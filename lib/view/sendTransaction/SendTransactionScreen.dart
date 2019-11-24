@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:ercoin_wallet/model/TransactionFactory.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/ApiConsumer.dart';
 import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
@@ -26,6 +27,7 @@ class SendTransactionState extends State<SendTransactionScreen>
   final _apiConsumer = ApiConsumer();
   final _sharedPreferencesUtil = SharedPreferencesUtil();
   final _accountRepository = AccountRepository();
+  final _transactionFactory = TransactionFactory();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -93,30 +95,8 @@ class SendTransactionState extends State<SendTransactionScreen>
       formData.save();
       var publicKey = await _sharedPreferencesUtil.getSharedPreference('activeAccountKey');
       var activeAccount = await _accountRepository.findByPublicKey(publicKey);
-
-      var timestamp = (new DateTime.now().millisecondsSinceEpoch  / 1000).round();
-
-      var timestampBytes = _transactionEncoder.encodeTimestamp(timestamp);
-      var receiverAddressBytes = _transactionEncoder.encodeReceiverAddress(_receiverAddress);
-      var transactionValueBytes = _transactionEncoder.encodeTransactionValue(_transactionValue);
-      var messageLengthBytes = _transactionEncoder.encodeMessageLength(_transactionMessage.length);
-      var senderAddressBytes = _transactionEncoder.encodeSenderAddress(publicKey);
-      var messageBytes = _transactionEncoder.encodeMessage(_transactionMessage);
-
-      List<int> transactionBytes = List.from([0]);
-      transactionBytes.addAll(timestampBytes);
-      transactionBytes.addAll(receiverAddressBytes);
-      transactionBytes.addAll(transactionValueBytes);
-      transactionBytes.addAll(messageLengthBytes);
-      transactionBytes.addAll(messageBytes);
-      transactionBytes.addAll([1]);
-      transactionBytes.addAll(senderAddressBytes);
-
-      Uint8List ed25519Signature = await CryptoSign.signBytes(Uint8List.fromList(transactionBytes), Uint8List.fromList(hex.decode(activeAccount.privateKey)));
-
-      transactionBytes.addAll(ed25519Signature);
-
-      var transactionHex = _transactionEncoder.convertTransactionBytesToHex(Uint8List.fromList(transactionBytes));
+      var transactionBytes = await _transactionFactory.createSignedTransactionBytesFrom(_receiverAddress, publicKey, _transactionValue, _transactionMessage, activeAccount.publicKey, activeAccount.privateKey);
+      var transactionHex = _transactionEncoder.convertTransactionBytesToHex(transactionBytes);
 
       prepareConfirmationAlert(transactionHex).show();
     }
