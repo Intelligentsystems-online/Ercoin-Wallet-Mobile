@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:convert/convert.dart';
+
+import 'package:flutter_sodium/flutter_sodium.dart';
+
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:flutter_sodium/flutter_sodium.dart';
 
 class ConfigureAccountNameInteractor {
   final _accountRepository = AccountRepository();
