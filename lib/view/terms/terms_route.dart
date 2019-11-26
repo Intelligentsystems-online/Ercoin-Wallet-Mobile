@@ -1,6 +1,6 @@
-import 'package:ercoin_wallet/utils/expanded_row.dart';
-import 'package:ercoin_wallet/utils/navigation_utils.dart';
-import 'package:ercoin_wallet/utils/values.dart';
+import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

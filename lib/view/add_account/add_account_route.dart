@@ -1,23 +1,27 @@
-import 'package:ercoin_wallet/utils/KeyGenerator.dart';
-import 'package:ercoin_wallet/utils/expanded_row.dart';
-import 'package:ercoin_wallet/utils/progress_overlay_container.dart';
-import 'package:ercoin_wallet/utils/values.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ercoin_wallet/interactor/add_account/add_account_interactor.dart';
+import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/view/configure_account_name/configure_account_name_route.dart';
 import 'package:flutter/material.dart';
 
 class AddAccountRoute extends StatefulWidget {
   final WidgetBuilder afterAdded;
 
   const AddAccountRoute({@required this.afterAdded});
+
+  @override
+  _AddAccountRouteState createState() => _AddAccountRouteState(afterAdded);
 }
 
 class _AddAccountRouteState extends State<AddAccountRoute> {
-  final keyGenerator = KeyGenerator();
   final WidgetBuilder afterAdded;
 
+  final _interactor = AddAccountInteractor(); // TODO(DI)
   bool _isLoading = false;
 
-  _AddAccountRouteState({@required this.afterAdded});
+  _AddAccountRouteState(this.afterAdded);
 
   @override
   Widget build(BuildContext context) =>
@@ -54,7 +58,7 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
 
   _createAccount() async {
     setState(() => _isLoading = true);
-    final keyPair = await keyGenerator.generateKeyPair();
-    move
+    final keyPair = await _interactor.generateKeyPair();
+    moveTo(context, (_) => ConfigureAccountNameRoute(afterAdded: afterAdded, keyPair: keyPair));
   }
 }
