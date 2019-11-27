@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:ercoin_wallet/utils/KeyGenerator.dart';
+
 import 'package:flutter_sodium/flutter_sodium.dart';
 
-// TODO(Interactor)
 class AddAccountInteractor {
-  Future<KeyPair> generateKeyPair() async => KeyPair(null, null);
+  final _keyGenerator = KeyGenerator();
+
+  Future<KeyPair> generateKeyPair() async => _keyGenerator
+      .generateKeyPair();
 }
