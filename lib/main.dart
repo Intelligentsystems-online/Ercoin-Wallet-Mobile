@@ -1,7 +1,7 @@
-
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/HomeScreen.dart';
 import 'package:ercoin_wallet/view/terms/terms_route.dart';
@@ -21,13 +21,13 @@ class App extends StatelessWidget {
                 future: accountRepository.findAll(),
                 builder: (List<Account> accounts) {
                   return accounts.isEmpty ? _onNewUser() : HomeScreen();
-                }
-    )));
+                })));
   }
 
   Widget _onNewUser() => TermsRoute(
-      afterAccepted: (_) => AddAccountRoute(
-        afterAdded: (_) => HomeScreen(),
-      )
-  );
+      onProceed: (ctx) => pushRoute(
+          Navigator.of(ctx),
+          () => AddAccountRoute(
+                onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeScreen()),
+              )));
 }

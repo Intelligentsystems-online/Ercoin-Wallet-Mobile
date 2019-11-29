@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-moveTo(BuildContext context, WidgetBuilder routeBuilder) =>
-    Navigator.of(context).push(MaterialPageRoute(builder: routeBuilder));
+pushRoute(NavigatorState navigator, Function() builder) => navigator.push(MaterialPageRoute(builder: (_) => builder()));
 
-runAfterBuild(Function() block) =>
-    WidgetsBinding.instance.addPostFrameCallback((_) => block);
+resetRoute(NavigatorState navigator, Function() builder) {
+  navigator.popUntil((route) => route.isFirst);
+  navigator.pushReplacement(MaterialPageRoute(builder: (_) => builder()));
+}
