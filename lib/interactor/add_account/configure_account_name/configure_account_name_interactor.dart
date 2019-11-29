@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:flutter_sodium/flutter_sodium.dart';
+import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 
-// TODO(Interactor)
 class ConfigureAccountNameInteractor {
+  final _accountRepository = AccountRepository(); // TODO(DI)
+
   Future<Account> addAccount(AccountKeys keys, String name) async {
-    return Account("pubkey", "privkey", name);
+    final account = Account(keys.publicKey, keys.privateKey, name);
+    _accountRepository.createAccount(account);
+    return account;
   }
 }
