@@ -16,7 +16,7 @@ class AddressList extends StatelessWidget {
   );
 
   Widget _prepareAddressRow(Address address) => GestureDetector(
-    onTap: () => onAddressPressed,
+    onTap: onAddressPressed(address),
     child: Text(address.accountName)
   );
 }
