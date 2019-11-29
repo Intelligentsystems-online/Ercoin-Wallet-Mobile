@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class TermsRoute extends StatefulWidget {
-  final WidgetBuilder afterAccepted;
+  final Function(BuildContext) onProceed;
 
-  const TermsRoute({@required this.afterAccepted});
+  const TermsRoute({@required this.onProceed});
 
   @override
-  _TermsRouteState createState() => _TermsRouteState(afterAccepted: afterAccepted);
+  _TermsRouteState createState() => _TermsRouteState(onProceed: onProceed);
 }
 
 class _TermsRouteState extends State<TermsRoute> {
-  final WidgetBuilder afterAccepted;
+  final Function(BuildContext) onProceed;
 
   bool _isAccepted = false;
 
-  _TermsRouteState({this.afterAccepted});
+  _TermsRouteState({this.onProceed});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -54,7 +54,6 @@ class _TermsRouteState extends State<TermsRoute> {
       );
 
   Widget _proceedBtn() => ExpandedRow(
-        child: RaisedButton(
-            child: const Text("Proceed"), onPressed: (_isAccepted ? () => moveTo(context, afterAccepted) : null)),
+        child: RaisedButton(child: const Text("Proceed"), onPressed: (_isAccepted ? () => onProceed(context) : null)),
       );
 }
