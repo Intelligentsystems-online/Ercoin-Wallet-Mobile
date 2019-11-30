@@ -2,6 +2,7 @@ import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AddressList extends StatelessWidget {
   final List<Address> addresses;
@@ -17,6 +18,8 @@ class AddressList extends StatelessWidget {
 
   Widget _prepareAddressRow(Address address) => GestureDetector(
     onTap: onAddressPressed(address),
-    child: Text(address.accountName)
+    child: Card(
+      child: Text(address.accountName)
+    )
   );
 }
