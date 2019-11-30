@@ -33,6 +33,7 @@ class HomeRoute extends StatelessWidget {
         _transactionsBtn(context),
         _accountsBtn(context),
         _addressesBtn(context)
+        //TODO wait for creating transaction list widget.
       ],
     ),
   );
@@ -40,13 +41,11 @@ class HomeRoute extends StatelessWidget {
   Widget _sendBtn(BuildContext context) => ExpandedRaisedTextButton(
     text: "Send",
     onPressed: () => pushRoute(Navigator.of(context), () => SendTransactionScreen())
-        //_navigateTo(context, SendTransactionScreen()),
   );
 
   Widget _transactionsBtn(BuildContext context) => ExpandedRaisedTextButton(
     text: "Transactions",
     onPressed: () => pushRoute(Navigator.of(context), () => TransactionScreen())
-        //_navigateTo(context, TransactionScreen()),
   );
 
   Widget _accountsBtn(BuildContext context) => ExpandedRaisedTextButton(
