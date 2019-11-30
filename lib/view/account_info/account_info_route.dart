@@ -1,10 +1,8 @@
 import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
-import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/transaction_list.dart';
-import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
-import 'package:ercoin_wallet/view/home/home_route.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +27,7 @@ class AccountInfoRoute extends StatelessWidget {
         Text("Account: " + accountWithBalance.account.accountName),
         Text("Balance: " + accountWithBalance.balance.toString() + " MICRO ERCOIN"),
         FutureBuilder(
-          future: _interactor.recentTransactions(),
+          future: _interactor.fetchRecentTransactions(),
           builder: (ctx, snapshot) =>
             snapshot.hasData ? TransactionList(snapshot.data, (transaction) => _onTransactionPressed(ctx, transaction)) : Container()
         )
@@ -40,22 +38,20 @@ class AccountInfoRoute extends StatelessWidget {
   _onTransactionPressed(BuildContext context, Transaction transaction) =>
       showDialog(context: context, builder: (context) => prepareAlertDialog(context, transaction));
 
-  AlertDialog prepareAlertDialog(BuildContext context, Transaction transaction) {
-    return AlertDialog(
-        title: Center(child: Text("Transaction detail")),
-        content: Column(
-          children: <Widget>[
-            Text("Receiver: " + transaction.receiverAddress),
-            Text("Sender: " + transaction.senderAddress),
-            Text("Coins: " + transaction.coins.toString()),
-            Text("Message: " + transaction.message),
-            Text("Timestamp: " + transaction.timestamp.toString()),
-            FlatButton(
-                child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-                onPressed: () => Navigator.of(context).pop()
-            )
-          ],
-        )
-    );
-  }
+  AlertDialog prepareAlertDialog(BuildContext context, Transaction transaction) => AlertDialog(
+      title: Center(child: Text("Transaction detail")),
+      content: Column(
+        children: <Widget>[
+          Text("Receiver: " + transaction.receiverAddress),
+          Text("Sender: " + transaction.senderAddress),
+          Text("Coins: " + transaction.coins.toString()),
+          Text("Message: " + transaction.message),
+          Text("Timestamp: " + transaction.timestamp.toString()),
+          FlatButton(
+              child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
+              onPressed: () => Navigator.of(context).pop()
+          )
+        ],
+      )
+  );
 }

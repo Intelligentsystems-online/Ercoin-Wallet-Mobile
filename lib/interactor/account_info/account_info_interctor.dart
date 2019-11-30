@@ -10,7 +10,7 @@ class AccountInfoInteractor {
     return AccountWithBalance(Account("public key", "private key", "account name"), 0);
   }
 
-  Future<List<Transaction>> recentTransactions() async {
+  Future<List<Transaction>> fetchRecentTransactions() async {
     var transaction = Transaction("receiver address", "sender address", 100, "message", 57000);
 
     return [transaction];
