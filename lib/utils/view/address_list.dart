@@ -13,10 +13,10 @@ class AddressList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView.builder(
       itemCount: addresses.length,
-      itemBuilder: (context, index) => ExpandedRow(child: _prepareAddressRow(addresses[index]))
+      itemBuilder: (context, index) => ExpandedRow(child: _addressRow(addresses[index]))
   );
 
-  Widget _prepareAddressRow(Address address) => GestureDetector(
+  Widget _addressRow(Address address) => GestureDetector(
     onTap: onAddressPressed(address),
     child: Card(
       child: Text(address.accountName)
