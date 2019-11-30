@@ -28,5 +28,5 @@ class TransactionList extends StatelessWidget {
     ),
   );
 
-  DateTime _dateTimeFrom(int timestamp) => new DateTime.fromMicrosecondsSinceEpoch(timestamp);
+  DateTime _dateTimeFrom(int timestamp) => new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
 }
