@@ -17,7 +17,7 @@ class AccountList extends StatelessWidget {
 
   Widget _accountBox(Account account) => GestureDetector(
     onTap: onAccountPressed(account),
-    child: Column(
+    child: Row(
       children: <Widget>[_activeAccountSign(account), _accountLabel(account)],
     )
   );
