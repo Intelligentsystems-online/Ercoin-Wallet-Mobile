@@ -11,9 +11,22 @@ import 'package:ercoin_wallet/view/transaction/TransactionScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeRoute extends StatelessWidget {
+class HomeRoute extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => HomeRouteState();
+}
+
+class HomeRouteState extends State<HomeRoute> {
 
   final _interactor = HomeInteractor(); // TODO(DI)
+
+  int _selectedPage = 0;
+
+  final List<Widget> _pages = [
+    TransactionScreen(),
+    AddressScreen(),
+    AccountScreen()
+  ];
 
   @override
   Widget build(BuildContext context) => FutureBuilder(
@@ -22,40 +35,29 @@ class HomeRoute extends StatelessWidget {
   );
 
   Scaffold _homeView(BuildContext context, AccountWithBalance accountWithBalance) => Scaffold(
-    appBar: AppBar(
-      title: Text("Welcome " + accountWithBalance.account.accountName),
-      centerTitle: true,
-    ),
-    body: Column(
-      children: <Widget>[
-        ExpandedRow(child: Text("Balance: " + accountWithBalance.balance.toString())),
-        _sendBtn(context),
-        _transactionsBtn(context),
-        _accountsBtn(context),
-        _addressesBtn(context)
-        //TODO wait for creating transaction list widget.
-      ],
-    ),
-  );
-//
-  Widget _sendBtn(BuildContext context) => ExpandedRaisedTextButton(
-    text: "Send",
-    onPressed: () => pushRoute(Navigator.of(context), () => SendTransactionScreen())
-  );
-
-  Widget _transactionsBtn(BuildContext context) => ExpandedRaisedTextButton(
-    text: "Transactions",
-    onPressed: () => pushRoute(Navigator.of(context), () => TransactionScreen())
-  );
-
-  Widget _accountsBtn(BuildContext context) => ExpandedRaisedTextButton(
-    text: "My accounts",
-    onPressed: () => pushRoute(Navigator.of(context), () => AccountScreen())
-  );
-
-  Widget _addressesBtn(BuildContext context) => ExpandedRaisedTextButton(
-    text: "Address book",
-    onPressed: () => pushRoute(Navigator.of(context), () => AddressScreen())
+      body: _pages[_selectedPage],
+      bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.blue,
+        selectedItemColor: Colors.blueAccent,
+        currentIndex: _selectedPage,
+        onTap: (int index) {
+          setState(() => _selectedPage = index);
+        },
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              title: Text("Transactions")
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.supervisor_account),
+              title: Text("Addresses")
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              title: Text("Accounts")
+          )
+        ],
+      )
   );
 
   Widget _onNoAccountFound() => AddAccountRoute(
