@@ -36,23 +36,16 @@ class HomeRouteState extends State<HomeRoute> {
           setState(() => _selectedPageIndex = index);
         },
         items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              title: Text("Info")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              title: Text("Transactions")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.supervisor_account),
-              title: Text("Addresses")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              title: Text("Accounts")
-          )
+          _navigationBarItem(Icons.info, "Info"),
+          _navigationBarItem(Icons.list, "Transactions"),
+          _navigationBarItem(Icons.supervisor_account, "Addresses"),
+          _navigationBarItem(Icons.account_circle, "Accounts")
         ],
       )
+  );
+
+  BottomNavigationBarItem _navigationBarItem(IconData iconData, String text) => BottomNavigationBarItem(
+      icon: Icon(iconData),
+      title: Text(text)
   );
 }
