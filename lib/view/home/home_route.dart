@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/interactor/home/home_interactor.dart';
+import 'package:ercoin_wallet/interactor/home/common_interactor.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
