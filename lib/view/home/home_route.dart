@@ -1,7 +1,5 @@
-import 'package:ercoin_wallet/interactor/home/home_interactor.dart';
-import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/view/account/AccountScreen.dart';
-import 'package:ercoin_wallet/view/account_info/account_info_route.dart';
+import 'package:ercoin_wallet/view/account_info/account_info_page.dart';
 import 'package:ercoin_wallet/view/address/AddressScreen.dart';
 import 'package:ercoin_wallet/view/transaction/TransactionScreen.dart';
 
@@ -14,25 +12,21 @@ class HomeRoute extends StatefulWidget {
 }
 
 class HomeRouteState extends State<HomeRoute> {
-
-  final _interactor = HomeInteractor(); // TODO(DI)
-
   int _selectedPageIndex = 0;
 
   final List<Widget> _pages = [
-    AccountInfoRoute(),
+    AccountInfoPage(),
     TransactionScreen(),
     AddressScreen(),
     AccountScreen()
   ];
 
   @override
-  Widget build(BuildContext context) => FutureBuilder(
-      future: _interactor.activeAccountWithBalance(),
-      builder: (context, snapshot) => snapshot.hasData ? _homeView(context, snapshot.data) : Center(child: CircularProgressIndicator())
-  );
-
-  Scaffold _homeView(BuildContext context, AccountWithBalance accountWithBalance) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(
+        title: Text("Home view"),
+        centerTitle: true,
+      ),
       body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.blue,
