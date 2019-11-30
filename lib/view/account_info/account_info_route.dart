@@ -46,7 +46,7 @@ class AccountInfoRoute extends StatelessWidget {
           Text("Sender: " + transaction.senderAddress),
           Text("Coins: " + transaction.coins.toString()),
           Text("Message: " + transaction.message),
-          Text("Timestamp: " + transaction.timestamp.toString()),
+          Text("Timestamp: " + _dateTimeFrom(transaction.timestamp).toString()),
           FlatButton(
               child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
               onPressed: () => Navigator.of(context).pop()
@@ -54,4 +54,6 @@ class AccountInfoRoute extends StatelessWidget {
         ],
       )
   );
+
+  DateTime _dateTimeFrom(int timestamp) => new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
 }
