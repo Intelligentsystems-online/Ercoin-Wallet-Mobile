@@ -2,6 +2,7 @@ import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AddressList extends StatelessWidget {
   final List<Address> addresses;
@@ -12,11 +13,13 @@ class AddressList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView.builder(
       itemCount: addresses.length,
-      itemBuilder: (context, index) => ExpandedRow(child: _prepareAddressRow(addresses[index]))
+      itemBuilder: (context, index) => ExpandedRow(child: _addressRow(addresses[index]))
   );
 
-  Widget _prepareAddressRow(Address address) => GestureDetector(
+  Widget _addressRow(Address address) => GestureDetector(
     onTap: onAddressPressed(address),
-    child: Text(address.accountName)
+    child: Card(
+      child: Text(address.accountName)
+    )
   );
 }
