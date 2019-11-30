@@ -1,11 +1,11 @@
+
 import 'dart:async';
 
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 
-// TODO(Interactor)
-class CommonInteractor {
+class AccountInfoInteractor {
   Future<AccountWithBalance> activeAccountWithBalance() async {
     return AccountWithBalance(Account("public key", "private key", "account name"), 0);
   }

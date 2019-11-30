@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/interactor/common/common_interactor.dart';
+import 'package:ercoin_wallet/interactor/home/home_interactor.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/view/account/AccountScreen.dart';
@@ -16,7 +16,7 @@ class HomeRoute extends StatefulWidget {
 
 class HomeRouteState extends State<HomeRoute> {
 
-  final _interactor = CommonInteractor(); // TODO(DI)
+  final _interactor = HomeInteractor(); // TODO(DI)
 
   int _selectedPage = 0;
 
