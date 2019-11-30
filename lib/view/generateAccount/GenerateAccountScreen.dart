@@ -1,8 +1,8 @@
 import 'package:ercoin_wallet/utils/KeyGenerator.dart';
 import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter_sodium/flutter_sodium.dart';
 
@@ -87,6 +87,6 @@ class _GenerateAccountState extends State<GenerateAccountScreen>
 
     Navigator
         .of(context)
-        .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        .push(MaterialPageRoute(builder: (context) => HomeRoute()));
   }
 }
