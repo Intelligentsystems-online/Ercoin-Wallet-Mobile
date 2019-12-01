@@ -8,7 +8,7 @@ class AddressList extends StatelessWidget {
   final List<Address> addresses;
   final Function(Address) onAddressPressed;
 
-  const AddressList({this.addresses, this.onAddressPressed});
+  const AddressList(this.addresses, this.onAddressPressed);
 
   @override
   Widget build(BuildContext context) => ListView.builder(
@@ -17,7 +17,7 @@ class AddressList extends StatelessWidget {
   );
 
   Widget _addressRow(Address address) => GestureDetector(
-    onTap: onAddressPressed(address),
+    onTap: () => onAddressPressed(address),
     child: Card(
       child: Text(address.accountName)
     )
