@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -34,24 +35,19 @@ class _EnterAddressState extends State<EnterAddressRoute> {
     ),
     body: Container(
       padding: standardPadding,
-      child: Stack(
-        children: <Widget>[
-          Align(
-            alignment: FractionalOffset.topCenter,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                  children: <Widget>[
-                    _publicKeyInput(),
-                    isNameOptional ? _checkboxWithText() : Container(),
-                    isNameOptional ? _addressNameInputByCheckbox() : _addressNameInput(),
-                  ]
-              ),
-            ),
-          ),
-          Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
-        ]
-      )
+      child: TopAndBottomContainer(
+        top: Form(
+          key: _formKey,
+          child: Column(
+              children: <Widget>[
+                _publicKeyInput(),
+                isNameOptional ? _checkboxWithText() : Container(),
+                isNameOptional ? _addressNameInputByCheckbox() : _addressNameInput(),
+              ]
+          )
+        ),
+        bottom: _proceedBtn(),
+      ),
     )
   );
 
