@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/view/account/AccountScreen.dart';
-import 'package:ercoin_wallet/view/account_info/account_info_page.dart';
 import 'package:ercoin_wallet/view/address/AddressScreen.dart';
+import 'package:ercoin_wallet/view/home/page/account_info/account_info_page.dart';
 import 'package:ercoin_wallet/view/transaction/TransactionScreen.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -32,9 +32,7 @@ class HomeRouteState extends State<HomeRoute> {
         unselectedItemColor: Colors.blue,
         selectedItemColor: Colors.blueAccent,
         currentIndex: _selectedPageIndex,
-        onTap: (int index) {
-          setState(() => _selectedPageIndex = index);
-        },
+        onTap: (int index) => setState(() => _selectedPageIndex = index),
         items: [
           _navigationBarItem(Icons.info, "Info"),
           _navigationBarItem(Icons.list, "Transactions"),

@@ -2,7 +2,7 @@ import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dar
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
-import 'package:ercoin_wallet/utils/view/transaction_detail_widget.dart';
+import 'package:ercoin_wallet/utils/view/transaction_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/transaction_list.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 
@@ -25,8 +25,8 @@ class AccountInfoPage extends StatelessWidget {
         Text("Account: " + accountWithBalance.account.accountName),
         Text("Balance: " + accountWithBalance.balance.toString() + " MICRO ERCOIN"),
         FutureBuilderWithProgress(
-          future: _interactor.obtainRecentTransactions(),
-          builder: (List<Transaction> transactions) => TransactionList(transactions, (transaction) => _onTransactionPressed(ctx, transaction))
+            future: _interactor.obtainRecentTransactions(),
+            builder: (List<Transaction> transactions) => TransactionList(transactions, (transaction) => _onTransactionPressed(ctx, transaction))
         )
       ],
     ),
@@ -39,6 +39,6 @@ class AccountInfoPage extends StatelessWidget {
 
   AlertDialog prepareAlertDialog(BuildContext ctx, Transaction transaction) => AlertDialog(
       title: Center(child: Text("Transaction detail")),
-      content: TransactionDetailWidget(transaction)
+      content: TransactionDetailsWidget(transaction)
   );
 }

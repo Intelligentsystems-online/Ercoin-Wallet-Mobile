@@ -4,10 +4,10 @@ import 'package:ercoin_wallet/utils/DateUtil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TransactionDetailWidget extends StatelessWidget {
+class TransactionDetailsWidget extends StatelessWidget {
   final Transaction transaction;
 
-  const TransactionDetailWidget(this.transaction);
+  const TransactionDetailsWidget(this.transaction);
 
   @override
   Widget build(BuildContext ctx) => Column(

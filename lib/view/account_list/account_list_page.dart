@@ -7,7 +7,7 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class AccountListPage extends StatelessWidget {
   void _onActivate(BuildContext ctx, String publicKey) {
     _interactor.activateAccount(publicKey);
 
-    resetRoute(Navigator.of(ctx), () => HomeScreen());
+    resetRoute(Navigator.of(ctx), () => HomeRoute());
   }
 
   Widget _addAccountBtn(BuildContext ctx) => RawMaterialButton(
@@ -60,6 +60,6 @@ class AccountListPage extends StatelessWidget {
   );
 
   _navigateToAddAccount(BuildContext ctx) => pushRoute(
-      Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeScreen()))
+      Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()))
   );
 }
