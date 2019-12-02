@@ -17,10 +17,8 @@ class AddressDetailWidget extends StatelessWidget {
     ]
   );
 
-  ExpandedRow _closeBtn(BuildContext ctx) => ExpandedRow(
-    child: FlatButton(
-      child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-      onPressed: () => Navigator.of(ctx).pop(),
-    )
+  FlatButton _closeBtn(BuildContext ctx) => FlatButton(
+    child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
+    onPressed: () => Navigator.of(ctx).pop(),
   );
 }
