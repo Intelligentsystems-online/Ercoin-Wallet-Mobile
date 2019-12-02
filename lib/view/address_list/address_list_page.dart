@@ -1,9 +1,10 @@
 import 'package:ercoin_wallet/interactor/address_list/AddressListInteractor.dart';
 import 'package:ercoin_wallet/repository/address/Address.dart';
-import 'package:ercoin_wallet/utils/view/address_detail_widget.dart';
+import 'package:ercoin_wallet/utils/view/address_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/address_list.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/createAddress/CreateAddressScreen.dart';
 
@@ -18,17 +19,10 @@ class AddressListPage extends StatelessWidget {
     appBar: AppBar(
       title: Text("Addresses"),
     ),
-    body: Stack(
-      children: <Widget>[
-        Align(
-          alignment: FractionalOffset.topCenter,
-          child: _addressListBuilder(ctx)
-        ),
-        Align(
-          alignment: FractionalOffset.bottomRight,
-          child: _addAddressBtn(ctx)
-        )
-      ],
+    body: TopAndBottomContainer(
+      top: _addressListBuilder(ctx),
+      bottom: _addAddressBtn(ctx),
+      bottomAlignment: FractionalOffset.bottomRight,
     )
   );
 
@@ -44,7 +38,7 @@ class AddressListPage extends StatelessWidget {
 
   AlertDialog _prepareAlertDialog(BuildContext ctx, Address address) => AlertDialog(
       title: Center(child: Text("Address detail")),
-      content: AddressDetailWidget(address)
+      content: AddressDetailsWidget(address)
   );
 
   Widget _addAddressBtn(BuildContext ctx) => RawMaterialButton(
