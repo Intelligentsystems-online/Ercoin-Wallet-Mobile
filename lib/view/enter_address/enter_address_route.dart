@@ -72,7 +72,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
     text: "Proceed",
-    onPressed: _onProceed(),
+    onPressed: _onProceed,
   );
 
   _onProceed() {
