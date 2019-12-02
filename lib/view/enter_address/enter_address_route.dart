@@ -43,7 +43,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
               children: <Widget>[
                 _publicKeyInput(),
                 isNameOptional ? _checkboxWithText() : Container(),
-                isNameOptional ? _addressNameInputByCheckbox() : _addressNameInput(),
+                !isNameOptional || _shouldSave ? _addressNameInput() : Container(),
               ]
           )
         ),
@@ -51,8 +51,6 @@ class _EnterAddressState extends State<EnterAddressRoute> {
       ),
     )
   );
-
-  Widget _addressNameInputByCheckbox() => _shouldSave ? _addressNameInput() : Container();
 
   Widget _checkboxWithText() => CheckboxWithTextWidget(
       text: "Add to address book",
