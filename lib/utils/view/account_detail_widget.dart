@@ -1,5 +1,6 @@
 
 import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +22,17 @@ class AccountDetailWidget extends StatelessWidget {
     ],
   );
 
-  FlatButton _activateBtn(BuildContext ctx) => FlatButton(
-      child: Text("Activate", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-      onPressed: () => onActivate(ctx, accountWithBalance.account.publicKey)
+  ExpandedRow _activateBtn(BuildContext ctx) => ExpandedRow(
+    child: FlatButton(
+        child: Text("Activate", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
+        onPressed: () => onActivate(ctx, accountWithBalance.account.publicKey)
+    )
   );
 
-  FlatButton _closeBtn(BuildContext ctx) => FlatButton(
-      child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-      onPressed: () => Navigator.of(ctx).pop()
+  ExpandedRow _closeBtn(BuildContext ctx) => ExpandedRow(
+    child: FlatButton(
+        child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
+        onPressed: () => Navigator.of(ctx).pop()
+    )
   );
 }
