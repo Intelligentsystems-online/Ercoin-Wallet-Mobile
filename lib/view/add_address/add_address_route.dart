@@ -35,27 +35,25 @@ class _AddAddressState extends State<AddAddressRoute> {
     ),
     body: Container(
       padding: standardPadding,
-      child: _addAddressView()
-    ),
-  );
-
-  Widget _addAddressView() => Stack(
-    children: <Widget>[
-      Align(
-        alignment: FractionalOffset.topCenter,
-        child: Form(
-          key: _formKey,
-          child: Column(
-              children: <Widget>[
-                _publicKeyInput(),
-                checkboxEnable ? _addressNameInputByCheckbox() : _addressNameInput(),
-                checkboxEnable ? _saveCheckboxRow() : Container(),
-              ]
+      child: Stack(
+        children: <Widget>[
+          Align(
+            alignment: FractionalOffset.topCenter,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                  children: <Widget>[
+                    _publicKeyInput(),
+                    checkboxEnable ? _addressNameInputByCheckbox() : _addressNameInput(),
+                    checkboxEnable ? _saveCheckboxRow() : Container(),
+                  ]
+              ),
+            ),
           ),
-        ),
-      ),
-      Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
-    ],
+          Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
+        ]
+      )
+    )
   );
 
   Widget _addressNameInputByCheckbox() => _shouldSave ? _addressNameInput() : Container();
