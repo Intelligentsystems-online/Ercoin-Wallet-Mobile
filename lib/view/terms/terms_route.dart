@@ -43,7 +43,7 @@ class _TermsRouteState extends State<TermsRoute> {
   );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-    text: "Proccedd",
+    text: "Procced",
     onPressed: _isAccepted ? () => onProceed(context) : null,
   );
 }
