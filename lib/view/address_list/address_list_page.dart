@@ -34,7 +34,7 @@ class AddressListPage extends StatelessWidget {
 
   Widget _addressListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
       future: _interactor.obtainAddresses(),
-      builder: (List<Address> addresses) => AddressList(addresses, (address) => _onAddressPressed(ctx, address))
+      builder: (List<Address> addresses) => AddressList(addresses, (ctx, address) => _onAddressPressed(ctx, address))
   );
 
   _onAddressPressed(BuildContext ctx, Address address) => showDialog(

@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 
 class AddressList extends StatelessWidget {
   final List<Address> addresses;
-  final Function(Address) onAddressPressed;
+  final Function(BuildContext, Address) onAddressPressed;
 
   const AddressList(this.addresses, this.onAddressPressed);
 
   @override
-  Widget build(BuildContext context) => ListView.builder(
+  Widget build(BuildContext ctx) => ListView.builder(
       itemCount: addresses.length,
-      itemBuilder: (context, index) => ExpandedRow(child: _addressRow(addresses[index]))
+      itemBuilder: (context, index) => ExpandedRow(child: _addressRow(ctx, addresses[index]))
   );
 
-  Widget _addressRow(Address address) => GestureDetector(
-    onTap: () => onAddressPressed(address),
+  Widget _addressRow(BuildContext ctx, Address address) => GestureDetector(
+    onTap: () => onAddressPressed(ctx, address),
     child: Card(
       child: Text(address.accountName)
     )
