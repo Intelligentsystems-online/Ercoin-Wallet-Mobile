@@ -4,6 +4,7 @@ import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/HomeScreen.dart';
@@ -19,17 +20,10 @@ class AccountListPage extends StatelessWidget {
     appBar: AppBar(
       title: Text("Accounts"),
     ),
-    body: Stack(
-      children: <Widget>[
-        Align(
-          alignment: FractionalOffset.topCenter,
-          child:  _accountListBuilder(ctx),
-        ),
-        Align(
-          alignment: FractionalOffset.bottomRight,
-          child: _addAccountBtn(ctx),
-        )
-      ],
+    body: TopAndBottomContainer(
+      top: _accountListBuilder(ctx),
+      bottom: _addAccountBtn(ctx),
+      bottomAlignment: FractionalOffset.bottomRight,
     )
   );
 
