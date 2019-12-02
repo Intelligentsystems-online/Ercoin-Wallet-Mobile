@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
+import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -75,10 +76,9 @@ class _EnterAddressState extends State<EnterAddressRoute> {
     ),
   );
 
-  Widget _proceedBtn() => ExpandedRow(
-    child: RaisedButton(
-        child: const Text("Proceed"),
-        onPressed: () => _onProceed()),
+  Widget _proceedBtn() => ExpandedRaisedTextButton(
+    text: "Proceed",
+    onPressed: () => _onProceed(),
   );
 
   _onProceed() {
