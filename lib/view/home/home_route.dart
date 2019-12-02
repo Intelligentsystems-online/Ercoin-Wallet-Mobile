@@ -32,7 +32,7 @@ class HomeRouteState extends State<HomeRoute> {
         unselectedItemColor: Colors.blue,
         selectedItemColor: Colors.blueAccent,
         currentIndex: _selectedPageIndex,
-        onTap: (int index) => setState(() => _selectedPageIndex = index),
+        onTap: (index) => setState(() => _selectedPageIndex = index),
         items: [
           _navigationBarItem(Icons.info, "Info"),
           _navigationBarItem(Icons.list, "Transactions"),

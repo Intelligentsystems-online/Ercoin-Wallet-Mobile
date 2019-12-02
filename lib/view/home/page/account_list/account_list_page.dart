@@ -17,14 +17,14 @@ class AccountListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
-    appBar: AppBar(
-      title: Text("Accounts"),
-    ),
-    body: TopAndBottomContainer(
-      top: _accountListBuilder(ctx),
-      bottom: _addAccountBtn(ctx),
-      bottomAlignment: FractionalOffset.bottomRight,
-    )
+      appBar: AppBar(
+        title: Text("Accounts"),
+      ),
+      body: TopAndBottomContainer(
+        top: _accountListBuilder(ctx),
+        bottom: _addAccountBtn(ctx),
+        bottomAlignment: FractionalOffset.bottomRight,
+      )
   );
 
   Widget _accountListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
