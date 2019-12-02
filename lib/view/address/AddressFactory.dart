@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/view/createAddress/CreateAddressScreen.dart';
+import 'package:ercoin_wallet/view/enter_address/enter_address_route.dart';
 import 'package:ercoin_wallet/view/home/HomeScreen.dart';
 
 import 'package:flutter/material.dart';
@@ -43,7 +44,10 @@ class AddressFactory
 
   RaisedButton _accountNavigationButton(BuildContext context) => RaisedButton(
       child: Text("Create new address"),
-      onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateAddressScreen()));}
+      onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => EnterAddressRoute(
+        onProceed: (ctx, publicKey, addressName) => {},
+        isNameOptional: true,
+      )));}
   );
 
   RaisedButton _transactionNavigationButton(BuildContext context) => RaisedButton(

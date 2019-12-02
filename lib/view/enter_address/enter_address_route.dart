@@ -1,32 +1,31 @@
-import 'package:ercoin_wallet/interactor/add_address/AddAddressInteractor.dart';
+import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AddAddressRoute extends StatefulWidget {
-  final Function(BuildContext, String) onProceed;
-  final bool checkboxEnable;
+class EnterAddressRoute extends StatefulWidget {
+  final Function(BuildContext, String, String) onProceed;
+  final bool isNameOptional;
 
-  const AddAddressRoute({@required this.onProceed, @required this.checkboxEnable});
+  const EnterAddressRoute({@required this.onProceed, @required this.isNameOptional});
 
   @override
-  State<StatefulWidget> createState() => _AddAddressState(onProceed, checkboxEnable);
+  State<StatefulWidget> createState() => _EnterAddressState(onProceed, isNameOptional);
 }
 
-class _AddAddressState extends State<AddAddressRoute> {
-  final Function(BuildContext, String) onProceed;
-  final bool checkboxEnable;
+class _EnterAddressState extends State<EnterAddressRoute> {
+  final Function(BuildContext, String, [String]) onProceed;
+  final bool isNameOptional;
 
   String _publicKey;
   String _addressName;
   bool _shouldSave = false;
 
   final _formKey = GlobalKey<FormState>();
-  final _interactor = AddAddressInteractor(); //TODO(DI)
 
-  _AddAddressState(this.onProceed, this.checkboxEnable);
+  _EnterAddressState(this.onProceed, this.isNameOptional);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -44,8 +43,8 @@ class _AddAddressState extends State<AddAddressRoute> {
               child: Column(
                   children: <Widget>[
                     _publicKeyInput(),
-                    checkboxEnable ? _addressNameInputByCheckbox() : _addressNameInput(),
-                    checkboxEnable ? _saveCheckboxRow() : Container(),
+                    isNameOptional ? _checkboxWithText() : Container(),
+                    isNameOptional ? _addressNameInputByCheckbox() : _addressNameInput(),
                   ]
               ),
             ),
@@ -58,16 +57,10 @@ class _AddAddressState extends State<AddAddressRoute> {
 
   Widget _addressNameInputByCheckbox() => _shouldSave ? _addressNameInput() : Container();
 
-  Widget _saveCheckboxRow() => Row(
-    children: <Widget>[
-      Checkbox(
-        value: _shouldSave,
-        onChanged: (isChecked) => setState(() => _shouldSave = isChecked),
-      ),
-      const Expanded(
-        child: const Text("Add to address book")
-      )
-    ],
+  Widget _checkboxWithText() => CheckboxWithTextWidget(
+    text: "Add to address book",
+    initialState: false,
+    onChanged: (isChecked) => setState(() => _shouldSave = isChecked)
   );
 
   Widget _publicKeyInput() => ExpandedRow(
@@ -92,13 +85,11 @@ class _AddAddressState extends State<AddAddressRoute> {
         onPressed: () => _onProceed()),
   );
 
-  void _onProceed() {
+  _onProceed() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      if(checkboxEnable == false || (checkboxEnable && _shouldSave))
-        _interactor.saveAddress(_publicKey, _addressName);
 
-      onProceed(context, _publicKey);
+      onProceed(context, _publicKey, _addressName);
     }
   }
 }
