@@ -1,5 +1,8 @@
+import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
+import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,33 +30,20 @@ class _TermsRouteState extends State<TermsRoute> {
       ),
       body: Container(
         padding: standardPadding,
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: FractionalOffset.topCenter,
-              child: _termsRow(),
-            ),
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: _proceedBtn(),
-            ),
-          ],
-        ),
+        child: TopAndBottomContainer(
+          top: _termsRow(),
+          bottom: _proceedBtn(),
+        )
       ));
 
-  Widget _termsRow() => Row(
-        children: <Widget>[
-          Checkbox(
-            value: _isAccepted,
-            onChanged: (isChecked) => setState(() => _isAccepted = isChecked),
-          ),
-          const Expanded(
-            child: const Text("I accept terms"), // TODO(Add terms text)
-          )
-        ],
-      );
+  Widget _termsRow() => CheckboxWithTextWidget(
+    text: "I accept terms",
+    value: _isAccepted,
+    onChanged: (isChecked) => setState(() => _isAccepted = isChecked)
+  );
 
-  Widget _proceedBtn() => ExpandedRow(
-        child: RaisedButton(child: const Text("Proceed"), onPressed: (_isAccepted ? () => onProceed(context) : null)),
-      );
+  Widget _proceedBtn() => ExpandedRaisedTextButton(
+    text: "Procced",
+    onPressed: _isAccepted ? () => onProceed(context) : null,
+  );
 }
