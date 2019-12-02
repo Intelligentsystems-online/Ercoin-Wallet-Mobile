@@ -8,7 +8,7 @@ class AccountList extends StatelessWidget {
   final String activeAccountPk;
   final Function(AccountWithBalance) onAccountPressed;
 
-  const AccountList({this.accountsWithBalance, this.activeAccountPk, this.onAccountPressed});
+  const AccountList(this.accountsWithBalance, this.activeAccountPk, this.onAccountPressed);
 
   @override
   Widget build(BuildContext context) => ListView.builder(
@@ -18,11 +18,13 @@ class AccountList extends StatelessWidget {
 
   Widget _accountBox(AccountWithBalance accountWithBalance) => GestureDetector(
     onTap: () => onAccountPressed(accountWithBalance),
-    child: Row(
-      children: <Widget>[
-        _activeAccountSign(accountWithBalance.account),
-        _accountLabel(accountWithBalance.account),
-        Text(accountWithBalance.balance.toString())],
+    child: Card(
+        child: Row(children: <Widget>[
+          (accountWithBalance.account.publicKey == activeAccountPk) ? _activeAccountSign(accountWithBalance.account) : Container(),
+          _accountLabel(accountWithBalance.account),
+          Text(accountWithBalance.balance.toString())
+        ]
+      )
     )
   );
 
