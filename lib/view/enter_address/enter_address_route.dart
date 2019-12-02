@@ -20,7 +20,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   final bool isNameOptional;
 
   String _publicKey;
-  String _addressName;
+  String _name;
   bool _shouldSave = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -59,7 +59,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
 
   Widget _checkboxWithText() => CheckboxWithTextWidget(
     text: "Add to address book",
-    initialState: false,
+    initialValue: _shouldSave,
     onChanged: (isChecked) => setState(() => _shouldSave = isChecked)
   );
 
@@ -75,7 +75,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
     child: TextFormField(
       decoration: const InputDecoration(labelText: 'Address name'),
       validator: (value) => value.isEmpty ? "Enter address name" : null,
-      onSaved: (value) => setState(() => _addressName = value),
+      onSaved: (value) => setState(() => _name = value),
     ),
   );
 
@@ -89,7 +89,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      onProceed(context, _publicKey, _addressName);
+      onProceed(context, _publicKey, _name);
     }
   }
 }
