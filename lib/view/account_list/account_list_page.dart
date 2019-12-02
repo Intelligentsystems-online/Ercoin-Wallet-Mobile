@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
-import 'package:ercoin_wallet/utils/view/account_detail_widget.dart';
+import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -48,7 +48,7 @@ class AccountListPage extends StatelessWidget {
 
   AlertDialog _prepareAlertDialog(BuildContext ctx, AccountWithBalance account) => AlertDialog(
       title: Center(child: Text("Account detail")),
-      content: AccountDetailWidget(account, (ctx, publicKey) => _onActivate(ctx, publicKey))
+      content: AccountDetailsWidget(account, (ctx, publicKey) => _onActivate(ctx, publicKey))
   );
 
   void _onActivate(BuildContext ctx, String publicKey) {

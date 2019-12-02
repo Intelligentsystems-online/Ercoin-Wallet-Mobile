@@ -20,7 +20,7 @@ class AccountList extends StatelessWidget {
     onTap: () => onAccountPressed(ctx, accountWithBalance),
     child: Card(
         child: Row(children: <Widget>[
-          (accountWithBalance.account.publicKey == activeAccountPk) ? _activeAccountSign(accountWithBalance.account) : Container(),
+          _activeAccountSign(accountWithBalance.account),
           _accountLabel(accountWithBalance.account),
           Text(accountWithBalance.balance.toString())
         ]

@@ -1,14 +1,13 @@
-
 import 'package:ercoin_wallet/model/account_with_balance.dart';
-import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AccountDetailWidget extends StatelessWidget {
+class AccountDetailsWidget extends StatelessWidget {
   final AccountWithBalance accountWithBalance;
   final Function(BuildContext, String) onActivate;
 
-  const AccountDetailWidget(this.accountWithBalance, this.onActivate);
+  const AccountDetailsWidget(this.accountWithBalance, this.onActivate);
 
   @override
   Widget build(BuildContext ctx) => Column(
