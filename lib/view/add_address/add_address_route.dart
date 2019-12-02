@@ -107,7 +107,7 @@ class _AddAddressState extends State<AddAddressRoute> {
         onPressed: () => _onProceed()),
   );
 
-  _onProceed() {
+  void _onProceed() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       if(checkboxEnable == false || (checkboxEnable && _shouldSave))
