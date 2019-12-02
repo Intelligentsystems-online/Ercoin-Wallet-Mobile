@@ -1,0 +1,65 @@
+import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
+import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
+import 'package:ercoin_wallet/utils/view/account_list.dart';
+import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
+import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
+import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class AccountListPage extends StatelessWidget {
+  final _interactor = AccountListInteractor(); //TODO(DI)
+
+  @override
+  Widget build(BuildContext ctx) => Scaffold(
+    appBar: AppBar(
+      title: Text("Accounts"),
+    ),
+    body: TopAndBottomContainer(
+      top: _accountListBuilder(ctx),
+      bottom: _addAccountBtn(ctx),
+      bottomAlignment: FractionalOffset.bottomRight,
+    )
+  );
+
+  Widget _accountListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
+      future: _interactor.obtainAccountsWithBalance(),
+      builder: (List<AccountWithBalance> accounts) => FutureBuilderWithProgress(
+        future: _interactor.obtainActiveAccountPk(),
+        builder: (String activeAccountPk) => AccountList(accounts, activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account)),
+      )
+  );
+
+  void _onAccountPressed(BuildContext ctx, AccountWithBalance account) => showDialog(
+      context: ctx,
+      builder: (ctx) => _prepareAlertDialog(ctx, account)
+  );
+
+  AlertDialog _prepareAlertDialog(BuildContext ctx, AccountWithBalance account) => AlertDialog(
+      title: Center(child: Text("Account detail")),
+      content: AccountDetailsWidget(account, (ctx, publicKey) => _onActivate(ctx, publicKey))
+  );
+
+  void _onActivate(BuildContext ctx, String publicKey) {
+    _interactor.activateAccount(publicKey);
+
+    resetRoute(Navigator.of(ctx), () => HomeScreen());
+  }
+
+  Widget _addAccountBtn(BuildContext ctx) => RawMaterialButton(
+    shape: CircleBorder(),
+    padding: standardPadding,
+    fillColor: Colors.white,
+    child: Icon(Icons.add, color: Colors.blue, size: 35.0),
+    onPressed: () => _navigateToAddAccount(ctx),
+  );
+
+  _navigateToAddAccount(BuildContext ctx) => pushRoute(
+      Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeScreen()))
+  );
+}
