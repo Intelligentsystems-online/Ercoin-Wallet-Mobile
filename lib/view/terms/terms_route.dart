@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
+import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
@@ -41,7 +42,8 @@ class _TermsRouteState extends State<TermsRoute> {
     onChanged: (isChecked) => setState(() => _isAccepted = isChecked)
   );
 
-  Widget _proceedBtn() => ExpandedRow(
-        child: RaisedButton(child: const Text("Proceed"), onPressed: (_isAccepted ? () => onProceed(context) : null)),
-      );
+  Widget _proceedBtn() => ExpandedRaisedTextButton(
+    text: "Proccedd",
+    onPressed: _isAccepted ? () => onProceed(context) : null,
+  );
 }

@@ -34,22 +34,18 @@ class _EnterAddressState extends State<EnterAddressRoute> {
     appBar: AppBar(
       title: const Text("Address configure"),
     ),
-    body: Container(
-      padding: standardPadding,
-      child: TopAndBottomContainer(
-        top: Form(
-          key: _formKey,
-          child: Column(
-              children: <Widget>[
-                _publicKeyInput(),
-                isNameOptional ? _checkboxWithText() : Container(),
-                !isNameOptional || _shouldSave ? _addressNameInput() : Container(),
-              ]
-          )
-        ),
-        bottom: _proceedBtn(),
+    body: TopAndBottomContainer(
+      top: Form(
+        key: _formKey,
+        child: Column(children: <Widget>[
+            _publicKeyInput(),
+            isNameOptional ? _checkboxWithText() : Container(),
+            !isNameOptional || _shouldSave ? _addressNameInput() : Container(),
+          ]
+        )
       ),
-    )
+        bottom: _proceedBtn(),
+    ),
   );
 
   Widget _checkboxWithText() => CheckboxWithTextWidget(
@@ -76,7 +72,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
     text: "Proceed",
-    onPressed: () => _onProceed(),
+    onPressed: _onProceed(),
   );
 
   _onProceed() {
