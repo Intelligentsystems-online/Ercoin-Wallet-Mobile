@@ -37,7 +37,7 @@ class AccountListPage extends StatelessWidget {
       future: _interactor.obtainAccountsWithBalance(),
       builder: (List<AccountWithBalance> accounts) => FutureBuilderWithProgress(
         future: _interactor.obtainActiveAccountPk(),
-        builder: (String activeAccountPk) => AccountList(accounts, activeAccountPk, (account) => _onAccountPressed(ctx, account)),
+        builder: (String activeAccountPk) => AccountList(accounts, activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account)),
       )
   );
 

@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 class AccountList extends StatelessWidget {
   final List<AccountWithBalance> accountsWithBalance;
   final String activeAccountPk;
-  final Function(AccountWithBalance) onAccountPressed;
+  final Function(BuildContext, AccountWithBalance) onAccountPressed;
 
   const AccountList(this.accountsWithBalance, this.activeAccountPk, this.onAccountPressed);
 
   @override
-  Widget build(BuildContext context) => ListView.builder(
+  Widget build(BuildContext ctx) => ListView.builder(
       itemCount: accountsWithBalance.length,
-      itemBuilder: (context, index) => _accountBox(accountsWithBalance[index])
+      itemBuilder: (context, index) => _accountBox(ctx, accountsWithBalance[index])
   );
 
-  Widget _accountBox(AccountWithBalance accountWithBalance) => GestureDetector(
-    onTap: () => onAccountPressed(accountWithBalance),
+  Widget _accountBox(BuildContext ctx, AccountWithBalance accountWithBalance) => GestureDetector(
+    onTap: () => onAccountPressed(ctx, accountWithBalance),
     child: Card(
         child: Row(children: <Widget>[
           (accountWithBalance.account.publicKey == activeAccountPk) ? _activeAccountSign(accountWithBalance.account) : Container(),
