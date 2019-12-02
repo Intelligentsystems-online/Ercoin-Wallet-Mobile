@@ -16,7 +16,7 @@ class EnterAddressRoute extends StatefulWidget {
 }
 
 class _EnterAddressState extends State<EnterAddressRoute> {
-  final Function(BuildContext, String, [String]) onProceed;
+  final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
   String _publicKey;
