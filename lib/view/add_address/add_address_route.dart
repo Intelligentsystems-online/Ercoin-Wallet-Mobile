@@ -6,17 +6,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddAddressRoute extends StatefulWidget {
-  final Function(BuildContext) onAdded;
+  final Function(BuildContext, String) onProceed;
   final bool checkboxEnable;
 
-  const AddAddressRoute({@required this.onAdded, @required this.checkboxEnable});
+  const AddAddressRoute({@required this.onProceed, @required this.checkboxEnable});
 
   @override
-  State<StatefulWidget> createState() => _AddAddressState(onAdded, checkboxEnable);
+  State<StatefulWidget> createState() => _AddAddressState(onProceed, checkboxEnable);
 }
 
 class _AddAddressState extends State<AddAddressRoute> {
-  final Function(BuildContext) onAdded;
+  final Function(BuildContext, String) onProceed;
   final bool checkboxEnable;
 
   String _publicKey;
@@ -26,7 +26,7 @@ class _AddAddressState extends State<AddAddressRoute> {
   final _formKey = GlobalKey<FormState>();
   final _interactor = AddAddressInteractor(); //TODO(DI)
 
-  _AddAddressState(this.onAdded, this.checkboxEnable);
+  _AddAddressState(this.onProceed, this.checkboxEnable);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -113,7 +113,7 @@ class _AddAddressState extends State<AddAddressRoute> {
       if(checkboxEnable == false || (checkboxEnable && _shouldSave))
         _interactor.saveAddress(_publicKey, _addressName);
 
-      onAdded(context);
+      onProceed(context, _publicKey);
     }
   }
 }
