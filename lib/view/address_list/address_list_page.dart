@@ -37,7 +37,7 @@ class AddressListPage extends StatelessWidget {
       builder: (List<Address> addresses) => AddressList(addresses, (ctx, address) => _onAddressPressed(ctx, address))
   );
 
-  _onAddressPressed(BuildContext ctx, Address address) => showDialog(
+  void _onAddressPressed(BuildContext ctx, Address address) => showDialog(
       context: ctx,
       builder: (ctx) => _prepareAlertDialog(ctx, address)
   );
