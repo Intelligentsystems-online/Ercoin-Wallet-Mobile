@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/model/Transaction.dart';
+import 'package:ercoin_wallet/utils/DateUtil.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.builder(
+      shrinkWrap: true,
       itemCount: transactions.length,
       itemBuilder: (context, index) => _transactionRow(transactions[index])
   );
@@ -22,11 +24,9 @@ class TransactionList extends StatelessWidget {
           children: <Widget>[
             Text(transaction.message),
             Text(transaction.coins.toString()),
-            Text(_dateTimeFrom(transaction.timestamp).toString())
+            Text(DateUtil.dateTimeFrom(transaction.timestamp).toString())
           ],
         )
     ),
   );
-
-  DateTime _dateTimeFrom(int timestamp) => new DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
 }

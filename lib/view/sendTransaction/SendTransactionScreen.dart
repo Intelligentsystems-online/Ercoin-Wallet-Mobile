@@ -6,7 +6,7 @@ import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/ApiConsumer.dart';
 import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
 import 'package:ercoin_wallet/utils/TransactionEncoder.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -144,7 +144,7 @@ class SendTransactionState extends State<SendTransactionScreen>
               ),
               onPressed: () => Navigator
                   .of(context)
-                  .push(MaterialPageRoute(builder: (context) => HomeScreen()))
+                  .push(MaterialPageRoute(builder: (context) => HomeRoute()))
           )
         ]
     );

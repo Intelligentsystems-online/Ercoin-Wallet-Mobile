@@ -1,7 +1,7 @@
 import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:random_string/random_string.dart';
 
@@ -87,7 +87,7 @@ class _ImportAccountState extends State<ImportAccountScreen>
 
       Navigator
           .of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+          .push(MaterialPageRoute(builder: (context) => HomeRoute()));
     }
   }
 }

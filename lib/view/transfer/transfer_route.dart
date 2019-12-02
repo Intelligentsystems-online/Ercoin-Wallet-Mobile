@@ -7,7 +7,7 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -87,7 +87,7 @@ class _TransferRouteState extends State<TransferRoute> {
           setState(() => _isInsufficientFundsError = true);
           _formKey.currentState.validate();
         } else {
-          resetRoute(Navigator.of(context), () => HomeScreen());
+          resetRoute(Navigator.of(context), () => HomeRoute());
         }
       }
     },
