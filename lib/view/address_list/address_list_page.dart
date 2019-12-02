@@ -36,7 +36,7 @@ class AddressListPage extends StatelessWidget {
       builder: (ctx) => _prepareAlertDialog(ctx, address)
   );
 
-  AlertDialog _prepareAlertDialog(BuildContext ctx, Address address) => AlertDialog(
+  Widget _prepareAlertDialog(BuildContext ctx, Address address) => AlertDialog(
       title: Center(child: Text("Address detail")),
       content: AddressDetailsWidget(address)
   );
