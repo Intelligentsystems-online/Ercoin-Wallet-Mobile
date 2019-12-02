@@ -41,6 +41,22 @@ class AccountListPage extends StatelessWidget {
       )
   );
 
+  void _onAccountPressed(BuildContext ctx, AccountWithBalance account) => showDialog(
+      context: ctx,
+      builder: (ctx) => _prepareAlertDialog(ctx, account)
+  );
+
+  AlertDialog _prepareAlertDialog(BuildContext ctx, AccountWithBalance account) => AlertDialog(
+      title: Center(child: Text("Account detail")),
+      content: AccountDetailWidget(account, () => _onActivate(ctx, account))
+  );
+
+  void _onActivate(BuildContext ctx, AccountWithBalance account) {
+    _interactor.activateAccount(account.account.publicKey);
+
+    resetRoute(Navigator.of(ctx), () => HomeScreen());
+  }
+
   Widget _addAccountBtn(BuildContext ctx) => RawMaterialButton(
     shape: CircleBorder(),
     padding: standardPadding,
@@ -52,18 +68,4 @@ class AccountListPage extends StatelessWidget {
   _navigateToAddAccount(BuildContext ctx) => pushRoute(
       Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeScreen()))
   );
-
-  _onAccountPressed(BuildContext ctx, AccountWithBalance account) => showDialog(
-      context: ctx,
-      builder: (ctx) => _prepareAlertDialog(ctx, account)
-  );
-
-  AlertDialog _prepareAlertDialog(BuildContext ctx, AccountWithBalance account) => AlertDialog(
-      title: Center(child: Text("Account detail")),
-      content: AccountDetailWidget(account, () => _onActivate(ctx, account))
-  );
-
-  void _onActivate(BuildContext ctx, AccountWithBalance account) => _interactor
-      .activateAccount(account.account.publicKey)
-      .then((_) => resetRoute(Navigator.of(ctx), () => HomeScreen()));
 }
