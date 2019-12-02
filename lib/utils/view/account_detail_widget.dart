@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class AccountDetailWidget extends StatelessWidget {
   final AccountWithBalance accountWithBalance;
-  final Function() onActivate;
+  final Function(BuildContext, String) onActivate;
 
   const AccountDetailWidget(this.accountWithBalance, this.onActivate);
 
@@ -23,7 +23,7 @@ class AccountDetailWidget extends StatelessWidget {
 
   FlatButton _activateBtn(BuildContext ctx) => FlatButton(
       child: Text("Activate", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-      onPressed: () => onActivate()
+      onPressed: () => onActivate(ctx, accountWithBalance.account.publicKey)
   );
 
   FlatButton _closeBtn(BuildContext ctx) => FlatButton(

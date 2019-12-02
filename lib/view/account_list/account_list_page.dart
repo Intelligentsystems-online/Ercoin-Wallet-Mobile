@@ -48,11 +48,11 @@ class AccountListPage extends StatelessWidget {
 
   AlertDialog _prepareAlertDialog(BuildContext ctx, AccountWithBalance account) => AlertDialog(
       title: Center(child: Text("Account detail")),
-      content: AccountDetailWidget(account, () => _onActivate(ctx, account))
+      content: AccountDetailWidget(account, (ctx, publicKey) => _onActivate(ctx, publicKey))
   );
 
-  void _onActivate(BuildContext ctx, AccountWithBalance account) {
-    _interactor.activateAccount(account.account.publicKey);
+  void _onActivate(BuildContext ctx, String publicKey) {
+    _interactor.activateAccount(publicKey);
 
     resetRoute(Navigator.of(ctx), () => HomeScreen());
   }
