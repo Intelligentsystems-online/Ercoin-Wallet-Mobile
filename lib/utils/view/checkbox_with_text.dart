@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 
 class CheckboxWithTextWidget extends StatelessWidget {
   final String text;
-  final bool initialValue;
+  final bool value;
   final Function(bool) onChanged;
 
-  const CheckboxWithTextWidget({this.text, this.initialValue, this.onChanged});
+  const CheckboxWithTextWidget({this.text, this.value, this.onChanged});
 
   @override
   Widget build(BuildContext context) => Row(
     children: <Widget>[
       Checkbox(
-        value: initialValue,
+        value: value,
         onChanged: onChanged,
       ),
       Expanded(

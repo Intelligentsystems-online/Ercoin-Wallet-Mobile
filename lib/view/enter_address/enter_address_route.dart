@@ -54,9 +54,9 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   Widget _addressNameInputByCheckbox() => _shouldSave ? _addressNameInput() : Container();
 
   Widget _checkboxWithText() => CheckboxWithTextWidget(
-    text: "Add to address book",
-    initialValue: _shouldSave,
-    onChanged: (isChecked) => setState(() => _shouldSave = isChecked)
+      text: "Add to address book",
+      value: _shouldSave,
+      onChanged: (isChecked) => setState(() => _shouldSave = isChecked)
   );
 
   Widget _publicKeyInput() => ExpandedRow(
