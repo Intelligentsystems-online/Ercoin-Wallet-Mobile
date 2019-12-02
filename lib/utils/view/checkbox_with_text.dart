@@ -14,7 +14,7 @@ class CheckboxWithTextWidget extends StatelessWidget {
     children: <Widget>[
       Checkbox(
         value: initialValue,
-        onChanged: (isChecked) => onChanged(isChecked),
+        onChanged: onChanged,
       ),
       Expanded(
           child: Text(text)
