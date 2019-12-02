@@ -1,6 +1,8 @@
 import 'package:ercoin_wallet/view/account/AccountScreen.dart';
 import 'package:ercoin_wallet/view/address/AddressScreen.dart';
 import 'package:ercoin_wallet/view/home/page/account_info/account_info_page.dart';
+import 'package:ercoin_wallet/view/home/page/account_list/account_list_page.dart';
+import 'package:ercoin_wallet/view/home/page/address_list/address_list_page.dart';
 import 'package:ercoin_wallet/view/transaction/TransactionScreen.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -17,8 +19,8 @@ class HomeRouteState extends State<HomeRoute> {
   final List<Widget> _pages = [
     AccountInfoPage(),
     TransactionScreen(),
-    AddressScreen(),
-    AccountScreen()
+    AddressListPage(),
+    AccountListPage()
   ];
 
   @override

@@ -16,15 +16,10 @@ class AccountListPage extends StatelessWidget {
   final _interactor = AccountListInteractor(); //TODO(DI)
 
   @override
-  Widget build(BuildContext ctx) => Scaffold(
-      appBar: AppBar(
-        title: Text("Accounts"),
-      ),
-      body: TopAndBottomContainer(
-        top: _accountListBuilder(ctx),
-        bottom: _addAccountBtn(ctx),
-        bottomAlignment: FractionalOffset.bottomRight,
-      )
+  Widget build(BuildContext ctx) => TopAndBottomContainer(
+    top: _accountListBuilder(ctx),
+    bottom: _addAccountBtn(ctx),
+    bottomAlignment: FractionalOffset.bottomRight,
   );
 
   Widget _accountListBuilder(BuildContext ctx) => FutureBuilderWithProgress(

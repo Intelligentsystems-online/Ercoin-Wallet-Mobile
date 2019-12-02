@@ -15,15 +15,10 @@ class AddressListPage extends StatelessWidget {
   final _interactor = AddressListInteractor(); //TODO(DI)
 
   @override
-  Widget build(BuildContext ctx) => Scaffold(
-    appBar: AppBar(
-      title: Text("Addresses"),
-    ),
-    body: TopAndBottomContainer(
-      top: _addressListBuilder(ctx),
-      bottom: _addAddressBtn(ctx),
-      bottomAlignment: FractionalOffset.bottomRight,
-    )
+  Widget build(BuildContext ctx) => TopAndBottomContainer(
+    top: _addressListBuilder(ctx),
+    bottom: _addAddressBtn(ctx),
+    bottomAlignment: FractionalOffset.bottomRight,
   );
 
   Widget _addressListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
