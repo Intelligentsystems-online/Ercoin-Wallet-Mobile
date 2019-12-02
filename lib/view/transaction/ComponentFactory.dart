@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/TransactionFactory.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -44,7 +44,7 @@ class ComponentFactory
 
   RaisedButton _transactionNavigationButton(BuildContext context) => RaisedButton(
       child: Text("Back to home"),
-      onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));}
+      onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeRoute()));}
   );
 
   Alert prepareAlert(BuildContext context, Transaction transaction) {

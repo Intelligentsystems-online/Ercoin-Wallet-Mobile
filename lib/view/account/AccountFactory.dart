@@ -4,7 +4,7 @@ import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/utils/ApiConsumer.dart';
 import 'package:ercoin_wallet/utils/BalanceAccountUtil.dart';
 import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +61,7 @@ class AccountFactory
                       child: Text("Activate account"),
                       onPressed: () {
                         _sharedPreferencesUtil.setSharedPreference('activeAccountKey', account.publicKey);
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeRoute()));
                       },
                     ),
                   ),
