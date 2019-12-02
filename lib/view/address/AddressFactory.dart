@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/view/createAddress/CreateAddressScreen.dart';
-import 'package:ercoin_wallet/view/home/HomeScreen.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +48,7 @@ class AddressFactory
 
   RaisedButton _transactionNavigationButton(BuildContext context) => RaisedButton(
       child: Text("Back to home"),
-      onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));}
+      onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeRoute()));}
   );
 
   Alert prepareAlert(BuildContext context, Address address) {
