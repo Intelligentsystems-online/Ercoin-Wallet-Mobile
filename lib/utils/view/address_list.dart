@@ -8,7 +8,7 @@ class AddressList extends StatelessWidget {
   final List<Address> addresses;
   final Function(BuildContext, Address) onAddressPressed;
 
-  const AddressList(this.addresses, this.onAddressPressed);
+  const AddressList({this.addresses, this.onAddressPressed});
 
   @override
   Widget build(BuildContext ctx) => ListView.builder(

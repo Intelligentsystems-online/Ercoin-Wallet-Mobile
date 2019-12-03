@@ -22,19 +22,18 @@ class AddressListPage extends StatelessWidget {
   );
 
   Widget _addressListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
-      future: _interactor.obtainAddresses(),
-      builder: (List<Address> addresses) => AddressList(addresses, (ctx, address) => _onAddressPressed(ctx, address))
-  );
+        future: _interactor.obtainAddresses(),
+        builder: (List<Address> addresses) => AddressList(
+          addresses: addresses,
+          onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address),
+        ),
+      );
 
-  _onAddressPressed(BuildContext ctx, Address address) => showDialog(
-      context: ctx,
-      builder: (ctx) => _prepareAlertDialog(ctx, address)
-  );
+  _onAddressPressed(BuildContext ctx, Address address) =>
+      showDialog(context: ctx, builder: (ctx) => _prepareAlertDialog(ctx, address));
 
-  Widget _prepareAlertDialog(BuildContext ctx, Address address) => AlertDialog(
-      title: Center(child: Text("Address detail")),
-      content: AddressDetailsWidget(address)
-  );
+  Widget _prepareAlertDialog(BuildContext ctx, Address address) =>
+      AlertDialog(title: Center(child: Text("Address detail")), content: AddressDetailsWidget(address));
 
   Widget _addAddressBtn(BuildContext ctx) => RawMaterialButton(
     shape: CircleBorder(),
