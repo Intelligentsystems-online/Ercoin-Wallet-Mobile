@@ -30,17 +30,17 @@ class AccountInfoInteractor {
     final activeAccountPk = await _sharedPreferencesUtil.getSharedPreference("active_account");
     final transactionsBase64 = await _apiConsumer.fetchOutboundTransactionBase64ListFor(activeAccountPk);
 
-    return transactionsBase64
-        .map((trxBase64) => _transactionFactory.createFromBase64(trxBase64))
-        .toList();
+    return _obtainTransactionsFrom(transactionsBase64);
   }
 
   Future<List<Transaction>> obtainRecentIncomingTransactions() async {
     final activeAccountPk = await _sharedPreferencesUtil.getSharedPreference("active_account");
     final transactionsBase64 = await _apiConsumer.fetchIncomingTransactionBase64ListFor(activeAccountPk);
 
-    return transactionsBase64
-        .map((trxBase64) => _transactionFactory.createFromBase64(trxBase64))
-        .toList();
+    return _obtainTransactionsFrom(transactionsBase64);
   }
+
+  List<Transaction> _obtainTransactionsFrom(List<String> transactionsBase64) => transactionsBase64
+      .map((trxBase64) => _transactionFactory.createFromBase64(trxBase64))
+      .toList();
 }
