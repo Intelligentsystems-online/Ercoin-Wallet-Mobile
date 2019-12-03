@@ -11,6 +11,7 @@ import 'package:ercoin_wallet/view/transfer/select_destination/select_transfer_d
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
   final _interactor = AccountInfoInteractor(); //TODO(DI)
@@ -24,6 +25,11 @@ class AccountInfoPage extends StatelessWidget {
         padding: standardPadding,
         child: Column(
           children: <Widget>[
+            QrImage(
+              data: accountWithBalance.account.publicKey,
+              size: 150,
+              padding: standardPadding,
+            ),
             Text("Account: " + accountWithBalance.account.accountName),
             Text("Balance: " + accountWithBalance.balance.toString() + " MICRO ERCOIN"),
             FutureBuilderWithProgress(
