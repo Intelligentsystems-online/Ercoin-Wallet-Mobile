@@ -1,21 +1,39 @@
 import 'dart:async';
+import 'dart:convert';
+
+import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
+import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
+import 'package:ercoin_wallet/utils/ApiConsumer.dart';
+import 'package:ercoin_wallet/utils/BalanceAccountUtil.dart';
 
-//TODO(Interactor)
+//TODO(DI)
 class AccountListInteractor {
+  final _sharedPreferencesUtil = SharedPreferencesUtil();
+  final _accountRepository = AccountRepository();
+  final _apiConsumer = ApiConsumer();
+  final _balanceAccountUtil = BalanceAccountUtil();
+
   Future<List<AccountWithBalance>> obtainAccountsWithBalance() async {
-    final account = AccountWithBalance(Account("public key", "private key", "account name"), 100);
+    final accounts = await _accountRepository.findAll();
 
-    return [account];
+    return Observable
+        .fromIterable(accounts)
+        .flatMap((account) => toAccountWithBalance(account))
+        .toList();
   }
 
-  Future<String> obtainActiveAccountPk() async {
-    return "public key";
+  Stream<AccountWithBalance> toAccountWithBalance(Account account) async* {
+    final accountDataBase64 = await _apiConsumer.fetchAccountDataBase64For(account.publicKey);
+    final accountBalance = _balanceAccountUtil.obtainBalanceValue(base64.decode(accountDataBase64));
+
+    yield AccountWithBalance(account, accountBalance);
   }
 
-  Future<void> activateAccount(String publicKey) async {
-    //TODO change active account in shared preferences
-  }
+  Future<String> obtainActiveAccountPk() => _sharedPreferencesUtil.getSharedPreference("active_account");
+
+  Future<void> activateAccount(String publicKey) => _sharedPreferencesUtil.setSharedPreference("active_account", publicKey);
 }
