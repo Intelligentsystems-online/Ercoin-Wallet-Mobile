@@ -8,7 +8,7 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function(Transaction) onTransactionPressed;
 
-  const TransactionList(this.transactions, this.onTransactionPressed);
+  const TransactionList({this.transactions, this.onTransactionPressed});
 
   @override
   Widget build(BuildContext context) => ListView.builder(
