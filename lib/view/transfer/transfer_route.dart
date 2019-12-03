@@ -33,7 +33,7 @@ class _TransferRouteState extends State<TransferRoute> {
   final _formKey = GlobalKey<FormState>();
   final _interactor = TransferInteractor(); // TODO(DI)
 
-  _TransferRouteState(this.destinationName, this.destinationAddress);
+  _TransferRouteState(this.destinationAddress, this.destinationName);
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
@@ -89,6 +89,7 @@ class _TransferRouteState extends State<TransferRoute> {
     text: "Send",
     onPressed: () async {
       if(_formKey.currentState.validate()) {
+        _formKey.currentState.save();
         setState(() => _isLoading = true);
         final error = await _interactor.sendTransfer(destinationAddress, _message, _amount);
         setState(() => _isLoading = false);
