@@ -26,6 +26,7 @@ class _TransferRouteState extends State<TransferRoute> {
   final String destinationName;
 
   double _amount;
+  String _message = "";
   bool _isInsufficientFundsError = false;
   bool _isLoading = false;
 
@@ -48,7 +49,8 @@ class _TransferRouteState extends State<TransferRoute> {
               children: <Widget>[
                 Text("Destination address: $destinationAddress"),
                 destinationName != null ? Text("Name: $destinationName") : Container(),
-                _amountInput()
+                _amountInput(),
+                _messageInput(),
               ],
             ),
           ),
@@ -62,6 +64,13 @@ class _TransferRouteState extends State<TransferRoute> {
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       validator: _validateAmount,
       onSaved: (value) => setState(() => _amount = double.parse(value)),
+    ),
+  );
+
+  Widget _messageInput() => ExpandedRow(
+    child: TextFormField(
+      decoration: const InputDecoration(labelText: "Message"),
+      onSaved: (value) => setState(() => _message = value),
     ),
   );
 
@@ -81,7 +90,7 @@ class _TransferRouteState extends State<TransferRoute> {
     onPressed: () async {
       if(_formKey.currentState.validate()) {
         setState(() => _isLoading = true);
-        final error = await _interactor.sendTransfer(destinationAddress, destinationName, _amount);
+        final error = await _interactor.sendTransfer(destinationAddress, _message, _amount);
         setState(() => _isLoading = false);
         if(error == SendTransferError.INSUFFICIENT_FUNDS) {
           setState(() => _isInsufficientFundsError = true);

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 class TransferInteractor {
   /// [destinationName] optional
-  Future<SendTransferError> sendTransfer(String destinationAddress, String destinationName, double amount) async {
+  Future<SendTransferError> sendTransfer(String destinationAddress, String message, double amount) async {
     return null;
   }
 }
