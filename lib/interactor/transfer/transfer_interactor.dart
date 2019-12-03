@@ -25,7 +25,7 @@ class TransferInteractor {
 
     final timestampBytes = _transactionEncoder.encodeTimestamp(timestamp);
     final receiverAddressBytes = _transactionEncoder.encodeReceiverAddress(destinationAddress);
-    final transactionValueBytes = _transactionEncoder.encodeTransactionValue((amount*1000000).floor());
+    final transactionValueBytes = _transactionEncoder.encodeTransactionValue(toMicroErcoins(amount));
     final messageLengthBytes = _transactionEncoder.encodeMessageLength(message.length);
     final senderAddressBytes = _transactionEncoder.encodeSenderAddress(activeAccountPk);
     final messageBytes = _transactionEncoder.encodeMessage(message);
@@ -49,6 +49,8 @@ class TransferInteractor {
 
     return null;
   }
+
+  int toMicroErcoins(double amount) => (amount*1000000).floor();
 
   Future<Uint8List> _prepareSignature(List<int> transactionBytes, String privateKey) =>
       CryptoSign.signBytes(Uint8List.fromList(transactionBytes), Uint8List.fromList(hex.decode(privateKey)));
