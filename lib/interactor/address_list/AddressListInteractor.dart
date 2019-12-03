@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/repository/address/Address.dart';
+import 'package:ercoin_wallet/repository/address/AddressRepository.dart';
 
-//TODO(Interactor)
+//TODO(DI)
 class AddressListInteractor {
-  Future<List<Address>> obtainAddresses() async {
-    final addressList = [Address("1", "pk_1", "name_1"), Address("2", "pk_2", "name_2")];
+  final _addressRepository = AddressRepository();
 
-    return addressList;
-  }
+  Future<List<Address>> obtainAddresses() => _addressRepository.findAll();
 }
