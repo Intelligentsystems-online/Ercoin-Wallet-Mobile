@@ -26,19 +26,27 @@ class AccountInfoInteractor {
     return AccountWithBalance(account, accountBalance);
   }
 
-  Future<List<Transaction>> obtainRecentOutboundTransactions() async {
+  Future<List<Transaction>> obtainRecentTransactions() async {
     final activeAccountPk = await _sharedPreferencesUtil.getSharedPreference("active_account");
-    final transactionsBase64 = await _apiConsumer.fetchOutboundTransactionBase64ListFor(activeAccountPk);
+    final outboundTransactionsBase64 = await _apiConsumer.fetchOutboundTransactionBase64ListFor(activeAccountPk);
+    final incomingTransactionsBase64 = await _apiConsumer.fetchIncomingTransactionBase64ListFor(activeAccountPk);
 
-    return _obtainTransactionsFrom(transactionsBase64);
+    final outboundTransactions = _obtainTransactionsFrom(outboundTransactionsBase64);
+    final incomingTransactions = _obtainTransactionsFrom(incomingTransactionsBase64);
+
+    final limitedOutboundTransactions = _obtainLimitedTransactions(3, outboundTransactions);
+    final limitedIncomingTransactions = _obtainLimitedTransactions(3, incomingTransactions);
+
+    final recentTransactions = List<Transaction>();
+
+    recentTransactions.addAll(limitedOutboundTransactions);
+    recentTransactions.addAll(limitedIncomingTransactions);
+
+    return recentTransactions;
   }
 
-  Future<List<Transaction>> obtainRecentIncomingTransactions() async {
-    final activeAccountPk = await _sharedPreferencesUtil.getSharedPreference("active_account");
-    final transactionsBase64 = await _apiConsumer.fetchIncomingTransactionBase64ListFor(activeAccountPk);
-
-    return _obtainTransactionsFrom(transactionsBase64);
-  }
+  List<Transaction> _obtainLimitedTransactions(int limit, List<Transaction> transactions) =>
+      (transactions.length < limit) ? transactions.sublist(0, transactions.length) : transactions.sublist(0, limit);
 
   List<Transaction> _obtainTransactionsFrom(List<String> transactionsBase64) => transactionsBase64
       .map((trxBase64) => _transactionFactory.createFromBase64(trxBase64))
