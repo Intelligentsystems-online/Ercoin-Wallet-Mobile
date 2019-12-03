@@ -25,7 +25,7 @@ class AccountInfoPage extends StatelessWidget {
         Text("Account: " + accountWithBalance.account.accountName),
         Text("Balance: " + accountWithBalance.balance.toString() + " MICRO ERCOIN"),
         FutureBuilderWithProgress(
-            future: _interactor.obtainRecentTransactions(),
+            future: _interactor.obtainRecentOutboundTransactions(),
             builder: (List<Transaction> transactions) => TransactionList(transactions, (transaction) => _onTransactionPressed(ctx, transaction))
         )
       ],
