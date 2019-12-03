@@ -4,6 +4,7 @@ import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/utils/KeyGenerator.dart';
 
+//TODO(DI)
 class AddAccountInteractor {
   final _keyGenerator = KeyGenerator();
 
