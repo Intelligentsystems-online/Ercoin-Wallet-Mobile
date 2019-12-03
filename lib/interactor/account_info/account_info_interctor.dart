@@ -32,7 +32,9 @@ class AccountInfoInteractor {
     final incomingTransactionsBase64 = await _apiConsumer.fetchIncomingTransactionBase64ListFor(activeAccountPk);
 
     final outboundTransactions = _obtainTransactionsFrom(outboundTransactionsBase64);
+    outboundTransactions.sort((t1, t2) => t2.timestamp.compareTo(t1.timestamp));
     final incomingTransactions = _obtainTransactionsFrom(incomingTransactionsBase64);
+    incomingTransactions.sort((t1, t2) => t2.timestamp.compareTo(t1.timestamp));
 
     final limitedOutboundTransactions = _obtainLimitedTransactions(3, outboundTransactions);
     final limitedIncomingTransactions = _obtainLimitedTransactions(3, incomingTransactions);
@@ -41,6 +43,7 @@ class AccountInfoInteractor {
 
     recentTransactions.addAll(limitedOutboundTransactions);
     recentTransactions.addAll(limitedIncomingTransactions);
+    recentTransactions.sort((t1, t2) => t2.timestamp.compareTo(t1.timestamp));
 
     return recentTransactions;
   }
