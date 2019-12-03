@@ -2,7 +2,7 @@ import 'package:ercoin_wallet/repository/account/Account.dart';
 
 class AccountWithBalance {
   final Account account;
-  final int balance;
+  final double balance;
 
   const AccountWithBalance(this.account, this.balance);
 }
