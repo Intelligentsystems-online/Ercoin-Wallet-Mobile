@@ -5,8 +5,8 @@ import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:ercoin_wallet/utils/KeyGenerator.dart';
 import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
+import 'package:ercoin_wallet/utils/service/common/key_generator.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
 class AccountService {

@@ -2,7 +2,7 @@ import 'package:convert/convert.dart';
 
 import 'dart:typed_data';
 
-import 'package:ercoin_wallet/utils/ByteConverter.dart';
+import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
 
 class TransactionEncoder
 {

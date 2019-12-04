@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
 import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
+import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart';
 
 class ActiveAccountService {
   final _sharedPreferencesUtil = SharedPreferencesUtil();
