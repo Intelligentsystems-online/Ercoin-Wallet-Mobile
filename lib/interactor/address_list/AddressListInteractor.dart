@@ -9,4 +9,8 @@ class AddressListInteractor {
 
     return addressList;
   }
+
+  Future<Address> addAddress(String address, String name) async {
+    return Address(address, address, name);
+  }
 }
