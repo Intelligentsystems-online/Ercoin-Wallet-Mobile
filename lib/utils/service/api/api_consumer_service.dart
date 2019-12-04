@@ -23,17 +23,17 @@ class ApiConsumerService
   Future<List<String>> fetchOutboundTransactionBase64ListFor(String address) async {
     final response = await http.get(uriFactory.outboundTransactionsUriFor(address));
 
-    List<dynamic> transactions = jsonDecode(response.body)['result']['txs'];
-
-    return transactions
-        .map((transaction) => transaction['tx'] as String)
-        .toList();
+    return _obtainTransactionBase64ListFrom(response.body);
   }
 
   Future<List<String>> fetchIncomingTransactionBase64ListFor(String address) async {
     final response = await http.get(uriFactory.incomingTransactionsUriFor(address));
 
-    List<dynamic> transactions = jsonDecode(response.body)['result']['txs'];
+    return _obtainTransactionBase64ListFrom(response.body);
+  }
+
+  List<String> _obtainTransactionBase64ListFrom(String responseBody) {
+    List<dynamic> transactions = jsonDecode(responseBody)['result']['txs'];
 
     return transactions
         .map((transaction) => transaction['tx'] as String)
