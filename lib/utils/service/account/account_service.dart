@@ -22,7 +22,7 @@ class AccountService {
     final accounts = await _accountRepository.findAll();
     final futureAccounts = accounts.map((account) => _toAccountWithBalance(account));
 
-    return Future.wait(futureAccounts);
+    return await Future.wait(futureAccounts);
   }
 
   Future<AccountWithBalance> _toAccountWithBalance(Account account) async {
