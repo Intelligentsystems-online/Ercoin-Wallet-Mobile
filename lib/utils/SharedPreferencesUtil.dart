@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+//TODO(Remove after removing unused view Screens)
 class SharedPreferencesUtil
 {
   setSharedPreference(String key, String value) async {

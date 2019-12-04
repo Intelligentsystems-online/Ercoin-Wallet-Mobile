@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:ercoin_wallet/utils/ByteConverter.dart';
 
+//TODO(Remove after removing unused view Screens)
 class TransactionEncoder
 {
   final _byteConverter = ByteConverter();

@@ -1,6 +1,7 @@
 
 import 'dart:typed_data';
 
+//TODO(Remove after removing unused view Screens)
 class ByteConverter
 {
   Uint8List convertIntToBytes(BigInt number, int bytesSize) {

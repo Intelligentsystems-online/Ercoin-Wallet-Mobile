@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:convert/convert.dart';
 
+//TODO(Remove after removing unused view Screens)
 class ApiConsumer
 {
   static final String _hostname = "testnet-node.ercoin.tech";

@@ -1,6 +1,7 @@
 
 import 'dart:typed_data';
 
+//TODO(Remove after removing unused view Screens)
 class BalanceAccountUtil
 {
   double obtainBalanceValue(Uint8List accountDataBytes) {
