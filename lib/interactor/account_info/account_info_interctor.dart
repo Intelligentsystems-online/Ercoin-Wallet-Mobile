@@ -1,30 +1,21 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/TransactionFactory.dart';
 import 'package:ercoin_wallet/model/account_with_balance.dart';
-import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/ApiConsumer.dart';
-import 'package:ercoin_wallet/utils/BalanceAccountUtil.dart';
 import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
+import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 
 //TODO(DI)
 class AccountInfoInteractor {
+  final _activeAccountService = ActiveAccountService();
+
   final _sharedPreferencesUtil = SharedPreferencesUtil();
   final _apiConsumer = ApiConsumer();
-  final _balanceAccountUtil = BalanceAccountUtil();
-  final _accountRepository = AccountRepository();
   final _transactionFactory = TransactionFactory();
 
-  Future<AccountWithBalance> obtainActiveAccountWithBalance() async {
-    final activeAccountPk = await _sharedPreferencesUtil.getSharedPreference("active_account");
-    final account = await _accountRepository.findByPublicKey(activeAccountPk);
-    final accountDataBase64 = await _apiConsumer.fetchAccountDataBase64For(activeAccountPk);
-    final accountBalance = _balanceAccountUtil.obtainBalanceValue(base64.decode(accountDataBase64));
-
-    return AccountWithBalance(account, accountBalance);
-  }
+  Future<AccountWithBalance> obtainActiveAccountWithBalance() => _activeAccountService.obtainActiveAccountWithBalance();
 
   Future<List<Transaction>> obtainRecentTransactions() async {
     final activeAccountPk = await _sharedPreferencesUtil.getSharedPreference("active_account");

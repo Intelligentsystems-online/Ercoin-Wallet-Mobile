@@ -1,36 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
-
-import 'package:ercoin_wallet/utils/SharedPreferencesUtil.dart';
 
 import 'package:ercoin_wallet/model/account_with_balance.dart';
-import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:ercoin_wallet/utils/ApiConsumer.dart';
-import 'package:ercoin_wallet/utils/BalanceAccountUtil.dart';
+import 'package:ercoin_wallet/utils/service/account/account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 
 //TODO(DI)
 class AccountListInteractor {
-  final _sharedPreferencesUtil = SharedPreferencesUtil();
-  final _accountRepository = AccountRepository();
-  final _apiConsumer = ApiConsumer();
-  final _balanceAccountUtil = BalanceAccountUtil();
+  final _accountService = AccountService();
+  final _activeAccountService = ActiveAccountService();
 
-  Future<List<AccountWithBalance>> obtainAccountsWithBalance() async {
-    final accounts = await _accountRepository.findAll();
-    final futureAccounts = accounts.map((account) => toAccountWithBalance(account));
+  Future<List<AccountWithBalance>> obtainAccountsWithBalance() => _accountService.obtainAccountsWithBalance();
 
-    return Future.wait(futureAccounts);
-  }
+  Future<String> obtainActiveAccountPk() => _activeAccountService.obtainActiveAccountPk();
 
-  Future<AccountWithBalance> toAccountWithBalance(Account account) async {
-    final accountDataBase64 = await _apiConsumer.fetchAccountDataBase64For(account.publicKey);
-    final accountBalance = _balanceAccountUtil.obtainBalanceValue(base64.decode(accountDataBase64));
-
-    return AccountWithBalance(account, accountBalance);
-  }
-
-  Future<String> obtainActiveAccountPk() => _sharedPreferencesUtil.getSharedPreference("active_account");
-
-  Future<void> activateAccount(String publicKey) => _sharedPreferencesUtil.setSharedPreference("active_account", publicKey);
+  Future<void> activateAccount(String publicKey) => _activeAccountService.activateAccount(publicKey);
 }
