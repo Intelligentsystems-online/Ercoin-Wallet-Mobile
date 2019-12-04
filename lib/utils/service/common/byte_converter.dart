@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-//TODO(Search for convert big endian or make some refactor here)
+//TODO(Search for lib converting big endian or make some refactor here)
 class ByteConverter
 {
   Uint8List convertIntToBytes(BigInt number, int bytesSize) {
