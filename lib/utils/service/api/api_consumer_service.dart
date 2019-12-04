@@ -11,23 +11,23 @@ class ApiConsumerService
   final uriFactory = UriFactory(); //TODO(DI)
 
   Future<bool> makeTransaction(String transactionHex) => http
-      .get(uriFactory.makeTransactionUriFor(transactionHex))
+      .get(uriFactory.createTransferUri(transactionHex))
       .then((response) => true);
 
   Future<String> fetchAccountDataBase64For(String address) async {
-    final response = await http.get(uriFactory.accountDataUriFor(address));
+    final response = await http.get(uriFactory.createAccountDataUri(address));
 
     return jsonDecode(response.body)['result']['response']['value'] as String;
   }
 
   Future<List<String>> fetchOutboundTransactionBase64ListFor(String address) async {
-    final response = await http.get(uriFactory.outboundTransactionsUriFor(address));
+    final response = await http.get(uriFactory.createOutboundTransactionsUri(address));
 
     return _obtainTransactionBase64ListFrom(response.body);
   }
 
   Future<List<String>> fetchIncomingTransactionBase64ListFor(String address) async {
-    final response = await http.get(uriFactory.incomingTransactionsUriFor(address));
+    final response = await http.get(uriFactory.createIncomingTransactionsUri(address));
 
     return _obtainTransactionBase64ListFrom(response.body);
   }

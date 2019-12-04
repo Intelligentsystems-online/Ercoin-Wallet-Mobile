@@ -22,14 +22,12 @@ class TransactionListService {
   }
 
   Future<List<Transaction>> obtainTransactionsFor(String address) async {
-    final incomingTransactions = await obtainIncomingTransactionsFor(address);
-    final outboundTransactions = await obtainOutboundTransactionsFor(address);
+    final incomingTransactions = obtainIncomingTransactionsFor(address);
+    final outboundTransactions = obtainOutboundTransactionsFor(address);
 
-    final transactions = List<Transaction>();
-    transactions.addAll(incomingTransactions);
-    transactions.addAll(outboundTransactions);
+    final transactionSets = await Future.wait([incomingTransactions, outboundTransactions]);
 
-    return transactions;
+    return transactionSets[0] + transactionSets[1];
   }
 
   List<Transaction> _obtainTransactionsFrom(List<String> transactionsBase64) => transactionsBase64

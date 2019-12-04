@@ -9,16 +9,16 @@ class UriFactory {
   static final String _accountDataEndpoint = "/abci_query";
   static final String _makeTransactionEndpoint = "/broadcast_tx_sync";
 
-  Uri outboundTransactionsUriFor(String address) =>
+  Uri createOutboundTransactionsUri(String address) =>
       new Uri.https(_hostname, _fetchTransactionsEndpoint, { "query" : _prepareOutboundTransactionsQueryValue(address) });
 
-  Uri incomingTransactionsUriFor(String address) =>
+  Uri createIncomingTransactionsUri(String address) =>
       new Uri.https(_hostname, _fetchTransactionsEndpoint, { "query" : _prepareIncomingTransactionsQueryValue(address) });
 
-  Uri accountDataUriFor(String address) =>
+  Uri createAccountDataUri(String address) =>
       new Uri.https(_hostname, _accountDataEndpoint, { "path" : "\"account\"", "data" : "0x" + address});
 
-  Uri makeTransactionUriFor(String transactionHex) =>
+  Uri createTransferUri(String transactionHex) =>
       new Uri.https(_hostname, _makeTransactionEndpoint, { "tx" : "0x" + transactionHex});
 
   String _prepareOutboundTransactionsQueryValue(String address) =>

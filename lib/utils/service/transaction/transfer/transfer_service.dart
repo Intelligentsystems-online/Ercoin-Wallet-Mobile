@@ -5,12 +5,12 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
-import 'package:ercoin_wallet/utils/service/transaction/transaction_encoder.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
 //TODO(DI)
-class TransactionTransferService {
-  final _transactionEncoder = TransactionEncoder();
+class TransferService {
+  final _transactionEncoder = TransactionEncodeService();
   final _accountRepository = AccountRepository();
   final _apiConsumer = ApiConsumerService();
 

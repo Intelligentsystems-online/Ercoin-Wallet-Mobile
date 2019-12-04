@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
 
 //TODO(DI)
-class TransactionEncoder
+class TransactionEncodeService
 {
   final _byteConverter = ByteConverter();
 

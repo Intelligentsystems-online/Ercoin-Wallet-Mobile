@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 
-class TransactionDecoder
+class TransactionDecodeService
 {
   Uint8List convertTransactionHexToBytes(String transactionHex) => hex.decode(transactionHex);
 
