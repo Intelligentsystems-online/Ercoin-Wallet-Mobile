@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/utils/ApiConsumer.dart';
+import 'package:ercoin_wallet/utils/service/api/api_consumer.dart';
 
 class CommonAccountUtil {
   final _apiConsumer = ApiConsumer();
