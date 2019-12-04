@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
 class ApiConsumer
 {
