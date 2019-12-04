@@ -14,7 +14,7 @@ class TransactionTransferService {
   final _accountRepository = AccountRepository();
   final _apiConsumer = ApiConsumerService();
 
-  Future<bool> executeTransactionTransfer(String senderAddress, String destinationAddress, String message, double amount) async {
+  Future<bool> executeTransfer(String senderAddress, String destinationAddress, String message, double amount) async {
     final senderAccount = await _accountRepository.findByPublicKey(senderAddress);
     final transactionBytes = _obtainTransactionBytesFor(senderAddress, destinationAddress, message, amount);
     final signedTransactionBytes = await _obtainSignedTransactionBytesFor(transactionBytes, senderAccount.privateKey);

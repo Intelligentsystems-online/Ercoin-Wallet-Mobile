@@ -12,7 +12,7 @@ class TransferInteractor {
   Future<SendTransferError> sendTransfer(String destinationAddress, String message, double amount) async {
     final activeAccountPk = await _activeAccountService.obtainActiveAccountPk();
 
-    await _transactionTransferService.executeTransactionTransfer(activeAccountPk, destinationAddress, message, amount);
+    await _transactionTransferService.executeTransfer(activeAccountPk, destinationAddress, message, amount);
 
     return null;
   }
