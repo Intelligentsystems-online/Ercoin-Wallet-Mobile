@@ -5,6 +5,7 @@ import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart';
 
+//TODO(DI)
 class ActiveAccountService {
   final _sharedPreferencesUtil = SharedPreferencesUtil();
   final _commonAccountUtil = CommonAccountUtil();

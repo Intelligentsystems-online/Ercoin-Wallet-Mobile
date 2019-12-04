@@ -9,6 +9,7 @@ import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/common/key_generator.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
+//TODO(DI)
 class AccountService {
   final _commonAccountUtil = CommonAccountUtil();
   final _accountRepository = AccountRepository();

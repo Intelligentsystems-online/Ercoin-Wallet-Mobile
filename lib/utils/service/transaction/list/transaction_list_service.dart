@@ -4,6 +4,7 @@ import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/TransactionFactory.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer.dart';
 
+//TODO(DI)
 class TransactionListService {
   final _transactionFactory = TransactionFactory();
   final _apiConsumer = ApiConsumer();
