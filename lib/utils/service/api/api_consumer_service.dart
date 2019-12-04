@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
-class ApiConsumer
+//TODO(Create generic response model containing response status [SUCCESS, FAILURE] and optionally response value)
+class ApiConsumerService
 {
   final uriFactory = UriFactory(); //TODO(DI)
 

@@ -4,11 +4,11 @@ import 'dart:typed_data';
 
 import 'package:ercoin_wallet/model/account_with_balance.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/utils/service/api/api_consumer.dart';
+import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 
 //TODO(DI)
 class CommonAccountUtil {
-  final _apiConsumer = ApiConsumer();
+  final _apiConsumer = ApiConsumerService();
 
   Future<AccountWithBalance> toAccountWithBalance(Account account) async {
     final accountDataBase64 = await _apiConsumer.fetchAccountDataBase64For(account.publicKey);

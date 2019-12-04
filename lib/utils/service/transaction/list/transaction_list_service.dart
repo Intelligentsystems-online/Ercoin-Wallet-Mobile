@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/TransactionFactory.dart';
-import 'package:ercoin_wallet/utils/service/api/api_consumer.dart';
+import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 
 //TODO(DI)
 class TransactionListService {
   final _transactionFactory = TransactionFactory();
-  final _apiConsumer = ApiConsumer();
+  final _apiConsumer = ApiConsumerService();
 
   Future<List<Transaction>> obtainOutboundTransactionsFor(String address) async {
     final transactionsBase64 = await _apiConsumer.fetchOutboundTransactionBase64ListFor(address);

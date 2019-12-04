@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:ercoin_wallet/utils/service/api/api_consumer.dart';
+import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_encoder.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
@@ -12,7 +12,7 @@ import 'package:flutter_sodium/flutter_sodium.dart';
 class TransactionTransferService {
   final _transactionEncoder = TransactionEncoder();
   final _accountRepository = AccountRepository();
-  final _apiConsumer = ApiConsumer();
+  final _apiConsumer = ApiConsumerService();
 
   Future<bool> executeTransactionTransfer(String senderAddress, String destinationAddress, String message, double amount) async {
     final senderAccount = await _accountRepository.findByPublicKey(senderAddress);
