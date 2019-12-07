@@ -23,6 +23,7 @@ dependencies:
   folder_picker: 0.3.0
   file_picker: 1.4.2
   qr_flutter: ^3.1.0
+  qrcode_reader: 0.4.4
   test:
 
 dev_dependencies:
