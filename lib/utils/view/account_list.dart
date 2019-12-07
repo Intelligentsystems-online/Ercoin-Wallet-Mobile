@@ -19,16 +19,19 @@ class AccountList extends StatelessWidget {
   Widget _accountBox(BuildContext ctx, AccountWithBalance accountWithBalance) => GestureDetector(
     onTap: () => onAccountPressed(ctx, accountWithBalance),
     child: Card(
-        child: Row(children: <Widget>[
-          _activeAccountSign(accountWithBalance.account),
-          _accountLabel(accountWithBalance.account),
-          Text(accountWithBalance.balance.toString())
-        ]
-      )
+        child: ListTile(
+          title: _accountNameLabel(accountWithBalance.account),
+          subtitle: _accountBalanceLabel(accountWithBalance),
+          trailing: _activeAccountSign(accountWithBalance.account)
+        )
     )
   );
 
-  Widget _accountLabel(Account account) => Text(account.accountName);
+  Widget _accountNameLabel(Account account) => Text(account.accountName);
 
-  Widget _activeAccountSign(Account account) => (account.publicKey == activeAccountPk) ? CircleAvatar(child: Text("A")) : Container();
+  Widget _accountBalanceLabel(AccountWithBalance accountWithBalance) =>
+      Text(accountWithBalance.balance.toString() + " ERC");
+
+  Widget _activeAccountSign(Account account) =>
+      (account.publicKey == activeAccountPk) ? Icon(Icons.check, color: Colors.blue) : IgnorePointer();
 }
