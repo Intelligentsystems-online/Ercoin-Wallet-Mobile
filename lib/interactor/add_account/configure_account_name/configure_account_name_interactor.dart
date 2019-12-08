@@ -11,9 +11,7 @@ class ConfigureAccountNameInteractor {
   final _activeAccountService = ActiveAccountService();
 
   Future<Account> addAccount(AccountKeys keys, String name) async {
-    final account = Account(keys.publicKey, keys.privateKey, name);
-
-    await _accountService.saveAccount(account);
+    final account = await _accountService.saveAccount(keys.publicKey, keys.privateKey, name);
     await _activeAccountService.activateAccount(keys.publicKey);
 
     return account;

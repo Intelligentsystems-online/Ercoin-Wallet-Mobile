@@ -10,7 +10,7 @@ import 'package:ercoin_wallet/repository/account/Account.dart';
 class CommonAccountUtil {
   AccountInfo obtainAccountInfoFrom(ApiResponse<String> apiResponse, Account account) {
     if(apiResponse.status == ApiResponseStatus.SUCCESS) {
-      final accountBalance = obtainBalanceValue(base64.decode(apiResponse.response));
+      final accountBalance = _obtainBalanceValue(base64.decode(apiResponse.response));
 
       return AccountInfo(account, accountBalance, AccountStatus.REGISTERED);
     }
@@ -20,7 +20,7 @@ class CommonAccountUtil {
       return AccountInfo(account, 0.0, AccountStatus.REGISTERED);
   }
 
-  double obtainBalanceValue(Uint8List accountDataBytes) {
+  double _obtainBalanceValue(Uint8List accountDataBytes) {
     ByteBuffer buffer = _balanceBytesFrom(accountDataBytes).buffer;
     int microErcoinAmount = ByteData
         .view(buffer)

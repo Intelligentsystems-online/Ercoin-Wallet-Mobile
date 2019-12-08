@@ -33,11 +33,9 @@ class AccountService {
     return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 
-  Future<Account> saveAccount(Account account) async {
-    await _accountRepository.createAccount(account);
+  Future<Account> saveAccount(String publicKey, String privateKey, String accountName) =>
+      _accountRepository.createAccount(publicKey, privateKey, accountName);
 
-    return account;
-  }
   Future<AccountKeys> generateAccountKeys() async {
     final keyPair = await _keyGenerator.generateKeyPair();
 

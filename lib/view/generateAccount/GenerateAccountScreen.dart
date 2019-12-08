@@ -81,7 +81,7 @@ class _GenerateAccountState extends State<GenerateAccountScreen>
   }
 
   saveAccount(KeyPair keyPair) {
-    _accountRepository.createAccount(Account(hex.encode(keyPair.publicKey), hex.encode(keyPair.secretKey), _accountName));
+    _accountRepository.createAccount(hex.encode(keyPair.publicKey), hex.encode(keyPair.secretKey), _accountName);
 
     _sharedPreferencesUtil.setSharedPreference('activeAccountKey', hex.encode(keyPair.publicKey));
 
