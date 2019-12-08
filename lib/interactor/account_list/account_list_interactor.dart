@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 
@@ -9,7 +9,7 @@ class AccountListInteractor {
   final _accountService = AccountService();
   final _activeAccountService = ActiveAccountService();
 
-  Future<List<AccountWithBalance>> obtainAccountsWithBalance() => _accountService.obtainAccountsWithBalance();
+  Future<List<AccountInfo>> obtainAccountsWithBalance() => _accountService.obtainAccountsInfo();
 
   Future<String> obtainActiveAccountPk() => _activeAccountService.obtainActiveAccountPk();
 

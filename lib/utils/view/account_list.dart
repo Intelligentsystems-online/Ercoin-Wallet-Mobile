@@ -1,12 +1,12 @@
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountList extends StatelessWidget {
-  final List<AccountWithBalance> accountsWithBalance;
+  final List<AccountInfo> accountsWithBalance;
   final String activeAccountPk;
-  final Function(BuildContext, AccountWithBalance) onAccountPressed;
+  final Function(BuildContext, AccountInfo) onAccountPressed;
 
   const AccountList(this.accountsWithBalance, this.activeAccountPk, this.onAccountPressed);
 
@@ -16,7 +16,7 @@ class AccountList extends StatelessWidget {
       itemBuilder: (context, index) => _accountBox(ctx, accountsWithBalance[index])
   );
 
-  Widget _accountBox(BuildContext ctx, AccountWithBalance accountWithBalance) => GestureDetector(
+  Widget _accountBox(BuildContext ctx, AccountInfo accountWithBalance) => GestureDetector(
     onTap: () => onAccountPressed(ctx, accountWithBalance),
     child: Card(
         child: Row(children: <Widget>[

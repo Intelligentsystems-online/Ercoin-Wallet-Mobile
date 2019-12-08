@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
+import 'package:ercoin_wallet/model/account_status.dart';
+import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
@@ -18,18 +20,17 @@ class AccountService {
   final _keyGenerator = KeyGenerator();
   final _apiConsumerService = ApiConsumerService();
 
-  Future<List<AccountWithBalance>> obtainAccountsWithBalance() async {
+  Future<List<AccountInfo>> obtainAccountsInfo() async {
     final accounts = await _accountRepository.findAll();
-    final futureAccounts = accounts.map((account) => _toAccountWithBalance(account));
+    final futureAccounts = accounts.map((account) => _toAccountInfo(account));
 
     return await Future.wait(futureAccounts);
   }
 
-  Future<AccountWithBalance> _toAccountWithBalance(Account account) async {
-    final accountDataBase64 = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
-    final accountBalance = _commonAccountUtil.obtainBalanceValue(base64.decode(accountDataBase64));
+  Future<AccountInfo> _toAccountInfo(Account account) async {
+    final apiResponse = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
 
-    return AccountWithBalance(account, accountBalance);
+    return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 
   Future<Account> saveAccount(Account account) async {

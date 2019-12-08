@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ercoin_wallet/model/api_response.dart';
+import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
-//TODO(Create generic response model containing response status [SUCCESS, FAILURE] and optionally response value)
 class ApiConsumerService
 {
   final uriFactory = UriFactory(); //TODO(DI)
@@ -14,22 +15,28 @@ class ApiConsumerService
       .get(uriFactory.createTransferUri(transactionHex))
       .then((response) => true);
 
-  Future<String> fetchAccountDataBase64For(String address) async {
+  Future<ApiResponse<String>> fetchAccountDataBase64For(String address) async {
     final response = await http.get(uriFactory.createAccountDataUri(address));
+    final jsonResponse = jsonDecode(response.body)['result']['response'];
+    final responseCode = jsonResponse['code'] as int;
+    final responseStatus = responseAccountCodeToStatus(responseCode);
 
-    return jsonDecode(response.body)['result']['response']['value'] as String;
+    if(responseStatus == ApiResponseStatus.SUCCESS)
+      return ApiResponse(ApiResponseStatus.SUCCESS, jsonResponse['value'] as String);
+    else
+      return ApiResponse(ApiResponseStatus.FAILURE, null);
   }
 
-  Future<List<String>> fetchOutboundTransactionBase64ListFor(String address) async {
+  Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(String address) async {
     final response = await http.get(uriFactory.createOutboundTransactionsUri(address));
 
-    return _obtainTransactionBase64ListFrom(response.body);
+    return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
-  Future<List<String>> fetchIncomingTransactionBase64ListFor(String address) async {
+  Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(String address) async {
     final response = await http.get(uriFactory.createIncomingTransactionsUri(address));
 
-    return _obtainTransactionBase64ListFrom(response.body);
+    return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
   List<String> _obtainTransactionBase64ListFrom(String responseBody) {
@@ -38,5 +45,14 @@ class ApiConsumerService
     return transactions
         .map((transaction) => transaction['tx'] as String)
         .toList();
+  }
+
+  ApiResponseStatus responseAccountCodeToStatus(int responseCode) {
+    if(responseCode == 0)
+      return ApiResponseStatus.SUCCESS;
+    else if(responseCode == 2)
+      return ApiResponseStatus.ACCOUNT_NOT_FOUND;
+    else
+      return ApiResponseStatus.FAILURE;
   }
 }

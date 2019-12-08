@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
+import 'package:ercoin_wallet/model/account_status.dart';
+import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
@@ -20,12 +22,11 @@ class ActiveAccountService {
 
   Future<void> activateAccount(String publicKey) => _sharedPreferencesUtil.setSharedPreference(_activeAccountPreference, publicKey);
 
-  Future<AccountWithBalance> obtainActiveAccountWithBalance() async {
+  Future<AccountInfo> obtainActiveAccountInfo() async {
     final activeAccountPk = await obtainActiveAccountPk();
     final account = await _accountRepository.findByPublicKey(activeAccountPk);
-    final accountDataBase64 = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
-    final accountBalance = _commonAccountUtil.obtainBalanceValue(base64.decode(accountDataBase64));
+    final apiResponse = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
 
-    return AccountWithBalance(account, accountBalance);
+    return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 }
