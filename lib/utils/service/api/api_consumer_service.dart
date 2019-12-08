@@ -28,6 +28,8 @@ class ApiConsumerService {
 
     if(responseStatus == ApiResponseStatus.SUCCESS)
       return ApiResponse(ApiResponseStatus.SUCCESS, jsonResponse['value'] as String);
+    else  if(responseStatus == ApiResponseStatus.ACCOUNT_NOT_FOUND)
+      return ApiResponse(ApiResponseStatus.ACCOUNT_NOT_FOUND, null);
     else
       return ApiResponse(ApiResponseStatus.FAILURE, null);
   }
