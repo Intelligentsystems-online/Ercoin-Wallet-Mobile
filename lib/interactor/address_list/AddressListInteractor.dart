@@ -9,10 +9,5 @@ class AddressListInteractor {
 
   Future<List<Address>> obtainAddresses() => _addressService.obtainAddresses();
 
-  Future<Address> addAddress(String address, String name) async {
-    final addressEntry = Address(address, address, name);
-    await _addressService.saveAddress(addressEntry);
-
-    return addressEntry;
-  }
+  Future<Address> addAddress(String address, String name) => _addressService.saveAddress(address, name);
 }

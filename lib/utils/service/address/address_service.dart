@@ -9,5 +9,5 @@ class AddressService {
 
   Future<List<Address>> obtainAddresses() => _addressRepository.findAll();
 
-  Future<int> saveAddress(Address address) => _addressRepository.createAddress(address);
+  Future<Address> saveAddress(String publicKey, String accountName) => _addressRepository.createAddress(publicKey, accountName);
 }

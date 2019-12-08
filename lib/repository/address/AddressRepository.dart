@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ercoin_wallet/repository/DatabaseProvider.dart';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 
@@ -7,10 +9,15 @@ class AddressRepository
 {
   final _tableName = "Address";
 
-  Future<int> createAddress(Address address) => DatabaseProvider
-      .databaseProvider
-      .databaseInstance
-      .then((database) => executeInsertQueryOn(database, address));
+  Future<Address> createAddress(String publicKey, String accountName) {
+    Address address = Address(publicKey, accountName);
+
+    return DatabaseProvider
+        .databaseProvider
+        .databaseInstance
+        .then((database) => executeInsertQueryOn(database, address))
+        .then((_) => address);
+  }
 
   Future<List<Address>> findAll() => DatabaseProvider
       .databaseProvider
