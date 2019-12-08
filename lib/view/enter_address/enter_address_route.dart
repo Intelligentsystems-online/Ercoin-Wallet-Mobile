@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -6,6 +8,7 @@ import 'package:ercoin_wallet/utils/view/values.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qrcode_reader/qrcode_reader.dart';
 
 class EnterAddressRoute extends StatefulWidget {
   final Function(BuildContext, String, String) onProceed;
@@ -26,6 +29,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   bool _shouldSave = false;
 
   final _formKey = GlobalKey<FormState>();
+  final _publicKeyController = TextEditingController();
 
   _EnterAddressState(this.onProceed, this.isNameOptional);
 
@@ -39,6 +43,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
         key: _formKey,
         child: Column(children: <Widget>[
             _publicKeyInput(),
+            _scanBtn(),
             isNameOptional ? _checkboxWithText() : Container(),
             !isNameOptional || _shouldSave ? _addressNameInput() : Container(),
           ]
@@ -57,6 +62,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   Widget _publicKeyInput() => ExpandedRow(
     child: TextFormField(
       decoration: const InputDecoration(labelText: 'Public key'),
+      controller: _publicKeyController,
       validator: (value) => value.isEmpty ? "Enter public key" : null,
       onSaved: (value) => setState(() => _publicKey = value),
     ),
@@ -69,6 +75,15 @@ class _EnterAddressState extends State<EnterAddressRoute> {
       onSaved: (value) => setState(() => _name = value),
     ),
   );
+
+  Widget _scanBtn() => ExpandedRaisedTextButton(
+    text: "Scan",
+    onPressed: _onScan,
+  );
+
+  _onScan() async {
+    _publicKeyController.text = await QRCodeReader().scan();
+  }
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
     text: "Proceed",
