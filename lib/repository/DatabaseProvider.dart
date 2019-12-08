@@ -43,7 +43,6 @@ class DatabaseProvider
 
   String addressTableQuery() =>
       "CREATE TABLE Address ("
-      "id varchar(255) PRIMARY KEY,"
-      "publicKey varchar(255),"
+      "publicKey varchar(255) PRIMARY KEY,"
       "accountName varchar(255));";
 }
