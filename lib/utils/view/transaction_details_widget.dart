@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 class TransactionDetailsWidget extends StatelessWidget {
   final Transaction transaction;
 
-  const TransactionDetailsWidget(this.transaction);
+  final _dateUtil = DateUtil();
+
+  TransactionDetailsWidget(this.transaction);
 
   @override
   Widget build(BuildContext ctx) => Column(
@@ -16,7 +18,7 @@ class TransactionDetailsWidget extends StatelessWidget {
       Text("Sender: " + transaction.senderAddress),
       Text("Coins: " + transaction.coins.toString()),
       Text("Message: " + transaction.message),
-      Text("Timestamp: " + DateUtil.dateTimeFrom(transaction.timestamp).toString()),
+      Text("Timestamp: " + _dateUtil.dateTimeFrom(transaction.timestamp)),
       FlatButton(
           child: Text("Close", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
           onPressed: () => Navigator.of(ctx).pop()
