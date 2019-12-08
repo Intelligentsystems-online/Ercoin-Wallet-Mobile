@@ -16,13 +16,13 @@ class AccountList extends StatelessWidget {
       itemBuilder: (context, index) => _accountBox(ctx, accountsWithBalance[index])
   );
 
-  Widget _accountBox(BuildContext ctx, AccountInfo accountWithBalance) => GestureDetector(
-    onTap: () => onAccountPressed(ctx, accountWithBalance),
+  Widget _accountBox(BuildContext ctx, AccountInfo accountInfo) => GestureDetector(
+    onTap: () => onAccountPressed(ctx, accountInfo),
     child: Card(
         child: Row(children: <Widget>[
-          _activeAccountSign(accountWithBalance.account),
-          _accountLabel(accountWithBalance.account),
-          Text(accountWithBalance.balance.toString())
+          _activeAccountSign(accountInfo.account),
+          _accountLabel(accountInfo.account),
+          Text(accountInfo.balance.toString())
         ]
       )
     )
