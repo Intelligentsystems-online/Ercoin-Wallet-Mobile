@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/interactor/transfer/send_transfer_error.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
+import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -93,7 +94,7 @@ class _TransferRouteState extends State<TransferRoute> {
         setState(() => _isLoading = true);
         final error = await _interactor.sendTransfer(destinationAddress, _message, _amount);
         setState(() => _isLoading = false);
-        if(error == SendTransferError.INSUFFICIENT_FUNDS) {
+        if(error == ApiResponseStatus.FAILURE) {
           setState(() => _isInsufficientFundsError = true);
           _formKey.currentState.validate();
         } else {

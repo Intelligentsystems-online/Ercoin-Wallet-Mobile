@@ -3,6 +3,7 @@ import 'dart:core';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
@@ -14,7 +15,7 @@ class TransferService {
   final _accountRepository = AccountRepository();
   final _apiConsumer = ApiConsumerService();
 
-  Future<bool> executeTransfer(String senderAddress, String destinationAddress, String message, double amount) async {
+  Future<ApiResponseStatus> executeTransfer(String senderAddress, String destinationAddress, String message, double amount) async {
     final senderAccount = await _accountRepository.findByPublicKey(senderAddress);
     final transactionBytes = _obtainTransactionBytesFor(senderAddress, destinationAddress, message, amount);
     final signedTransactionBytes = await _obtainSignedTransactionBytesFor(transactionBytes, senderAccount.privateKey);

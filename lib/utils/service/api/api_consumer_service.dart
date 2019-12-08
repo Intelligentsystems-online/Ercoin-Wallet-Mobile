@@ -3,23 +3,28 @@ import 'dart:convert';
 
 import 'package:ercoin_wallet/model/api_response.dart';
 import 'package:ercoin_wallet/model/api_response_status.dart';
+import 'package:ercoin_wallet/utils/service/api/code_mapper_util.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
-class ApiConsumerService
-{
-  final uriFactory = UriFactory(); //TODO(DI)
+//TODO(DI)
+class ApiConsumerService {
+  final _codeMapperUtil = CodeMapperUtil();
+  final uriFactory = UriFactory();
 
-  Future<bool> makeTransaction(String transactionHex) => http
+  Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
       .get(uriFactory.createTransferUri(transactionHex))
-      .then((response) => true);
+      .then((response) => _codeMapperUtil.genericCodeToStatus(_obtainTransferResponseCode(response.body)));
+
+  int _obtainTransferResponseCode(String response) =>
+      jsonDecode(response)['result']['code'] as int;
 
   Future<ApiResponse<String>> fetchAccountDataBase64For(String address) async {
     final response = await http.get(uriFactory.createAccountDataUri(address));
     final jsonResponse = jsonDecode(response.body)['result']['response'];
     final responseCode = jsonResponse['code'] as int;
-    final responseStatus = responseAccountCodeToStatus(responseCode);
+    final responseStatus = _codeMapperUtil.accountCodeToStatus(responseCode);
 
     if(responseStatus == ApiResponseStatus.SUCCESS)
       return ApiResponse(ApiResponseStatus.SUCCESS, jsonResponse['value'] as String);
@@ -45,14 +50,5 @@ class ApiConsumerService
     return transactions
         .map((transaction) => transaction['tx'] as String)
         .toList();
-  }
-
-  ApiResponseStatus responseAccountCodeToStatus(int responseCode) {
-    if(responseCode == 0)
-      return ApiResponseStatus.SUCCESS;
-    else if(responseCode == 2)
-      return ApiResponseStatus.ACCOUNT_NOT_FOUND;
-    else
-      return ApiResponseStatus.FAILURE;
   }
 }
