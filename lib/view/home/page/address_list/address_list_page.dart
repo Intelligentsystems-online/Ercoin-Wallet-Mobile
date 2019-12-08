@@ -7,6 +7,8 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/createAddress/CreateAddressScreen.dart';
+import 'package:ercoin_wallet/view/enter_address/enter_address_route.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,13 @@ class AddressListPage extends StatelessWidget {
   );
 
   _navigateToAddAddress(BuildContext ctx) => pushRoute(
-      Navigator.of(ctx), () => CreateAddressScreen() //TODO change to add_address_route after merge.
+    Navigator.of(ctx),
+        () => EnterAddressRoute(
+          isNameOptional: false,
+          onProceed: (ctx, address, name) {
+            _interactor.addAddress(address, name);
+            resetRoute(Navigator.of(ctx), () => HomeRoute());
+      },
+    ),
   );
 }

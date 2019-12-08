@@ -19,7 +19,10 @@ class AddressList extends StatelessWidget {
   Widget _addressRow(BuildContext ctx, Address address) => GestureDetector(
     onTap: () => onAddressPressed(ctx, address),
     child: Card(
-      child: Text(address.accountName)
+      child: ListTile(
+        leading: Icon(Icons.person, color: Colors.blue),
+        title: Text(address.accountName)
+      ),
     )
   );
 }

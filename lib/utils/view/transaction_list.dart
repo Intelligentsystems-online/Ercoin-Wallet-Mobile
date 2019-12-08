@@ -8,7 +8,9 @@ class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function(Transaction) onTransactionPressed;
 
-  const TransactionList({this.transactions, this.onTransactionPressed});
+  final _dateUtil = DateUtil();
+
+  TransactionList({this.transactions, this.onTransactionPressed});
 
   @override
   Widget build(BuildContext context) => ListView.builder(
@@ -20,13 +22,21 @@ class TransactionList extends StatelessWidget {
   Widget _transactionRow(Transaction transaction) => GestureDetector(
     onTap: () => onTransactionPressed(transaction),
     child: Card(
-        child: Row(
-          children: <Widget>[
-            Text(transaction.message),
-            Text(transaction.coins.toString()),
-            Text(DateUtil.dateTimeFrom(transaction.timestamp).toString())
-          ],
-        )
+      child: ListTile(
+        title: Text(transaction.message),
+        subtitle: _subtitleRow(transaction)
+      ),
     ),
   );
+
+  Widget _subtitleRow(Transaction transaction) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Text(_dateUtil.dateTimeFrom(transaction.timestamp)),
+      _transactionValueLabel(transaction)
+    ],
+  );
+
+  Widget _transactionValueLabel(Transaction transaction) =>
+      Text(transaction.coins.toString() + " ERC");
 }

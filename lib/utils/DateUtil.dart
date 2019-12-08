@@ -1,4 +1,11 @@
-//TODO(Remove after removing unused view Screens)
+import 'package:intl/intl.dart';
+
 class DateUtil {
-  static DateTime dateTimeFrom(int timestampInSeconds) => new DateTime.fromMillisecondsSinceEpoch(timestampInSeconds * 1000);
+  final _formatter =  DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  String dateTimeFrom(int timestampInSeconds) {
+    final datetime = DateTime.fromMillisecondsSinceEpoch(timestampInSeconds * 1000);
+
+    return _formatter.format(datetime);
+  }
 }
