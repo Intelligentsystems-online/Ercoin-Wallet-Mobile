@@ -32,16 +32,18 @@ class AccountInfoPage extends StatelessWidget {
             ),
             Text("Account: " + accountWithBalance.account.accountName),
             Text("Balance: " + accountWithBalance.balance.toString() + " ERCOIN"),
-            FutureBuilderWithProgress(
-              future: _interactor.obtainRecentTransactions(),
-              builder: (transactions) => TransactionList(
-                transactions: transactions,
-                onTransactionPressed: (transaction) => _onTransactionPressed(ctx, transaction),
-              ),
-            ),
             ExpandedRaisedTextButton(
               text: "Transfer",
               onPressed: () => pushRoute(Navigator.of(ctx), () => SelectTransferDestinationRoute()),
+            ),
+            Flexible(
+              child: FutureBuilderWithProgress(
+                future: _interactor.obtainRecentTransactions(),
+                builder: (transactions) => TransactionList(
+                  transactions: transactions,
+                  onTransactionPressed: (transaction) => _onTransactionPressed(ctx, transaction),
+                ),
+              )
             )
           ],
         ),
