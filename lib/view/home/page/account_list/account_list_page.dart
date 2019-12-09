@@ -11,9 +11,15 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class AccountListPage extends StatelessWidget {
-  final _interactor = AccountListInteractor(); //TODO(DI)
+  AccountListInteractor _interactor; //TODO(DI)
+
+  AccountListPage() {
+    Injector injector = Injector.appInstance;
+    _interactor = injector.getDependency<AccountListInteractor>();
+  }
 
   @override
   Widget build(BuildContext ctx) => TopAndBottomContainer(

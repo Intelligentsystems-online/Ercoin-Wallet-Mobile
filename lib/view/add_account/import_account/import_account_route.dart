@@ -8,6 +8,7 @@ import 'package:ercoin_wallet/view/add_account/configure_account_name/configure_
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class ImportAccountRoute extends StatefulWidget {
   final Function(BuildContext) onAdded;
@@ -24,12 +25,16 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   String _pubKey;
   String _privKey;
 
+  ImportAccountInteractor _interactor; // TODO(DI)
+
   final _formKey = GlobalKey<FormState>();
-  final _interactor = ImportAccountInteractor(); // TODO(DI)
   final _pubKeyController = TextEditingController();
   final _privKeyController = TextEditingController();
 
-  _ImportAccountRouteState(this.onAdded);
+  _ImportAccountRouteState(this.onAdded) {
+    Injector injector = Injector.appInstance;
+    _interactor = injector.getDependency<ImportAccountInteractor>();
+  }
 
   @override
   Widget build(BuildContext ctx) => Scaffold(

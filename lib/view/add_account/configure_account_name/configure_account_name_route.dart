@@ -6,6 +6,7 @@ import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/backup_prompt/backup_prompt_route.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class ConfigureAccountNameRoute extends StatefulWidget {
   final Function(BuildContext) onAdded;
@@ -21,13 +22,16 @@ class _ConfigureAccountNameRouteState extends State<ConfigureAccountNameRoute> {
   final Function(BuildContext) onAdded;
   final AccountKeys keys;
 
-  final _interactor = ConfigureAccountNameInteractor(); // TODO(DI)
+  ConfigureAccountNameInteractor _interactor; // TODO(DI)
   final _formKey = GlobalKey<FormState>();
 
   String _accountName = "";
   bool _isLoading = false;
 
-  _ConfigureAccountNameRouteState(this.onAdded, this.keys);
+  _ConfigureAccountNameRouteState(this.onAdded, this.keys) {
+    Injector injector = Injector.appInstance;
+    _interactor = injector.getDependency<ConfigureAccountNameInteractor>();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(

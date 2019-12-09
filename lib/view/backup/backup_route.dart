@@ -6,14 +6,18 @@ import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:folder_picker/folder_picker.dart';
+import 'package:injector/injector.dart';
 
 class BackupRoute extends StatelessWidget {
   final Function(BuildContext) onProceed;
   final Account account;
 
-  final _interactor = BackupInteractor(); // TODO(DI)
+  BackupInteractor _interactor; // TODO(DI)
 
-  BackupRoute({this.onProceed, @required this.account});
+  BackupRoute({this.onProceed, @required this.account}) {
+    Injector injector = Injector.appInstance;
+    _interactor = injector.getDependency<BackupInteractor>();
+  }
 
   @override
   Widget build(BuildContext ctx) => Scaffold(

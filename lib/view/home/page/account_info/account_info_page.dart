@@ -15,16 +15,16 @@ import 'package:injector/injector.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
-  AccountInfoInteractor interactor;
+  AccountInfoInteractor _interactor;
 
   AccountInfoPage() {
     Injector injector = Injector.appInstance;
-    interactor = injector.getDependency<AccountInfoInteractor>();
+    _interactor = injector.getDependency<AccountInfoInteractor>();
   }
 
   @override
   Widget build(BuildContext context) => FutureBuilderWithProgress(
-      future: interactor.obtainActiveAccountWithBalance(),
+      future: _interactor.obtainActiveAccountWithBalance(),
       builder: (AccountInfo accountWithBalance) => _accountInfoView(context, accountWithBalance));
 
   Widget _accountInfoView(BuildContext ctx, AccountInfo accountWithBalance) => Container(
@@ -44,7 +44,7 @@ class AccountInfoPage extends StatelessWidget {
             ),
             Flexible(
               child: FutureBuilderWithProgress(
-                future: interactor.obtainRecentTransactions(),
+                future: _interactor.obtainRecentTransactions(),
                 builder: (transactions) => TransactionList(
                   transactions: transactions,
                   onTransactionPressed: (transaction) => _onTransactionPressed(ctx, transaction),

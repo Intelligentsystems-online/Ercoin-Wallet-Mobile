@@ -11,6 +11,7 @@ import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class TransferRoute extends StatefulWidget {
   final String destinationAddress;
@@ -32,9 +33,12 @@ class _TransferRouteState extends State<TransferRoute> {
   bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
-  final _interactor = TransferInteractor(); // TODO(DI)
+  TransferInteractor _interactor; // TODO(DI)
 
-  _TransferRouteState(this.destinationAddress, this.destinationName);
+  _TransferRouteState(this.destinationAddress, this.destinationName) {
+    Injector injector = Injector.appInstance;
+    _interactor = injector.getDependency<TransferInteractor>();
+  }
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
