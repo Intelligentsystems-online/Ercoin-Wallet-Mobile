@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/utils/service/common/validate_util.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -30,7 +30,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   bool _shouldSave = false;
 
   final _formKey = GlobalKey<FormState>();
-  final _validateUtil = ValidateUtil();
+  final _validateUtil = KeysValidationUtil();
   final _publicKeyController = TextEditingController();
 
   _EnterAddressState(this.onProceed, this.isNameOptional);

@@ -1,4 +1,4 @@
-class ValidateUtil {
+class KeysValidationUtil {
   static final publicKeyType = "public key";
   static final privateKeyType = "private key";
 
