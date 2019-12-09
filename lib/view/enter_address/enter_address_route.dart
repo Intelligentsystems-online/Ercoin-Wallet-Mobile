@@ -37,60 +37,76 @@ class _EnterAddressState extends State<EnterAddressRoute> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text("Address configure"),
-    ),
-    body: TopAndBottomContainer(
-      top: Form(
-        key: _formKey,
-        child: Column(children: <Widget>[
-            _publicKeyInput(),
-            _scanBtn(),
-            isNameOptional ? _checkboxWithText() : Container(),
-            !isNameOptional || _shouldSave ? _addressNameInput() : Container(),
-          ]
-        )
-      ),
-        bottom: _proceedBtn(),
-    ),
-  );
+        appBar: AppBar(
+          title: const Text("Address configure"),
+        ),
+        body: TopAndBottomContainer(
+          top: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                _publicKeyInput(),
+                _scanBtn(),
+                isNameOptional ? _checkboxWithText() : Container(),
+                !isNameOptional || _shouldSave ? _addressNameInput() : Container(),
+              ],
+            ),
+          ),
+          bottom: _proceedBtn(),
+        ),
+      );
 
   Widget _checkboxWithText() => CheckboxWithTextWidget(
       text: "Add to address book",
       value: _shouldSave,
-      onChanged: (isChecked) => setState(() => _shouldSave = isChecked)
-  );
+      onChanged: (isChecked) => setState(() => _shouldSave = isChecked));
 
   Widget _publicKeyInput() => ExpandedRow(
-    child: TextFormField(
-      decoration: const InputDecoration(labelText: 'Public key'),
-      controller: _publicKeyController,
-      validator: (value) => _validateUtil.validatePublicKey(value),
-      onSaved: (value) => setState(() => _publicKey = value),
-    ),
-  );
+        child: TextFormField(
+          decoration: const InputDecoration(
+            hintText: 'Public key',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+              borderSide: BorderSide()
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            suffixIcon: Icon(Icons.vpn_key)
+          ),
+          controller: _publicKeyController,
+          validator: (value) => _validateUtil.validatePublicKey(value),
+          onSaved: (value) => setState(() => _publicKey = value),
+        ),
+      );
 
   Widget _addressNameInput() => ExpandedRow(
-    child: TextFormField(
-      decoration: const InputDecoration(labelText: 'Address name'),
-      validator: (value) => value.isEmpty ? "Enter address name" : null,
-      onSaved: (value) => setState(() => _name = value),
-    ),
-  );
+        child: TextFormField(
+          decoration: const InputDecoration(
+            hintText: 'Address book name',
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7)),
+                borderSide: BorderSide()
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            suffixIcon: Icon(Icons.account_circle)
+        ),
+          validator: (value) => value.isEmpty ? "Enter address name" : null,
+          onSaved: (value) => setState(() => _name = value),
+        ),
+      );
 
   Widget _scanBtn() => ExpandedRaisedTextButton(
-    text: "Scan",
-    onPressed: _onScan,
-  );
+        text: "Scan",
+        onPressed: _onScan,
+      );
 
   _onScan() async {
     _publicKeyController.text = await QRCodeReader().scan();
   }
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-    text: "Proceed",
-    onPressed: _onProceed,
-  );
+        text: "Proceed",
+        onPressed: _onProceed,
+      );
 
   _onProceed() {
     if (_formKey.currentState.validate()) {
