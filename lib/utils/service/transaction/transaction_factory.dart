@@ -4,12 +4,9 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/utils/TransactionDecoder.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_decode_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
-
-import '../utils/TransactionEncoder.dart';
 
 class TransactionFactory
 {

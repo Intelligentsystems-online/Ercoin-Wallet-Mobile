@@ -6,12 +6,14 @@ import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_servic
 
 //TODO(DI)
 class TransferInteractor {
-  final _activeAccountService = ActiveAccountService();
-  final _transactionTransferService = TransferService();
+  final ActiveAccountService activeAccountService ;
+  final TransferService transferService;
+
+  TransferInteractor({this.activeAccountService, this.transferService});
 
   Future<ApiResponseStatus> sendTransfer(String destinationAddress, String message, double amount) async {
-    final activeAccountPk = await _activeAccountService.obtainActiveAccountPk();
+    final activeAccountPk = await activeAccountService.obtainActiveAccountPk();
 
-    return _transactionTransferService.executeTransfer(activeAccountPk, destinationAddress, message, amount);
+    return transferService.executeTransfer(activeAccountPk, destinationAddress, message, amount);
   }
 }

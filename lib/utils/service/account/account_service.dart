@@ -15,29 +15,31 @@ import 'package:flutter_sodium/flutter_sodium.dart';
 
 //TODO(DI)
 class AccountService {
-  final _commonAccountUtil = CommonAccountUtil();
-  final _accountRepository = AccountRepository();
-  final _keyGenerator = KeyGenerator();
-  final _apiConsumerService = ApiConsumerService();
+  final CommonAccountUtil commonAccountUtil;
+  final AccountRepository accountRepository;
+  final ApiConsumerService apiConsumerService;
+  final KeyGenerator keyGenerator;
+
+  AccountService({this.commonAccountUtil, this.accountRepository, this.apiConsumerService, this.keyGenerator});
 
   Future<List<AccountInfo>> obtainAccountsInfo() async {
-    final accounts = await _accountRepository.findAll();
+    final accounts = await accountRepository.findAll();
     final futureAccounts = accounts.map((account) => _toAccountInfo(account));
 
     return await Future.wait(futureAccounts);
   }
 
   Future<AccountInfo> _toAccountInfo(Account account) async {
-    final apiResponse = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
+    final apiResponse = await apiConsumerService.fetchAccountDataBase64For(account.publicKey);
 
-    return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
+    return commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 
   Future<Account> saveAccount(String publicKey, String privateKey, String accountName) =>
-      _accountRepository.createAccount(publicKey, privateKey, accountName);
+      accountRepository.createAccount(publicKey, privateKey, accountName);
 
   Future<AccountKeys> generateAccountKeys() async {
-    final keyPair = await _keyGenerator.generateKeyPair();
+    final keyPair = await keyGenerator.generateKeyPair();
 
     return _accountKeysFrom(keyPair);
   }

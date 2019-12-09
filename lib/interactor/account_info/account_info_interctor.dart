@@ -7,14 +7,16 @@ import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_se
 
 //TODO(DI)
 class AccountInfoInteractor {
-  final _activeAccountService = ActiveAccountService();
-  final _transactionListService = TransactionListService();
+  final ActiveAccountService activeAccountService;
+  final TransactionListService transactionListService;
 
-  Future<AccountInfo> obtainActiveAccountWithBalance() => _activeAccountService.obtainActiveAccountInfo();
+  AccountInfoInteractor({this.activeAccountService, this.transactionListService});
+
+  Future<AccountInfo> obtainActiveAccountWithBalance() => activeAccountService.obtainActiveAccountInfo();
 
   Future<List<Transaction>> obtainRecentTransactions() async {
-    final activeAccountPk = await _activeAccountService.obtainActiveAccountPk();
-    final transactions = await _transactionListService.obtainTransactionsFor(activeAccountPk);
+    final activeAccountPk = await activeAccountService.obtainActiveAccountPk();
+    final transactions = await transactionListService.obtainTransactionsFor(activeAccountPk);
 
     transactions.sort(_compareByTimestamp);
 

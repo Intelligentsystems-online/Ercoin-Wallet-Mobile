@@ -6,12 +6,14 @@ import 'package:ercoin_wallet/utils/service/account/active_account_service.dart'
 
 //TODO(DI)
 class AccountListInteractor {
-  final _accountService = AccountService();
-  final _activeAccountService = ActiveAccountService();
+  final AccountService accountService;
+  final ActiveAccountService activeAccountService;
 
-  Future<List<AccountInfo>> obtainAccountsWithBalance() => _accountService.obtainAccountsInfo();
+  AccountListInteractor({this.accountService, this.activeAccountService});
 
-  Future<String> obtainActiveAccountPk() => _activeAccountService.obtainActiveAccountPk();
+  Future<List<AccountInfo>> obtainAccountsWithBalance() => accountService.obtainAccountsInfo();
 
-  Future<void> activateAccount(String publicKey) => _activeAccountService.activateAccount(publicKey);
+  Future<String> obtainActiveAccountPk() => activeAccountService.obtainActiveAccountPk();
+
+  Future<void> activateAccount(String publicKey) => activeAccountService.activateAccount(publicKey);
 }

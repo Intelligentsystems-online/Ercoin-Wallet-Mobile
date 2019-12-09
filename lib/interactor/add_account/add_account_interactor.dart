@@ -5,7 +5,9 @@ import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 
 //TODO(DI)
 class AddAccountInteractor {
-  final _accountService = AccountService();
+  final AccountService accountService;
 
-  Future<AccountKeys> generateAccountKeys() => _accountService.generateAccountKeys();
+  AddAccountInteractor({this.accountService});
+
+  Future<AccountKeys> generateAccountKeys() => accountService.generateAccountKeys();
 }

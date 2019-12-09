@@ -25,6 +25,7 @@ dependencies:
   qr_flutter: ^3.1.0
   qrcode_reader: 0.4.4
   intl: ^0.16.0
+  injector: 1.0.8
   test:
 
 dev_dependencies:

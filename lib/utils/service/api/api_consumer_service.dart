@@ -10,12 +10,14 @@ import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
 //TODO(DI)
 class ApiConsumerService {
-  final _codeMapperUtil = CodeMapperUtil();
-  final uriFactory = UriFactory();
+  final CodeMapperUtil codeMapperUtil;
+  final UriFactory uriFactory;
+
+  ApiConsumerService({this.codeMapperUtil, this.uriFactory});
 
   Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
       .get(uriFactory.createTransferUri(transactionHex))
-      .then((response) => _codeMapperUtil.genericCodeToStatus(_obtainTransferResponseCode(response.body)));
+      .then((response) => codeMapperUtil.genericCodeToStatus(_obtainTransferResponseCode(response.body)));
 
   int _obtainTransferResponseCode(String response) =>
       jsonDecode(response)['result']['code'] as int;
@@ -24,7 +26,7 @@ class ApiConsumerService {
     final response = await http.get(uriFactory.createAccountDataUri(address));
     final jsonResponse = jsonDecode(response.body)['result']['response'];
     final responseCode = jsonResponse['code'] as int;
-    final responseStatus = _codeMapperUtil.accountCodeToStatus(responseCode);
+    final responseStatus = codeMapperUtil.accountCodeToStatus(responseCode);
 
     if(responseStatus == ApiResponseStatus.SUCCESS)
       return ApiResponse(ApiResponseStatus.SUCCESS, jsonResponse['value'] as String);

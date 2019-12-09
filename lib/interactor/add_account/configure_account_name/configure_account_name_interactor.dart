@@ -7,12 +7,14 @@ import 'package:ercoin_wallet/utils/service/account/active_account_service.dart'
 
 // TODO(DI)
 class ConfigureAccountNameInteractor {
-  final _accountService = AccountService();
-  final _activeAccountService = ActiveAccountService();
+  final AccountService accountService;
+  final ActiveAccountService activeAccountService;
+
+  ConfigureAccountNameInteractor({this.accountService, this.activeAccountService});
 
   Future<Account> addAccount(AccountKeys keys, String name) async {
-    final account = await _accountService.saveAccount(keys.publicKey, keys.privateKey, name);
-    await _activeAccountService.activateAccount(keys.publicKey);
+    final account = await accountService.saveAccount(keys.publicKey, keys.privateKey, name);
+    await activeAccountService.activateAccount(keys.publicKey);
 
     return account;
   }

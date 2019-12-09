@@ -7,13 +7,15 @@ import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
 //TODO(DI)
 class TransactionEncodeService
 {
-  final _byteConverter = ByteConverter();
+  final ByteConverter byteConverter;
+
+  TransactionEncodeService({this.byteConverter});
 
   String convertTransactionBytesToHex(Uint8List transactionBytes) => hex.encode(transactionBytes);
 
-  Uint8List encodeTimestamp(int timestamp) => _byteConverter.convertIntToBytes(BigInt.from(timestamp), 4);
+  Uint8List encodeTimestamp(int timestamp) => byteConverter.convertIntToBytes(BigInt.from(timestamp), 4);
 
-  Uint8List encodeTransactionValue(int transactionValue) => _byteConverter.convertIntToBytes(BigInt.from(transactionValue), 8);
+  Uint8List encodeTransactionValue(int transactionValue) => byteConverter.convertIntToBytes(BigInt.from(transactionValue), 8);
 
   Uint8List encodeReceiverAddress(String receiverAddress) => hex.decode(receiverAddress);
 

@@ -5,9 +5,11 @@ import 'package:ercoin_wallet/utils/service/address/address_service.dart';
 
 //TODO(DI)
 class AddressListInteractor {
-  final _addressService = AddressService();
+  final AddressService addressService;
 
-  Future<List<Address>> obtainAddresses() => _addressService.obtainAddresses();
+  AddressListInteractor({this.addressService});
 
-  Future<Address> addAddress(String address, String name) => _addressService.saveAddress(address, name);
+  Future<List<Address>> obtainAddresses() => addressService.obtainAddresses();
+
+  Future<Address> addAddress(String address, String name) => addressService.saveAddress(address, name);
 }

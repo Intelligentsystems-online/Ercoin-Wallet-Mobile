@@ -5,9 +5,11 @@ import 'package:ercoin_wallet/repository/address/AddressRepository.dart';
 
 //TODO(DI)
 class AddressService {
-  final _addressRepository = AddressRepository();
+  final AddressRepository addressRepository;
 
-  Future<List<Address>> obtainAddresses() => _addressRepository.findAll();
+  AddressService({this.addressRepository});
 
-  Future<Address> saveAddress(String publicKey, String accountName) => _addressRepository.createAddress(publicKey, accountName);
+  Future<List<Address>> obtainAddresses() => addressRepository.findAll();
+
+  Future<Address> saveAddress(String publicKey, String accountName) => addressRepository.createAddress(publicKey, accountName);
 }

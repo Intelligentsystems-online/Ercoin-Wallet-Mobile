@@ -11,14 +11,20 @@ import 'package:ercoin_wallet/view/transfer/select_destination/select_transfer_d
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
-  final _interactor = AccountInfoInteractor(); //TODO(DI)
+  AccountInfoInteractor interactor;
+
+  AccountInfoPage() {
+    Injector injector = Injector.appInstance;
+    interactor = injector.getDependency<AccountInfoInteractor>();
+  }
 
   @override
   Widget build(BuildContext context) => FutureBuilderWithProgress(
-      future: _interactor.obtainActiveAccountWithBalance(),
+      future: interactor.obtainActiveAccountWithBalance(),
       builder: (AccountInfo accountWithBalance) => _accountInfoView(context, accountWithBalance));
 
   Widget _accountInfoView(BuildContext ctx, AccountInfo accountWithBalance) => Container(
@@ -38,7 +44,7 @@ class AccountInfoPage extends StatelessWidget {
             ),
             Flexible(
               child: FutureBuilderWithProgress(
-                future: _interactor.obtainRecentTransactions(),
+                future: interactor.obtainRecentTransactions(),
                 builder: (transactions) => TransactionList(
                   transactions: transactions,
                   onTransactionPressed: (transaction) => _onTransactionPressed(ctx, transaction),
