@@ -1,5 +1,5 @@
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
@@ -24,18 +24,18 @@ class AccountListPage extends StatelessWidget {
 
   Widget _accountListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
       future: _interactor.obtainAccountsWithBalance(),
-      builder: (List<AccountWithBalance> accounts) => FutureBuilderWithProgress(
+      builder: (List<AccountInfo> accounts) => FutureBuilderWithProgress(
         future: _interactor.obtainActiveAccountPk(),
         builder: (String activeAccountPk) => AccountList(accounts, activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account)),
       )
   );
 
-  void _onAccountPressed(BuildContext ctx, AccountWithBalance account) => showDialog(
+  void _onAccountPressed(BuildContext ctx, AccountInfo account) => showDialog(
       context: ctx,
       builder: (ctx) => _prepareAlertDialog(ctx, account)
   );
 
-  AlertDialog _prepareAlertDialog(BuildContext ctx, AccountWithBalance account) => AlertDialog(
+  AlertDialog _prepareAlertDialog(BuildContext ctx, AccountInfo account) => AlertDialog(
       title: Center(child: Text("Account detail")),
       content: AccountDetailsWidget(account, (ctx, publicKey) => _onActivate(ctx, publicKey))
   );

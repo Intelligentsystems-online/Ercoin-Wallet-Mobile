@@ -1,7 +1,6 @@
-
 import 'dart:typed_data';
 
-//TODO(Remove after removing unused view Screens)
+//TODO(Search for lib converting big endian or make some refactor here)
 class ByteConverter
 {
   Uint8List convertIntToBytes(BigInt number, int bytesSize) {

@@ -2,10 +2,10 @@ import 'package:convert/convert.dart';
 
 import 'dart:typed_data';
 
-import 'package:ercoin_wallet/utils/ByteConverter.dart';
+import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
 
-//TODO(Remove after removing unused view Screens)
-class TransactionEncoder
+//TODO(DI)
+class TransactionEncodeService
 {
   final _byteConverter = ByteConverter();
 

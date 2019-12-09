@@ -72,7 +72,7 @@ class CreateAddressState extends State<CreateAddressScreen>
 
     if(formData.validate()) {
       formData.save();
-      _addressRepository.createAddress(Address(randomAlphaNumeric(30), _publicKey, _accountName));
+      _addressRepository.createAddress(_publicKey, _accountName);
 
       Navigator
           .of(context)
