@@ -27,8 +27,7 @@ class HomeRouteState extends State<HomeRoute> {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text("Home view"),
-        centerTitle: true,
+        title: const Text("Ercoin wallet"),
       ),
       body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(

@@ -15,6 +15,7 @@ class CheckboxWithTextWidget extends StatelessWidget {
       Switch(
         value: value,
         onChanged: onChanged,
+        activeColor: Theme.of(context).accentColor,
       ),
       Expanded(
           child: Text(text)

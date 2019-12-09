@@ -26,9 +26,10 @@ class App extends StatelessWidget {
           ),
         ),
         theme: ThemeData(
-          brightness: Brightness.light,
-          accentColor: Colors.indigoAccent,
-          primarySwatch: Colors.indigo,
+          brightness: Brightness.dark,
+          accentColor: Colors.orangeAccent,
+          primarySwatch: Colors.orange,
+          primaryColorDark: Colors.orange,
           buttonTheme: ButtonThemeData(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(7)),
