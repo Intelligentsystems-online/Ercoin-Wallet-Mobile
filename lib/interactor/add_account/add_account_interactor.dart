@@ -1,14 +1,11 @@
 import 'dart:async';
 
-import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
-import 'package:ercoin_wallet/utils/KeyGenerator.dart';
+import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 
+//TODO(DI)
 class AddAccountInteractor {
-  final _keyGenerator = KeyGenerator();
+  final _accountService = AccountService();
 
-  Future<AccountKeys> generateAccountKeys() async {
-    final keyPair = await _keyGenerator.generateKeyPair();
-    return AccountKeys(hex.encode(keyPair.publicKey), hex.encode(keyPair.secretKey));
-  }
+  Future<AccountKeys> generateAccountKeys() => _accountService.generateAccountKeys();
 }

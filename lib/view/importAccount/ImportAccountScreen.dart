@@ -83,7 +83,7 @@ class _ImportAccountState extends State<ImportAccountScreen>
     if(formData.validate()) {
       formData.save();
       _sharedPreferencesUtil.setSharedPreference('activeAccountKey', _publicKey);
-      _accountRepository.createAccount(Account(_publicKey, _privateKey, _accountName));
+      _accountRepository.createAccount(_publicKey, _privateKey, _accountName);
 
       Navigator
           .of(context)

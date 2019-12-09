@@ -31,7 +31,7 @@ class TransactionScreen extends StatelessWidget
   Container transactionListContainer(String accountKey) {
     return Container(
       child: FutureBuilder<List<String>> (
-          future: _apiConsumer.fetchTransactionBase64ListFor(accountKey),
+          future: _apiConsumer.fetchOutboundTransactionBase64ListFor(accountKey),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting: return Center(child: CircularProgressIndicator());

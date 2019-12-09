@@ -2,8 +2,7 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 
-//TODO(Remove after removing unused view Screens)
-class TransactionDecoder
+class TransactionDecodeService
 {
   Uint8List convertTransactionHexToBytes(String transactionHex) => hex.decode(transactionHex);
 

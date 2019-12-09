@@ -1,20 +1,20 @@
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountDetailsWidget extends StatelessWidget {
-  final AccountWithBalance accountWithBalance;
+  final AccountInfo accountInfo;
   final Function(BuildContext, String) onActivate;
 
-  const AccountDetailsWidget(this.accountWithBalance, this.onActivate);
+  const AccountDetailsWidget(this.accountInfo, this.onActivate);
 
   @override
   Widget build(BuildContext ctx) => Column(
     children: <Widget>[
-      Text("Name: " + accountWithBalance.account.accountName),
-      Text("Public key: " + accountWithBalance.account.publicKey),
-      Text("Balance: " + accountWithBalance.balance.toString()),
+      Text("Name: " + accountInfo.account.accountName),
+      Text("Public key: " + accountInfo.account.publicKey),
+      Text("Balance: " + accountInfo.balance.toString()),
       Row(
         children: <Widget>[_activateBtn(ctx), _closeBtn(ctx)]
       )
@@ -23,7 +23,7 @@ class AccountDetailsWidget extends StatelessWidget {
 
   FlatButton _activateBtn(BuildContext ctx) => FlatButton(
       child: Text("Activate", style: TextStyle(color: Colors.blueAccent, fontSize: 16)),
-      onPressed: () => onActivate(ctx, accountWithBalance.account.publicKey)
+      onPressed: () => onActivate(ctx, accountInfo.account.publicKey)
   );
 
   FlatButton _closeBtn(BuildContext ctx) => FlatButton(

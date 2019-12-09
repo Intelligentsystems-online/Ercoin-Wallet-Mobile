@@ -1,21 +1,17 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/account_with_balance.dart';
-import 'package:ercoin_wallet/repository/account/Account.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
+import 'package:ercoin_wallet/utils/service/account/account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 
-//TODO(Interactor)
+//TODO(DI)
 class AccountListInteractor {
-  Future<List<AccountWithBalance>> obtainAccountsWithBalance() async {
-    final account = AccountWithBalance(Account("public key", "private key", "account name"), 100);
+  final _accountService = AccountService();
+  final _activeAccountService = ActiveAccountService();
 
-    return [account];
-  }
+  Future<List<AccountInfo>> obtainAccountsWithBalance() => _accountService.obtainAccountsInfo();
 
-  Future<String> obtainActiveAccountPk() async {
-    return "public key";
-  }
+  Future<String> obtainActiveAccountPk() => _activeAccountService.obtainActiveAccountPk();
 
-  Future<void> activateAccount(String publicKey) async {
-    //TODO change active account in shared preferences
-  }
+  Future<void> activateAccount(String publicKey) => _activeAccountService.activateAccount(publicKey);
 }

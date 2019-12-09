@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -19,9 +19,9 @@ class AccountInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FutureBuilderWithProgress(
       future: _interactor.obtainActiveAccountWithBalance(),
-      builder: (AccountWithBalance accountWithBalance) => _accountInfoView(context, accountWithBalance));
+      builder: (AccountInfo accountWithBalance) => _accountInfoView(context, accountWithBalance));
 
-  Widget _accountInfoView(BuildContext ctx, AccountWithBalance accountWithBalance) => Container(
+  Widget _accountInfoView(BuildContext ctx, AccountInfo accountWithBalance) => Container(
         padding: standardPadding,
         child: Column(
           children: <Widget>[
@@ -31,17 +31,19 @@ class AccountInfoPage extends StatelessWidget {
               padding: standardPadding,
             ),
             Text("Account: " + accountWithBalance.account.accountName),
-            Text("Balance: " + accountWithBalance.balance.toString() + " MICRO ERCOIN"),
-            FutureBuilderWithProgress(
-              future: _interactor.obtainRecentTransactions(),
-              builder: (transactions) => TransactionList(
-                transactions: transactions,
-                onTransactionPressed: (transaction) => _onTransactionPressed(ctx, transaction),
-              ),
-            ),
+            Text("Balance: " + accountWithBalance.balance.toString() + " ERCOIN"),
             ExpandedRaisedTextButton(
               text: "Transfer",
               onPressed: () => pushRoute(Navigator.of(ctx), () => SelectTransferDestinationRoute()),
+            ),
+            Flexible(
+              child: FutureBuilderWithProgress(
+                future: _interactor.obtainRecentTransactions(),
+                builder: (transactions) => TransactionList(
+                  transactions: transactions,
+                  onTransactionPressed: (transaction) => _onTransactionPressed(ctx, transaction),
+                ),
+              )
             )
           ],
         ),

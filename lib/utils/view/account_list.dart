@@ -1,12 +1,12 @@
-import 'package:ercoin_wallet/model/account_with_balance.dart';
+import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccountList extends StatelessWidget {
-  final List<AccountWithBalance> accountsWithBalance;
+  final List<AccountInfo> accountsWithBalance;
   final String activeAccountPk;
-  final Function(BuildContext, AccountWithBalance) onAccountPressed;
+  final Function(BuildContext, AccountInfo) onAccountPressed;
 
   const AccountList(this.accountsWithBalance, this.activeAccountPk, this.onAccountPressed);
 
@@ -16,21 +16,21 @@ class AccountList extends StatelessWidget {
       itemBuilder: (context, index) => _accountBox(ctx, accountsWithBalance[index])
   );
 
-  Widget _accountBox(BuildContext ctx, AccountWithBalance accountWithBalance) => GestureDetector(
-    onTap: () => onAccountPressed(ctx, accountWithBalance),
+  Widget _accountBox(BuildContext ctx, AccountInfo accountInfo) => GestureDetector(
+    onTap: () => onAccountPressed(ctx, accountInfo),
     child: Card(
         child: ListTile(
-          title: _accountNameLabel(accountWithBalance.account),
-          subtitle: _accountBalanceLabel(accountWithBalance),
-          trailing: _activeAccountSign(accountWithBalance.account)
+          title: _accountNameLabel(accountInfo.account),
+          subtitle: _accountBalanceLabel(accountInfo),
+          trailing: _activeAccountSign(accountInfo.account)
         )
     )
   );
 
   Widget _accountNameLabel(Account account) => Text(account.accountName);
 
-  Widget _accountBalanceLabel(AccountWithBalance accountWithBalance) =>
-      Text(accountWithBalance.balance.toString() + " ERC");
+  Widget _accountBalanceLabel(AccountInfo accountInfo) =>
+      Text(accountInfo.balance.toString() + " ERC");
 
   Widget _activeAccountSign(Account account) =>
       (account.publicKey == activeAccountPk) ? Icon(Icons.check, color: Colors.blue) : IgnorePointer();
