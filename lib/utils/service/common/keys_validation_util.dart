@@ -4,9 +4,9 @@ class KeysValidationUtil {
 
   final _regExp = RegExp("^[0-9a-f]+\$", caseSensitive: false);
 
-  validatePublicKey(String publicKey) => _validateKey(publicKey, publicKeyType, 32);
+  validatePublicKey(String publicKey) => _validateKey(publicKey, publicKeyType, 64);
 
-  validatePrivateKey(String privateKey) => _validateKey(privateKey, privateKeyType, 64);
+  validatePrivateKey(String privateKey) => _validateKey(privateKey, privateKeyType, 128);
 
   _validateKey(String key, String keyType, int length) {
     if(key.isEmpty)
