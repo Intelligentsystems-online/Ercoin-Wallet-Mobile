@@ -12,7 +12,7 @@ import 'package:ercoin_wallet/view/terms/terms_route.dart';
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
-Injector mainInjector = Injector();
+final Injector mainInjector = Injector();
 
 void main() {
   RepositoryConfiguration.configure(mainInjector);
