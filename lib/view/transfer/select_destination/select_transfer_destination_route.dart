@@ -14,7 +14,8 @@ class SelectTransferDestinationRoute extends StatelessWidget {
   SelectTransferDestinationInteractor _interactor;
 
   SelectTransferDestinationRoute() {
-    _interactor = Injector().getDependency<SelectTransferDestinationInteractor>();
+    Injector injector = Injector.appInstance;
+    _interactor = injector.getDependency<SelectTransferDestinationInteractor>();
   }
 
   @override
