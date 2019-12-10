@@ -1,6 +1,6 @@
 
 import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/utils/DateUtil.dart';
+import 'package:ercoin_wallet/utils/service/common/date_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

@@ -6,7 +6,6 @@ import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:ercoin_wallet/view/createAddress/CreateAddressScreen.dart';
 import 'package:ercoin_wallet/view/enter_address/enter_address_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 

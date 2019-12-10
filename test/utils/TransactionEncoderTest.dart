@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:ercoin_wallet/utils/TransactionEncoder.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -8,7 +8,7 @@ void main() {
   final _transactionHex = "005dd41c872fd90154688fd3f0547eaadb2b736fecf9ae4b22d6b1d8cea0c687a31306abe500000000000f424003666f6f010b5d53e76f56fe2ef0ab133b8c5012b47fbf6e3719794ce6dc4ae683c69823c7e15f0f0c5041557b2482c5ce4fea3becf6087f674eb93ae1d80be28aafe36f79b3fb34af1f5ff984aaea7dbe25e47ac606cdf849be10bded4f7cf436c601880e";
 
   final _senderAddressBytes = [11,93,83,231,111,86,254,46,240,171,19,59,140,80,18,180,127,191,110,55,25,121,76,230,220,74,230,131,198,152,35,199];
-  final _transactionEncoder = TransactionEncoder();
+  final _transactionEncoder = TransactionEncodeService();
   
   test('Should correctly encode timestamp', () {
     var timestampBytes = _transactionEncoder.encodeTimestamp(1574182023);

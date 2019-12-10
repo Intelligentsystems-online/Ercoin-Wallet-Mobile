@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/model/TransactionFactory.dart';
 import 'package:ercoin_wallet/model/api_response.dart';
 import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transaction_factory.dart';
 
 //TODO(DI)
 class TransactionListService {
