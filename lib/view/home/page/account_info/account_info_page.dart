@@ -31,6 +31,7 @@ class AccountInfoPage extends StatelessWidget {
               data: accountWithBalance.account.publicKey,
               size: 150,
               padding: standardPadding,
+              backgroundColor: Colors.white,
             ),
             Text("Account: " + accountWithBalance.account.accountName),
             Text("Balance: " + accountWithBalance.balance.toString() + " ERCOIN"),

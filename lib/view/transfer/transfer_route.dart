@@ -7,6 +7,7 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
@@ -62,8 +63,8 @@ class _TransferRouteState extends State<TransferRoute> {
       ));
 
   Widget _amountInput() => ExpandedRow(
-    child: TextFormField(
-      decoration: const InputDecoration(labelText: "Amount"),
+    child: StandardTextFormField(
+      hintText: "Amount",
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       validator: _validateAmount,
       onSaved: (value) => setState(() => _amount = double.parse(value)),
@@ -71,8 +72,8 @@ class _TransferRouteState extends State<TransferRoute> {
   );
 
   Widget _messageInput() => ExpandedRow(
-    child: TextFormField(
-      decoration: const InputDecoration(labelText: "Message"),
+    child: StandardTextFormField(
+      hintText: "Message",
       onSaved: (value) => setState(() => _message = value),
     ),
   );
