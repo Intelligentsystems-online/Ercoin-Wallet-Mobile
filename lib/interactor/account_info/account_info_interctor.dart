@@ -5,7 +5,6 @@ import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 
-//TODO(DI)
 class AccountInfoInteractor {
   final ActiveAccountService activeAccountService;
   final TransactionListService transactionListService;

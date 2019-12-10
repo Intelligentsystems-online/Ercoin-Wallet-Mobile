@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/service/address/address_service.dart';
 
-//TODO(DI)
 class SelectTransferDestinationInteractor {
   final AddressService addressService;
 

@@ -4,7 +4,6 @@ import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_service.dart';
 
-//TODO(DI)
 class TransferInteractor {
   final ActiveAccountService activeAccountService ;
   final TransferService transferService;
