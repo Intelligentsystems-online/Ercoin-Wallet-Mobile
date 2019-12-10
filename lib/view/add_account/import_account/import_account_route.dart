@@ -4,6 +4,7 @@ import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/configure_account_name/configure_account_name_route.dart';
 import 'package:file_picker/file_picker.dart';
@@ -57,8 +58,8 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       );
 
   Widget _pubKeyInput() => ExpandedRow(
-        child: TextFormField(
-          decoration: const InputDecoration(labelText: 'Public key'),
+        child: StandardTextFormField(
+          hintText: 'Public key',
           controller: _pubKeyController,
           validator: (value) => _keysValidationUtil.validatePublicKey(value),
           onSaved: (value) => setState(() => _pubKey = value),
@@ -66,8 +67,9 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       );
 
   Widget _privKeyInput() => ExpandedRow(
-        child: TextFormField(
-          decoration: const InputDecoration(labelText: 'Private key'),
+        child: StandardTextFormField(
+          hintText: 'Private key',
+          icon: const Icon(Icons.vpn_key),
           controller: _privKeyController,
           validator: (value) => _keysValidationUtil.validatePrivateKey(value),
           onSaved: (value) => setState(() => _privKey = value),

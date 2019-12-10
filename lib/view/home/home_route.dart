@@ -24,13 +24,15 @@ class HomeRouteState extends State<HomeRoute> {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text("Home view"),
-        centerTitle: true,
+        title: const Text("Ercoin wallet"),
       ),
       body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.blue,
-        selectedItemColor: Colors.blueAccent,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Theme.of(context).cardColor,
+        showUnselectedLabels: true,
+        selectedFontSize: 14.00,
+        unselectedFontSize: 14.00,
         currentIndex: _selectedPageIndex,
         onTap: (index) => setState(() => _selectedPageIndex = index),
         items: [

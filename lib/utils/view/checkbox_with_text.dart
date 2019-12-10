@@ -12,9 +12,10 @@ class CheckboxWithTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
     children: <Widget>[
-      Checkbox(
+      Switch(
         value: value,
         onChanged: onChanged,
+        activeColor: Theme.of(context).accentColor,
       ),
       Expanded(
           child: Text(text)
