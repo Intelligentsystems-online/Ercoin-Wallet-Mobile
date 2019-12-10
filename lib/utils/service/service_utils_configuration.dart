@@ -10,6 +10,7 @@ import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
 import 'package:ercoin_wallet/utils/service/common/date_util.dart';
 import 'package:ercoin_wallet/utils/service/common/key_generator.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_decode_service.dart';
@@ -33,6 +34,7 @@ class ServiceUtilsConfiguration {
     _injector.registerSingleton<ByteConverter>((_) => ByteConverter());
     _injector.registerSingleton<DateUtil>((_) => DateUtil());
     _injector.registerSingleton<KeyGenerator>((_) => KeyGenerator());
+    _injector.registerSingleton<KeysValidationUtil>((_) => KeysValidationUtil());
     _injector.registerSingleton<SharedPreferencesUtil>((_) => SharedPreferencesUtil());
   }
 

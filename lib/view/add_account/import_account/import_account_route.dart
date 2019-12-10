@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -26,6 +27,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   String _privKey;
 
   ImportAccountInteractor _interactor;
+  KeysValidationUtil _keysValidationUtil;
 
   final _formKey = GlobalKey<FormState>();
   final _pubKeyController = TextEditingController();
@@ -34,6 +36,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   _ImportAccountRouteState(this.onAdded) {
     Injector injector = Injector.appInstance;
     _interactor = injector.getDependency<ImportAccountInteractor>();
+    _keysValidationUtil = injector.getDependency<KeysValidationUtil>();
   }
 
   @override
@@ -63,7 +66,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         child: TextFormField(
           decoration: const InputDecoration(labelText: 'Public key'),
           controller: _pubKeyController,
-          validator: (value) => value.isEmpty ? "Enter public key" : null,
+          validator: (value) => _keysValidationUtil.validatePublicKey(value),
           onSaved: (value) => setState(() => _pubKey = value),
         ),
       );
@@ -72,7 +75,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         child: TextFormField(
           decoration: const InputDecoration(labelText: 'Private key'),
           controller: _privKeyController,
-          validator: (value) => value.isEmpty ? "Enter private key" : null,
+          validator: (value) => _keysValidationUtil.validatePrivateKey(value),
           onSaved: (value) => setState(() => _privKey = value),
         ),
       );
