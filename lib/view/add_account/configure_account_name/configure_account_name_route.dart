@@ -22,7 +22,7 @@ class _ConfigureAccountNameRouteState extends State<ConfigureAccountNameRoute> {
   final Function(BuildContext) onAdded;
   final AccountKeys keys;
 
-  ConfigureAccountNameInteractor _interactor; // TODO(DI)
+  ConfigureAccountNameInteractor _interactor;
   final _formKey = GlobalKey<FormState>();
 
   String _accountName = "";

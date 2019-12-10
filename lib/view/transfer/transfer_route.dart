@@ -33,7 +33,7 @@ class _TransferRouteState extends State<TransferRoute> {
   bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
-  TransferInteractor _interactor; // TODO(DI)
+  TransferInteractor _interactor;
 
   _TransferRouteState(this.destinationAddress, this.destinationName) {
     Injector injector = Injector.appInstance;

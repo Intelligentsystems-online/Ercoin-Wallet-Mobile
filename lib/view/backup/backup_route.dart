@@ -12,7 +12,7 @@ class BackupRoute extends StatelessWidget {
   final Function(BuildContext) onProceed;
   final Account account;
 
-  BackupInteractor _interactor; // TODO(DI)
+  BackupInteractor _interactor;
 
   BackupRoute({this.onProceed, @required this.account}) {
     Injector injector = Injector.appInstance;

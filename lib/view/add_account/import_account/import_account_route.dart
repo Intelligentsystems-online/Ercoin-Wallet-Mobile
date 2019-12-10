@@ -25,7 +25,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   String _pubKey;
   String _privKey;
 
-  ImportAccountInteractor _interactor; // TODO(DI)
+  ImportAccountInteractor _interactor;
 
   final _formKey = GlobalKey<FormState>();
   final _pubKeyController = TextEditingController();

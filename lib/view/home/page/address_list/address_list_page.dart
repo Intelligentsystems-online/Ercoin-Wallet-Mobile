@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
 class AddressListPage extends StatelessWidget {
-  AddressListInteractor _interactor; //TODO(DI)
+  AddressListInteractor _interactor;
 
   AddressListPage() {
     Injector injector = Injector.appInstance;

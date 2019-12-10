@@ -21,7 +21,7 @@ class AddAccountRoute extends StatefulWidget {
 class _AddAccountRouteState extends State<AddAccountRoute> {
   final Function(BuildContext) onAdded;
 
-  AddAccountInteractor _interactor; // TODO(DI)
+  AddAccountInteractor _interactor;
   bool _isLoading = false;
 
   _AddAccountRouteState(this.onAdded) {
