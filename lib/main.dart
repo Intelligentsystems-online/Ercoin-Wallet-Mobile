@@ -10,15 +10,14 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:ercoin_wallet/view/terms/terms_route.dart';
 
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
+
+Injector mainInjector = Injector();
 
 void main() {
-  final _repositoryConfiguration = RepositoryConfiguration();
-  final _serviceUtilsConfiguration = ServiceUtilsConfiguration();
-  final _interactorConfiguration = InteractorConfiguration();
-
-  _repositoryConfiguration.configure();
-  _serviceUtilsConfiguration.configure();
-  _interactorConfiguration.configure();
+  RepositoryConfiguration.configure(mainInjector);
+  ServiceUtilsConfiguration.configure(mainInjector);
+  InteractorConfiguration.configure(mainInjector);
 
   runApp(App());
 }

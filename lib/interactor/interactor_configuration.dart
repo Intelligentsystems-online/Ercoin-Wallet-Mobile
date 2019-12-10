@@ -16,34 +16,32 @@ import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_servic
 import 'package:injector/injector.dart';
 
 class InteractorConfiguration {
-  Injector _injector = Injector.appInstance;
-
-  configure() {
-    _injector.registerSingleton<AccountInfoInteractor>((injector) => AccountInfoInteractor(
+  static configure(Injector injector) {
+    injector.registerSingleton<AccountInfoInteractor>((injector) => AccountInfoInteractor(
       activeAccountService: injector.getDependency<ActiveAccountService>(),
       transactionListService: injector.getDependency<TransactionListService>()
     ));
-    _injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
+    injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
       accountService: injector.getDependency<AccountService>(),
       activeAccountService: injector.getDependency<ActiveAccountService>()
     ));
-    _injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
+    injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
       accountService: injector.getDependency<AccountService>()
     ));
-    _injector.registerSingleton<ImportAccountInteractor>((_) => ImportAccountInteractor());
-    _injector.registerSingleton<ConfigureAccountNameInteractor>((injector) => ConfigureAccountNameInteractor(
+    injector.registerSingleton<ImportAccountInteractor>((_) => ImportAccountInteractor());
+    injector.registerSingleton<ConfigureAccountNameInteractor>((injector) => ConfigureAccountNameInteractor(
       accountService: injector.getDependency<AccountService>(),
       activeAccountService: injector.getDependency<ActiveAccountService>()
     ));
-    _injector.registerSingleton<AddressListInteractor>((injector) => AddressListInteractor(
+    injector.registerSingleton<AddressListInteractor>((injector) => AddressListInteractor(
       addressService: injector.getDependency<AddressService>()
     ));
-    _injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
-    _injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor());
-    _injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
+    injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
+    injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor());
+    injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
       addressService: injector.getDependency<AddressService>()
     ));
-    _injector.registerSingleton<TransferInteractor>((injector) => TransferInteractor(
+    injector.registerSingleton<TransferInteractor>((injector) => TransferInteractor(
       activeAccountService: injector.getDependency<ActiveAccountService>(),
       transferService: injector.getDependency<TransferService>()
     ));
