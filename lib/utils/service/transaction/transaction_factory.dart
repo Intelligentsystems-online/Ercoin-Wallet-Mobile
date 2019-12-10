@@ -4,15 +4,14 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/utils/TransactionDecoder.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transaction_decode_service.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
-
-import '../utils/TransactionEncoder.dart';
 
 class TransactionFactory
 {
-  final _transactionDecoder = TransactionDecoder();
-  final _transactionEncoder = TransactionEncoder();
+  final _transactionDecoder = TransactionDecodeService();
+  final _transactionEncoder = TransactionEncodeService();
 
   Transaction createFromBase64(String transactionBase64) {
     var transactionBytes = base64.decode(transactionBase64);
