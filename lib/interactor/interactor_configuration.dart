@@ -18,32 +18,32 @@ import 'package:injector/injector.dart';
 class InteractorConfiguration {
   static configure(Injector injector) {
     injector.registerSingleton<AccountInfoInteractor>((injector) => AccountInfoInteractor(
-      activeAccountService: injector.getDependency<ActiveAccountService>(),
-      transactionListService: injector.getDependency<TransactionListService>()
+      injector.getDependency<ActiveAccountService>(),
+      injector.getDependency<TransactionListService>()
     ));
     injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
-      accountService: injector.getDependency<AccountService>(),
-      activeAccountService: injector.getDependency<ActiveAccountService>()
+      injector.getDependency<AccountService>(),
+      injector.getDependency<ActiveAccountService>()
     ));
     injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
-      accountService: injector.getDependency<AccountService>()
+      injector.getDependency<AccountService>()
     ));
     injector.registerSingleton<ImportAccountInteractor>((_) => ImportAccountInteractor());
     injector.registerSingleton<ConfigureAccountNameInteractor>((injector) => ConfigureAccountNameInteractor(
-      accountService: injector.getDependency<AccountService>(),
-      activeAccountService: injector.getDependency<ActiveAccountService>()
+      injector.getDependency<AccountService>(),
+      injector.getDependency<ActiveAccountService>()
     ));
     injector.registerSingleton<AddressListInteractor>((injector) => AddressListInteractor(
-      addressService: injector.getDependency<AddressService>()
+      injector.getDependency<AddressService>()
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
     injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor());
     injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
-      addressService: injector.getDependency<AddressService>()
+      injector.getDependency<AddressService>()
     ));
     injector.registerSingleton<TransferInteractor>((injector) => TransferInteractor(
-      activeAccountService: injector.getDependency<ActiveAccountService>(),
-      transferService: injector.getDependency<TransferService>()
+      injector.getDependency<ActiveAccountService>(),
+      injector.getDependency<TransferService>()
     ));
   }
 }

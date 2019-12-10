@@ -5,14 +5,14 @@ import 'package:ercoin_wallet/utils/service/account/active_account_service.dart'
 import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_service.dart';
 
 class TransferInteractor {
-  final ActiveAccountService activeAccountService ;
-  final TransferService transferService;
+  final ActiveAccountService _activeAccountService ;
+  final TransferService _transferService;
 
-  TransferInteractor({this.activeAccountService, this.transferService});
+  TransferInteractor(this._activeAccountService, this._transferService);
 
   Future<ApiResponseStatus> sendTransfer(String destinationAddress, String message, double amount) async {
-    final activeAccountPk = await activeAccountService.obtainActiveAccountPk();
+    final activeAccountPk = await _activeAccountService.obtainActiveAccountPk();
 
-    return transferService.executeTransfer(activeAccountPk, destinationAddress, message, amount);
+    return _transferService.executeTransfer(activeAccountPk, destinationAddress, message, amount);
   }
 }

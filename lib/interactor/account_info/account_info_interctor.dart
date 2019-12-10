@@ -6,16 +6,16 @@ import 'package:ercoin_wallet/utils/service/account/active_account_service.dart'
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 
 class AccountInfoInteractor {
-  final ActiveAccountService activeAccountService;
-  final TransactionListService transactionListService;
+  final ActiveAccountService _activeAccountService;
+  final TransactionListService _transactionListService;
 
-  AccountInfoInteractor({this.activeAccountService, this.transactionListService});
+  AccountInfoInteractor(this._activeAccountService, this._transactionListService);
 
-  Future<AccountInfo> obtainActiveAccountWithBalance() => activeAccountService.obtainActiveAccountInfo();
+  Future<AccountInfo> obtainActiveAccountWithBalance() => _activeAccountService.obtainActiveAccountInfo();
 
   Future<List<Transaction>> obtainRecentTransactions() async {
-    final activeAccountPk = await activeAccountService.obtainActiveAccountPk();
-    final transactions = await transactionListService.obtainTransactionsFor(activeAccountPk);
+    final activeAccountPk = await _activeAccountService.obtainActiveAccountPk();
+    final transactions = await _transactionListService.obtainTransactionsFor(activeAccountPk);
 
     transactions.sort(_compareByTimestamp);
 
