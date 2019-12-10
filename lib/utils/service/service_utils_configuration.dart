@@ -23,14 +23,14 @@ class ServiceUtilsConfiguration {
   Injector _injector = Injector.appInstance;
 
   configure() {
-    _commonConfiguration();
-    _apiConfiguration();
-    _accountConfiguration();
-    _addressConfiguration();
-    _transactionConfiguration();
+    _configureCommon();
+    _configureApi();
+    _configureAccount();
+    _configureAddress();
+    _configureTransaction();
   }
 
-  _commonConfiguration() {
+  _configureCommon() {
     _injector.registerSingleton<ByteConverter>((_) => ByteConverter());
     _injector.registerSingleton<DateUtil>((_) => DateUtil());
     _injector.registerSingleton<KeyGenerator>((_) => KeyGenerator());
@@ -38,7 +38,7 @@ class ServiceUtilsConfiguration {
     _injector.registerSingleton<SharedPreferencesUtil>((_) => SharedPreferencesUtil());
   }
 
-  _apiConfiguration() {
+  _configureApi() {
     _injector.registerSingleton<CodeMapperUtil>((_) => CodeMapperUtil());
     _injector.registerSingleton<UriFactory>((_) => UriFactory());
     _injector.registerSingleton<ApiConsumerService>((injector) => ApiConsumerService(
@@ -47,7 +47,7 @@ class ServiceUtilsConfiguration {
     ));
   }
 
-  _accountConfiguration() {
+  _configureAccount() {
     _injector.registerSingleton<CommonAccountUtil>((_) => CommonAccountUtil());
     _injector.registerSingleton<ActiveAccountService>((injector) => ActiveAccountService(
         commonAccountUtil: injector.getDependency<CommonAccountUtil>(),
@@ -63,13 +63,13 @@ class ServiceUtilsConfiguration {
     ));
   }
 
-  _addressConfiguration() {
+  _configureAddress() {
     _injector.registerSingleton<AddressService>((injector) => AddressService(
         addressRepository: injector.getDependency<AddressRepository>()
     ));
   }
 
-  _transactionConfiguration() {
+  _configureTransaction() {
     _injector.registerSingleton<TransactionDecodeService>((_) => TransactionDecodeService());
     _injector.registerSingleton<TransactionEncodeService>((injector) => TransactionEncodeService(
         byteConverter: injector.getDependency<ByteConverter>()
