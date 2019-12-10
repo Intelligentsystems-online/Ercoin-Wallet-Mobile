@@ -10,23 +10,23 @@ import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_servi
 import 'package:flutter_sodium/flutter_sodium.dart';
 
 class TransferService {
-  final TransactionEncodeService transactionEncodeService;
-  final AccountRepository accountRepository;
-  final ApiConsumerService apiConsumerService;
+  final TransactionEncodeService _transactionEncodeService;
+  final AccountRepository _accountRepository;
+  final ApiConsumerService _apiConsumerService;
 
-  TransferService({this.transactionEncodeService, this.accountRepository, this.apiConsumerService});
+  TransferService(this._transactionEncodeService, this._accountRepository, this._apiConsumerService);
 
   Future<ApiResponseStatus> executeTransfer(String senderAddress, String destinationAddress, String message, double amount) async {
-    final senderAccount = await accountRepository.findByPublicKey(senderAddress);
+    final senderAccount = await _accountRepository.findByPublicKey(senderAddress);
     final transactionBytes = _obtainTransactionBytesFor(senderAddress, destinationAddress, message, amount);
     final signedTransactionBytes = await _obtainSignedTransactionBytesFor(transactionBytes, senderAccount.privateKey);
     final signedTransactionHex = _convertToHex(signedTransactionBytes);
 
-    return apiConsumerService.makeTransaction(signedTransactionHex);
+    return _apiConsumerService.makeTransaction(signedTransactionHex);
   }
 
   String _convertToHex(List<int> signedTransactionBytes) =>
-      transactionEncodeService.convertTransactionBytesToHex(Uint8List.fromList(signedTransactionBytes));
+      _transactionEncodeService.convertTransactionBytesToHex(Uint8List.fromList(signedTransactionBytes));
 
   Future<List<int>> _obtainSignedTransactionBytesFor(List<int> transactionBytes, String privateKey) async {
     final ed25519Signature = await _prepareSignature(transactionBytes, privateKey);
@@ -39,12 +39,12 @@ class TransferService {
   List<int> _obtainTransactionBytesFor(String senderAddress, String destinationAddress, String message, double amount) {
     final timestamp = (new DateTime.now().millisecondsSinceEpoch  / 1000).round();
 
-    final timestampBytes = transactionEncodeService.encodeTimestamp(timestamp);
-    final receiverAddressBytes = transactionEncodeService.encodeReceiverAddress(destinationAddress);
-    final transactionValueBytes = transactionEncodeService.encodeTransactionValue(_toMicroErcoins(amount));
-    final messageLengthBytes = transactionEncodeService.encodeMessageLength(message.length);
-    final senderAddressBytes = transactionEncodeService.encodeSenderAddress(senderAddress);
-    final messageBytes = transactionEncodeService.encodeMessage(message);
+    final timestampBytes = _transactionEncodeService.encodeTimestamp(timestamp);
+    final receiverAddressBytes = _transactionEncodeService.encodeReceiverAddress(destinationAddress);
+    final transactionValueBytes = _transactionEncodeService.encodeTransactionValue(_toMicroErcoins(amount));
+    final messageLengthBytes = _transactionEncodeService.encodeMessageLength(message.length);
+    final senderAddressBytes = _transactionEncodeService.encodeSenderAddress(senderAddress);
+    final messageBytes = _transactionEncodeService.encodeMessage(message);
 
     List<int> transactionBytes = List.from([0]);
     transactionBytes.addAll(timestampBytes);

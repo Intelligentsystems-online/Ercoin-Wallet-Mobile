@@ -12,22 +12,22 @@ import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart'
 class ActiveAccountService {
   static final _activeAccountPreferenceKey = 'active_account';
 
-  final CommonAccountUtil commonAccountUtil;
-  final AccountRepository accountRepository;
-  final ApiConsumerService apiConsumerService;
-  final SharedPreferencesUtil sharedPreferencesUtil;
+  final CommonAccountUtil _commonAccountUtil;
+  final AccountRepository _accountRepository;
+  final ApiConsumerService _apiConsumerService;
+  final SharedPreferencesUtil _sharedPreferencesUtil;
 
-  ActiveAccountService({this.commonAccountUtil, this.accountRepository, this.apiConsumerService, this.sharedPreferencesUtil});
+  ActiveAccountService(this._commonAccountUtil, this._accountRepository, this._apiConsumerService, this._sharedPreferencesUtil);
 
-  Future<String> obtainActiveAccountPk() => sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey);
+  Future<String> obtainActiveAccountPk() => _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey);
 
-  Future<void> activateAccount(String publicKey) => sharedPreferencesUtil.setSharedPreference(_activeAccountPreferenceKey, publicKey);
+  Future<void> activateAccount(String publicKey) => _sharedPreferencesUtil.setSharedPreference(_activeAccountPreferenceKey, publicKey);
 
   Future<AccountInfo> obtainActiveAccountInfo() async {
     final activeAccountPk = await obtainActiveAccountPk();
-    final account = await accountRepository.findByPublicKey(activeAccountPk);
-    final apiResponse = await apiConsumerService.fetchAccountDataBase64For(account.publicKey);
+    final account = await _accountRepository.findByPublicKey(activeAccountPk);
+    final apiResponse = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
 
-    return commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
+    return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 }

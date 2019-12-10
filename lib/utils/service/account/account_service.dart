@@ -14,31 +14,31 @@ import 'package:ercoin_wallet/utils/service/common/key_generator.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
 class AccountService {
-  final CommonAccountUtil commonAccountUtil;
-  final AccountRepository accountRepository;
-  final ApiConsumerService apiConsumerService;
-  final KeyGenerator keyGenerator;
+  final CommonAccountUtil _commonAccountUtil;
+  final AccountRepository _accountRepository;
+  final ApiConsumerService _apiConsumerService;
+  final KeyGenerator _keyGenerator;
 
-  AccountService({this.commonAccountUtil, this.accountRepository, this.apiConsumerService, this.keyGenerator});
+  AccountService(this._commonAccountUtil, this._accountRepository, this._apiConsumerService, this._keyGenerator);
 
   Future<List<AccountInfo>> obtainAccountsInfo() async {
-    final accounts = await accountRepository.findAll();
+    final accounts = await _accountRepository.findAll();
     final futureAccounts = accounts.map((account) => _toAccountInfo(account));
 
     return await Future.wait(futureAccounts);
   }
 
   Future<AccountInfo> _toAccountInfo(Account account) async {
-    final apiResponse = await apiConsumerService.fetchAccountDataBase64For(account.publicKey);
+    final apiResponse = await _apiConsumerService.fetchAccountDataBase64For(account.publicKey);
 
-    return commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
+    return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 
   Future<Account> saveAccount(String publicKey, String privateKey, String accountName) =>
-      accountRepository.createAccount(publicKey, privateKey, accountName);
+      _accountRepository.createAccount(publicKey, privateKey, accountName);
 
   Future<AccountKeys> generateAccountKeys() async {
-    final keyPair = await keyGenerator.generateKeyPair();
+    final keyPair = await _keyGenerator.generateKeyPair();
 
     return _accountKeysFrom(keyPair);
   }

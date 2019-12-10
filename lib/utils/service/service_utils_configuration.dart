@@ -40,50 +40,50 @@ class ServiceUtilsConfiguration {
     injector.registerSingleton<CodeMapperUtil>((_) => CodeMapperUtil());
     injector.registerSingleton<UriFactory>((_) => UriFactory());
     injector.registerSingleton<ApiConsumerService>((injector) => ApiConsumerService(
-        codeMapperUtil: injector.getDependency<CodeMapperUtil>(),
-        uriFactory: injector.getDependency<UriFactory>()
+        injector.getDependency<CodeMapperUtil>(),
+        injector.getDependency<UriFactory>()
     ));
   }
 
   static _configureAccount(Injector injector) {
     injector.registerSingleton<CommonAccountUtil>((_) => CommonAccountUtil());
     injector.registerSingleton<ActiveAccountService>((injector) => ActiveAccountService(
-        commonAccountUtil: injector.getDependency<CommonAccountUtil>(),
-        accountRepository: injector.getDependency<AccountRepository>(),
-        apiConsumerService: injector.getDependency<ApiConsumerService>(),
-        sharedPreferencesUtil: injector.getDependency<SharedPreferencesUtil>()
+        injector.getDependency<CommonAccountUtil>(),
+        injector.getDependency<AccountRepository>(),
+        injector.getDependency<ApiConsumerService>(),
+        injector.getDependency<SharedPreferencesUtil>()
     ));
     injector.registerSingleton<AccountService>((injector) => AccountService(
-        commonAccountUtil: injector.getDependency<CommonAccountUtil>(),
-        accountRepository: injector.getDependency<AccountRepository>(),
-        apiConsumerService: injector.getDependency<ApiConsumerService>(),
-        keyGenerator: injector.getDependency<KeyGenerator>()
+        injector.getDependency<CommonAccountUtil>(),
+        injector.getDependency<AccountRepository>(),
+        injector.getDependency<ApiConsumerService>(),
+        injector.getDependency<KeyGenerator>()
     ));
   }
 
   static _configureAddress(Injector injector) {
     injector.registerSingleton<AddressService>((injector) => AddressService(
-        addressRepository: injector.getDependency<AddressRepository>()
+        injector.getDependency<AddressRepository>()
     ));
   }
 
   static _configureTransaction(Injector injector) {
     injector.registerSingleton<TransactionDecodeService>((_) => TransactionDecodeService());
     injector.registerSingleton<TransactionEncodeService>((injector) => TransactionEncodeService(
-        byteConverter: injector.getDependency<ByteConverter>()
+        injector.getDependency<ByteConverter>()
     ));
     injector.registerSingleton<TransactionFactory>((injector) => TransactionFactory(
-        transactionDecodeService: injector.getDependency<TransactionDecodeService>(),
-        transactionEncodeService: injector.getDependency<TransactionEncodeService>()
+        injector.getDependency<TransactionDecodeService>(),
+        injector.getDependency<TransactionEncodeService>()
     ));
     injector.registerSingleton<TransferService>((injector) => TransferService(
-        transactionEncodeService: injector.getDependency<TransactionEncodeService>(),
-        accountRepository: injector.getDependency<AccountRepository>(),
-        apiConsumerService: injector.getDependency<ApiConsumerService>()
+        injector.getDependency<TransactionEncodeService>(),
+        injector.getDependency<AccountRepository>(),
+        injector.getDependency<ApiConsumerService>()
     ));
     injector.registerSingleton<TransactionListService>((injector) => TransactionListService(
-        transactionFactory: injector.getDependency<TransactionFactory>(),
-        apiConsumerService: injector.getDependency<ApiConsumerService>()
+        injector.getDependency<TransactionFactory>(),
+        injector.getDependency<ApiConsumerService>()
     ));
   }
 }

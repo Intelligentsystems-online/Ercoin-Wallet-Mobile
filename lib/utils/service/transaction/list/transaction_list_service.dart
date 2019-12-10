@@ -7,19 +7,19 @@ import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_factory.dart';
 
 class TransactionListService {
-  final TransactionFactory transactionFactory;
-  final ApiConsumerService apiConsumerService;
+  final TransactionFactory _transactionFactory;
+  final ApiConsumerService _apiConsumerService;
 
-  TransactionListService({this.transactionFactory, this.apiConsumerService});
+  TransactionListService(this._transactionFactory, this._apiConsumerService);
 
   Future<List<Transaction>> obtainOutboundTransactionsFor(String address) async {
-    final apiResponse = await apiConsumerService.fetchOutboundTransactionBase64ListFor(address);
+    final apiResponse = await _apiConsumerService.fetchOutboundTransactionBase64ListFor(address);
 
     return _obtainTransactionsFrom(apiResponse);
   }
 
   Future<List<Transaction>> obtainIncomingTransactionsFor(String address) async {
-    final apiResponse = await apiConsumerService.fetchIncomingTransactionBase64ListFor(address);
+    final apiResponse = await _apiConsumerService.fetchIncomingTransactionBase64ListFor(address);
 
     return _obtainTransactionsFrom(apiResponse);
   }
@@ -37,7 +37,7 @@ class TransactionListService {
     if(apiResponse.status == ApiResponseStatus.SUCCESS)
       return apiResponse
           .response
-          .map((trxBase64) => transactionFactory.createFromBase64(trxBase64))
+          .map((trxBase64) => _transactionFactory.createFromBase64(trxBase64))
           .toList();
     else
       return [];
