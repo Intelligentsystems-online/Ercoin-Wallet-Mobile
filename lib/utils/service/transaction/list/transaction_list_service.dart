@@ -6,7 +6,6 @@ import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_factory.dart';
 
-//TODO(DI)
 class TransactionListService {
   final TransactionFactory transactionFactory;
   final ApiConsumerService apiConsumerService;

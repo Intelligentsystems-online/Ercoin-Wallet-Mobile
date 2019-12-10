@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/repository/address/AddressRepository.dart';
 
-//TODO(DI)
 class AddressService {
   final AddressRepository addressRepository;
 

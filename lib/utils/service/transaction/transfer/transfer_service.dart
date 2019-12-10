@@ -9,7 +9,6 @@ import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
-//TODO(DI)
 class TransferService {
   final TransactionEncodeService transactionEncodeService;
   final AccountRepository accountRepository;

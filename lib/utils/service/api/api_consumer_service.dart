@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
-//TODO(DI)
 class ApiConsumerService {
   final CodeMapperUtil codeMapperUtil;
   final UriFactory uriFactory;

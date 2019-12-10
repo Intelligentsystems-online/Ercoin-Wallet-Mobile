@@ -9,7 +9,6 @@ import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart';
 
-//TODO(DI)
 class ActiveAccountService {
   static final _activeAccountPreferenceKey = 'active_account';
 
