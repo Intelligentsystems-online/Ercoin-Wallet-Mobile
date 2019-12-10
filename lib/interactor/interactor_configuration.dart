@@ -5,6 +5,7 @@ import 'package:ercoin_wallet/interactor/add_account/configure_account_name/conf
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
 import 'package:ercoin_wallet/interactor/address_list/AddressListInteractor.dart';
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
+import 'package:ercoin_wallet/interactor/transaction_list/transaction_list_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
@@ -38,6 +39,7 @@ class InteractorConfiguration {
       addressService: injector.getDependency<AddressService>()
     ));
     _injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
+    _injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor());
     _injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
       addressService: injector.getDependency<AddressService>()
     ));
