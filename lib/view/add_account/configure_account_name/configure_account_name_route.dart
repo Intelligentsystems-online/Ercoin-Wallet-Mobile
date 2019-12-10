@@ -3,6 +3,7 @@ import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/backup_prompt/backup_prompt_route.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +54,9 @@ class _ConfigureAccountNameRouteState extends State<ConfigureAccountNameRoute> {
   Widget _nameInput() => ExpandedRow(
         child: Form(
           key: _formKey,
-          child: TextFormField(
-            decoration: const InputDecoration(labelText: "Account name"),
+          child: StandardTextFormField(
+            hintText: "Account name",
+            icon: const Icon(Icons.account_circle),
             validator: (value) => value.isEmpty ? 'Enter account name' : null,
             onSaved: (value) => setState(() => _accountName = value),
           ),

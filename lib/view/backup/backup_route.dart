@@ -2,6 +2,8 @@ import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +31,11 @@ class BackupRoute extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       const Text("Write down following keys:"),
+                      Padding(padding: standardColumnSpacing),
                       _box(name: "Account name", value: account.accountName),
+                      Padding(padding: standardColumnSpacing),
                       _box(name: "Public key", value: account.publicKey),
+                      Padding(padding: standardColumnSpacing),
                       _box(name: "Private key", value: account.privateKey),
                       Builder(builder: _backupBtn),
                     ],
@@ -45,10 +50,9 @@ class BackupRoute extends StatelessWidget {
       );
 
   Widget _box({String name, String value}) => ExpandedRow(
-        child: TextFormField(
-          decoration: InputDecoration(labelText: name),
-          enabled: false,
-          initialValue: value,
+        child: StandardCopyTextBox(
+          labelText: name,
+          value: value,
         ),
       );
 

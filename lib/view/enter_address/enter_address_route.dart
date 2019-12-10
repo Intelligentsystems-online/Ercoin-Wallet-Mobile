@@ -4,6 +4,7 @@ import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 
@@ -62,16 +63,9 @@ class _EnterAddressState extends State<EnterAddressRoute> {
       onChanged: (isChecked) => setState(() => _shouldSave = isChecked));
 
   Widget _publicKeyInput() => ExpandedRow(
-        child: TextFormField(
-          decoration: const InputDecoration(
-            hintText: 'Public key',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
-              borderSide: BorderSide()
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            suffixIcon: Icon(Icons.vpn_key)
-          ),
+        child: StandardTextFormField(
+          hintText: "Public key",
+          icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
           validator: (value) => _validateUtil.validatePublicKey(value),
           onSaved: (value) => setState(() => _publicKey = value),
@@ -79,16 +73,9 @@ class _EnterAddressState extends State<EnterAddressRoute> {
       );
 
   Widget _addressNameInput() => ExpandedRow(
-        child: TextFormField(
-          decoration: const InputDecoration(
-            hintText: 'Address book name',
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(7)),
-                borderSide: BorderSide()
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            suffixIcon: Icon(Icons.account_circle)
-        ),
+        child: StandardTextFormField(
+          hintText: 'Address book name',
+          icon: const Icon(Icons.account_circle),
           validator: (value) => value.isEmpty ? "Enter address name" : null,
           onSaved: (value) => setState(() => _name = value),
         ),

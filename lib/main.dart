@@ -4,6 +4,7 @@ import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:ercoin_wallet/view/terms/terms_route.dart';
@@ -25,19 +26,7 @@ class App extends StatelessWidget {
             },
           ),
         ),
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          accentColor: Colors.orangeAccent,
-          primarySwatch: Colors.orange,
-          primaryColorDark: Colors.orange,
-          buttonTheme: ButtonThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7)),
-            ),
-            textTheme: ButtonTextTheme.primary
-          ),
-          fontFamily: 'Montserrat'
-        ),
+        theme: standardThemeData,
       );
 
   Widget _onNewUser() => TermsRoute(
