@@ -16,7 +16,7 @@ import 'package:injector/injector.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
-  AccountInfoInteractor _interactor = mainInjector.getDependency<AccountInfoInteractor>();
+  final _interactor = mainInjector.getDependency<AccountInfoInteractor>();
 
   @override
   Widget build(BuildContext context) => FutureBuilderWithProgress(

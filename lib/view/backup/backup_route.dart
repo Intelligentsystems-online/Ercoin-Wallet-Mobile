@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -12,12 +13,9 @@ class BackupRoute extends StatelessWidget {
   final Function(BuildContext) onProceed;
   final Account account;
 
-  BackupInteractor _interactor;
+  final _interactor = mainInjector.getDependency<BackupInteractor>();
 
-  BackupRoute({this.onProceed, @required this.account}) {
-    Injector injector = Injector.appInstance;
-    _interactor = injector.getDependency<BackupInteractor>();
-  }
+  BackupRoute({this.onProceed, @required this.account});
 
   @override
   Widget build(BuildContext ctx) => Scaffold(

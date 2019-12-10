@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/add_account/configure_account_name/configure_account_name_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -22,16 +23,13 @@ class _ConfigureAccountNameRouteState extends State<ConfigureAccountNameRoute> {
   final Function(BuildContext) onAdded;
   final AccountKeys keys;
 
-  ConfigureAccountNameInteractor _interactor;
+  final _interactor = mainInjector.getDependency<ConfigureAccountNameInteractor>();
   final _formKey = GlobalKey<FormState>();
 
   String _accountName = "";
   bool _isLoading = false;
 
-  _ConfigureAccountNameRouteState(this.onAdded, this.keys) {
-    Injector injector = Injector.appInstance;
-    _interactor = injector.getDependency<ConfigureAccountNameInteractor>();
-  }
+  _ConfigureAccountNameRouteState(this.onAdded, this.keys);
 
   @override
   Widget build(BuildContext context) => Scaffold(

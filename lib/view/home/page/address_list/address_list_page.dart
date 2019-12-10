@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
 class AddressListPage extends StatelessWidget {
-  AddressListInteractor _interactor = mainInjector.getDependency<AddressListInteractor>();
+  final _interactor = mainInjector.getDependency<AddressListInteractor>();
 
   @override
   Widget build(BuildContext ctx) => TopAndBottomContainer(

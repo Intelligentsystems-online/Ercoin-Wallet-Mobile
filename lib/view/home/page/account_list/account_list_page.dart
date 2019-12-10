@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
 class AccountListPage extends StatelessWidget {
-  AccountListInteractor _interactor = mainInjector.getDependency<AccountListInteractor>();
+  final _interactor = mainInjector.getDependency<AccountListInteractor>();
 
   @override
   Widget build(BuildContext ctx) => TopAndBottomContainer(

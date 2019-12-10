@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
@@ -26,18 +27,14 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   String _pubKey;
   String _privKey;
 
-  ImportAccountInteractor _interactor;
-  KeysValidationUtil _keysValidationUtil;
+  final _interactor = mainInjector.getDependency<ImportAccountInteractor>();
+  final _keysValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
 
   final _formKey = GlobalKey<FormState>();
   final _pubKeyController = TextEditingController();
   final _privKeyController = TextEditingController();
 
-  _ImportAccountRouteState(this.onAdded) {
-    Injector injector = Injector.appInstance;
-    _interactor = injector.getDependency<ImportAccountInteractor>();
-    _keysValidationUtil = injector.getDependency<KeysValidationUtil>();
-  }
+  _ImportAccountRouteState(this.onAdded);
 
   @override
   Widget build(BuildContext ctx) => Scaffold(

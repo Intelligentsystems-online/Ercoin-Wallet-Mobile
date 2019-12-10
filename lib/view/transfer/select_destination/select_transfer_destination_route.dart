@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/address_list.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
@@ -11,12 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
 class SelectTransferDestinationRoute extends StatelessWidget {
-  SelectTransferDestinationInteractor _interactor;
-
-  SelectTransferDestinationRoute() {
-    Injector injector = Injector.appInstance;
-    _interactor = injector.getDependency<SelectTransferDestinationInteractor>();
-  }
+  final _interactor = mainInjector.getDependency<SelectTransferDestinationInteractor>();
 
   @override
   Widget build(BuildContext ctx) => Scaffold(

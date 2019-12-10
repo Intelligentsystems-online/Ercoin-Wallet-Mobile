@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/add_account/add_account_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
@@ -21,13 +22,10 @@ class AddAccountRoute extends StatefulWidget {
 class _AddAccountRouteState extends State<AddAccountRoute> {
   final Function(BuildContext) onAdded;
 
-  AddAccountInteractor _interactor;
+  final _interactor = mainInjector.getDependency<AddAccountInteractor>();
   bool _isLoading = false;
 
-  _AddAccountRouteState(this.onAdded) {
-    Injector injector = Injector.appInstance;
-    _interactor = injector.getDependency<AddAccountInteractor>();
-  }
+  _AddAccountRouteState(this.onAdded);
 
   @override
   Widget build(BuildContext context) => Scaffold(

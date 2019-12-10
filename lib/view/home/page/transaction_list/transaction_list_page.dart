@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/transaction_list/transaction_list_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/transaction_details_widget.dart';
@@ -18,12 +19,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
   _TransactionFilterType _filterType;
   List<Transaction> _transactions, _inboundTransactions, _outgoingTransactions;
 
-  TransactionListInteractor _interactor;
-
-  _TransactionListPageState() {
-    Injector injector = Injector.appInstance;
-    _interactor = injector.getDependency<TransactionListInteractor>();
-  }
+  final _interactor = mainInjector.getDependency<TransactionListInteractor>();
 
   @override
   void initState() {
