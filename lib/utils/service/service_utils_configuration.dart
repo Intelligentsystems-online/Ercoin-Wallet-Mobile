@@ -55,7 +55,6 @@ class ServiceUtilsConfiguration {
         apiConsumerService: injector.getDependency<ApiConsumerService>(),
         sharedPreferencesUtil: injector.getDependency<SharedPreferencesUtil>()
     ));
-
     _injector.registerSingleton<AccountService>((injector) => AccountService(
         commonAccountUtil: injector.getDependency<CommonAccountUtil>(),
         accountRepository: injector.getDependency<AccountRepository>(),
