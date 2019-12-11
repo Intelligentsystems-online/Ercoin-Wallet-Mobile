@@ -61,7 +61,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
         ),
         validator: _validate,
         onSaved: onSaved,
-        controller: controller ?? TextEditingController(),
+        controller: controller,
         keyboardType: keyboardType,
         maxLength: maxLength,
       );

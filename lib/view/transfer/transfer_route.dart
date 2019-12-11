@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/interactor/transfer/send_transfer_error.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/api_response_status.dart';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
@@ -12,6 +13,7 @@ import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class TransferRoute extends StatefulWidget {
   final String destinationAddress;
@@ -33,7 +35,7 @@ class _TransferRouteState extends State<TransferRoute> {
   bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
-  final _interactor = TransferInteractor(); // TODO(DI)
+  final _interactor = mainInjector.getDependency<TransferInteractor>();
 
   _TransferRouteState(this.destinationAddress, this.destinationName);
 

@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
@@ -10,6 +11,7 @@ import 'package:ercoin_wallet/view/add_account/configure_account_name/configure_
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class ImportAccountRoute extends StatefulWidget {
   final Function(BuildContext) onAdded;
@@ -26,9 +28,10 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   String _pubKey;
   String _privKey;
 
+  final _interactor = mainInjector.getDependency<ImportAccountInteractor>();
+  final _keysValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
+
   final _formKey = GlobalKey<FormState>();
-  final _interactor = ImportAccountInteractor(); // TODO(DI)
-  final _keysValidationUtil = KeysValidationUtil(); //TODO(DI)
   final _pubKeyController = TextEditingController();
   final _privKeyController = TextEditingController();
 

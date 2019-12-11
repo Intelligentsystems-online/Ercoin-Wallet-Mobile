@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/service/address/address_service.dart';
 
-//TODO(DI)
 class SelectTransferDestinationInteractor {
-  final _addressService = AddressService();
+  final AddressService _addressService;
+
+  SelectTransferDestinationInteractor(this._addressService);
 
   Future<List<Address>> obtainAddressList() => _addressService.obtainAddresses();
 

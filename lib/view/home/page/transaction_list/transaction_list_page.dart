@@ -1,10 +1,12 @@
 import 'package:ercoin_wallet/interactor/transaction_list/transaction_list_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/transaction_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/transaction_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class TransactionListPage extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
   _TransactionFilterType _filterType;
   List<Transaction> _transactions, _inboundTransactions, _outgoingTransactions;
 
-  final _interactor = TransactionListInteractor();
+  final _interactor = mainInjector.getDependency<TransactionListInteractor>();
 
   @override
   void initState() {

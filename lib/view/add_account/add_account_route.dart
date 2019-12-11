@@ -1,10 +1,12 @@
 import 'package:ercoin_wallet/interactor/add_account/add_account_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/import_account/import_account_route.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 import 'configure_account_name/configure_account_name_route.dart';
 
@@ -20,7 +22,7 @@ class AddAccountRoute extends StatefulWidget {
 class _AddAccountRouteState extends State<AddAccountRoute> {
   final Function(BuildContext) onAdded;
 
-  final _interactor = AddAccountInteractor(); // TODO(DI)
+  final _interactor = mainInjector.getDependency<AddAccountInteractor>();
   bool _isLoading = false;
 
   _AddAccountRouteState(this.onAdded);

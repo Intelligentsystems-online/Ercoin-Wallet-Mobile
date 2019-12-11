@@ -5,10 +5,11 @@ import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 
-//TODO(DI)
 class AccountInfoInteractor {
-  final _activeAccountService = ActiveAccountService();
-  final _transactionListService = TransactionListService();
+  final ActiveAccountService _activeAccountService;
+  final TransactionListService _transactionListService;
+
+  AccountInfoInteractor(this._activeAccountService, this._transactionListService);
 
   Future<AccountInfo> obtainActiveAccountWithBalance() => _activeAccountService.obtainActiveAccountInfo();
 

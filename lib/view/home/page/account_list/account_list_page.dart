@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
@@ -11,9 +12,10 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class AccountListPage extends StatelessWidget {
-  final _interactor = AccountListInteractor(); //TODO(DI)
+  final _interactor = mainInjector.getDependency<AccountListInteractor>();
 
   @override
   Widget build(BuildContext ctx) => TopAndBottomContainer(

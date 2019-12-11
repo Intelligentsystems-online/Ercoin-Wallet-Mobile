@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/interactor/address_list/AddressListInteractor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/repository/address/Address.dart';
 import 'package:ercoin_wallet/utils/view/address_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/address_list.dart';
@@ -11,9 +12,10 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
 class AddressListPage extends StatelessWidget {
-  final _interactor = AddressListInteractor(); //TODO(DI)
+  final _interactor = mainInjector.getDependency<AddressListInteractor>();
 
   @override
   Widget build(BuildContext ctx) => TopAndBottomContainer(

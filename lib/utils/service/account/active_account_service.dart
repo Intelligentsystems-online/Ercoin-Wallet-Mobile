@@ -9,14 +9,15 @@ import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart';
 
-//TODO(DI)
 class ActiveAccountService {
   static final _activeAccountPreferenceKey = 'active_account';
 
-  final _sharedPreferencesUtil = SharedPreferencesUtil();
-  final _commonAccountUtil = CommonAccountUtil();
-  final _accountRepository = AccountRepository();
-  final _apiConsumerService = ApiConsumerService();
+  final CommonAccountUtil _commonAccountUtil;
+  final AccountRepository _accountRepository;
+  final ApiConsumerService _apiConsumerService;
+  final SharedPreferencesUtil _sharedPreferencesUtil;
+
+  ActiveAccountService(this._commonAccountUtil, this._accountRepository, this._apiConsumerService, this._sharedPreferencesUtil);
 
   Future<String> obtainActiveAccountPk() => _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey);
 

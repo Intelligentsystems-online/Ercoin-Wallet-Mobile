@@ -1,7 +1,10 @@
+import 'package:ercoin_wallet/interactor/interactor_configuration.dart';
 import 'dart:ui';
 
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
+import 'package:ercoin_wallet/repository/repository_configuration.dart';
+import 'package:ercoin_wallet/utils/service/service_utils_configuration.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -10,8 +13,17 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:ercoin_wallet/view/terms/terms_route.dart';
 
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 
-void main() => runApp(App());
+final Injector mainInjector = Injector();
+
+void main() {
+  RepositoryConfiguration.configure(mainInjector);
+  ServiceUtilsConfiguration.configure(mainInjector);
+  InteractorConfiguration.configure(mainInjector);
+
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   final AccountRepository accountRepository = AccountRepository();

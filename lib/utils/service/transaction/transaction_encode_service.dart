@@ -4,10 +4,11 @@ import 'dart:typed_data';
 
 import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
 
-//TODO(DI)
 class TransactionEncodeService
 {
-  final _byteConverter = ByteConverter();
+  final ByteConverter _byteConverter;
+
+  TransactionEncodeService(this._byteConverter);
 
   String convertTransactionBytesToHex(Uint8List transactionBytes) => hex.encode(transactionBytes);
 

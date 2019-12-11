@@ -13,12 +13,13 @@ import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/common/key_generator.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 
-//TODO(DI)
 class AccountService {
-  final _commonAccountUtil = CommonAccountUtil();
-  final _accountRepository = AccountRepository();
-  final _keyGenerator = KeyGenerator();
-  final _apiConsumerService = ApiConsumerService();
+  final CommonAccountUtil _commonAccountUtil;
+  final AccountRepository _accountRepository;
+  final ApiConsumerService _apiConsumerService;
+  final KeyGenerator _keyGenerator;
+
+  AccountService(this._commonAccountUtil, this._accountRepository, this._apiConsumerService, this._keyGenerator);
 
   Future<List<AccountInfo>> obtainAccountsInfo() async {
     final accounts = await _accountRepository.findAll();

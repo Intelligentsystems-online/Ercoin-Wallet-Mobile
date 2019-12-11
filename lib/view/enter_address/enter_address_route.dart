@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
@@ -10,6 +11,7 @@ import 'package:ercoin_wallet/utils/view/values.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
 class EnterAddressRoute extends StatefulWidget {
@@ -30,8 +32,9 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   String _name;
   bool _shouldSave = false;
 
+  final _keyValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
+
   final _formKey = GlobalKey<FormState>();
-  final _validateUtil = KeysValidationUtil();
   final _publicKeyController = TextEditingController();
 
   _EnterAddressState(this.onProceed, this.isNameOptional);
@@ -67,7 +70,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
           hintText: "Public key",
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
-          validator: (value) => _validateUtil.validatePublicKey(value),
+          validator: (value) => _keyValidationUtil.validatePublicKey(value),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );

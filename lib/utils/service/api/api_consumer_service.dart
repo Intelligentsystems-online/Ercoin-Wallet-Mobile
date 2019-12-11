@@ -8,20 +8,21 @@ import 'package:http/http.dart' as http;
 
 import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
 
-//TODO(DI)
 class ApiConsumerService {
-  final _codeMapperUtil = CodeMapperUtil();
-  final uriFactory = UriFactory();
+  final CodeMapperUtil _codeMapperUtil;
+  final UriFactory _uriFactory;
+
+  ApiConsumerService(this._codeMapperUtil, this._uriFactory);
 
   Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
-      .get(uriFactory.createTransferUri(transactionHex))
+      .get(_uriFactory.createTransferUri(transactionHex))
       .then((response) => _codeMapperUtil.genericCodeToStatus(_obtainTransferResponseCode(response.body)));
 
   int _obtainTransferResponseCode(String response) =>
       jsonDecode(response)['result']['code'] as int;
 
   Future<ApiResponse<String>> fetchAccountDataBase64For(String address) async {
-    final response = await http.get(uriFactory.createAccountDataUri(address));
+    final response = await http.get(_uriFactory.createAccountDataUri(address));
     final jsonResponse = jsonDecode(response.body)['result']['response'];
     final responseCode = jsonResponse['code'] as int;
     final responseStatus = _codeMapperUtil.accountCodeToStatus(responseCode);
@@ -35,13 +36,13 @@ class ApiConsumerService {
   }
 
   Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(String address) async {
-    final response = await http.get(uriFactory.createOutboundTransactionsUri(address));
+    final response = await http.get(_uriFactory.createOutboundTransactionsUri(address));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
   Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(String address) async {
-    final response = await http.get(uriFactory.createIncomingTransactionsUri(address));
+    final response = await http.get(_uriFactory.createIncomingTransactionsUri(address));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
