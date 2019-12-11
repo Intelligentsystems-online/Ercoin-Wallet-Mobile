@@ -1,9 +1,9 @@
 import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:ercoin_wallet/repository/address/AddressRepository.dart';
+import 'package:ercoin_wallet/repository/addressBook/AddressBookRepository.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
-import 'package:ercoin_wallet/utils/service/address/address_service.dart';
+import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
 import 'package:ercoin_wallet/utils/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/utils/service/api/code_mapper_util.dart';
 import 'package:ercoin_wallet/utils/service/api/uri_factory.dart';
@@ -62,8 +62,8 @@ class ServiceUtilsConfiguration {
   }
 
   static _configureAddress(Injector injector) {
-    injector.registerSingleton<AddressService>((injector) => AddressService(
-        injector.getDependency<AddressRepository>()
+    injector.registerSingleton<AddressBookService>((injector) => AddressBookService(
+        injector.getDependency<AddressBookRepository>()
     ));
   }
 

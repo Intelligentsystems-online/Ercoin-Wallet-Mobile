@@ -3,14 +3,14 @@ import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.da
 import 'package:ercoin_wallet/interactor/add_account/add_account_interactor.dart';
 import 'package:ercoin_wallet/interactor/add_account/configure_account_name/configure_account_name_interactor.dart';
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
-import 'package:ercoin_wallet/interactor/address_list/AddressListInteractor.dart';
+import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.dart';
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
 import 'package:ercoin_wallet/interactor/transaction_list/transaction_list_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
-import 'package:ercoin_wallet/utils/service/address/address_service.dart';
+import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_service.dart';
 import 'package:injector/injector.dart';
@@ -33,13 +33,13 @@ class InteractorConfiguration {
       injector.getDependency<AccountService>(),
       injector.getDependency<ActiveAccountService>()
     ));
-    injector.registerSingleton<AddressListInteractor>((injector) => AddressListInteractor(
-      injector.getDependency<AddressService>()
+    injector.registerSingleton<AddressBookInteractor>((injector) => AddressBookInteractor(
+      injector.getDependency<AddressBookService>()
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
     injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor());
     injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
-      injector.getDependency<AddressService>()
+      injector.getDependency<AddressBookService>()
     ));
     injector.registerSingleton<TransferInteractor>((injector) => TransferInteractor(
       injector.getDependency<ActiveAccountService>(),

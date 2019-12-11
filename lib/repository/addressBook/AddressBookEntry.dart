@@ -1,11 +1,11 @@
-class Address
+class AddressBookEntry
 {
   final String publicKey;
   final String accountName;
 
-  Address(this.publicKey, this.accountName);
+  AddressBookEntry(this.publicKey, this.accountName);
 
-  factory Address.fromMap(Map<String, dynamic> json) => Address(
+  factory AddressBookEntry.fromMap(Map<String, dynamic> json) => AddressBookEntry(
     json['publicKey'],
     json['accountName']
   );

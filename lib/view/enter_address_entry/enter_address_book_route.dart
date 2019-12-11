@@ -14,17 +14,17 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
-class EnterAddressRoute extends StatefulWidget {
+class EnterAddressBookRoute extends StatefulWidget {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
-  const EnterAddressRoute({@required this.onProceed, @required this.isNameOptional});
+  const EnterAddressBookRoute({@required this.onProceed, @required this.isNameOptional});
 
   @override
-  State<StatefulWidget> createState() => _EnterAddressState(onProceed, isNameOptional);
+  State<StatefulWidget> createState() => _EnterAddressBookState(onProceed, isNameOptional);
 }
 
-class _EnterAddressState extends State<EnterAddressRoute> {
+class _EnterAddressBookState extends State<EnterAddressBookRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
@@ -37,7 +37,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
-  _EnterAddressState(this.onProceed, this.isNameOptional);
+  _EnterAddressBookState(this.onProceed, this.isNameOptional);
 
   @override
   Widget build(BuildContext context) => Scaffold(
