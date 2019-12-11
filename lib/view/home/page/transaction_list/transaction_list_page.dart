@@ -17,7 +17,7 @@ enum _TransactionFilterType { INBOUND, OUTGOING }
 
 class _TransactionListPageState extends State<TransactionListPage> {
   _TransactionFilterType _filterType;
-  List<Transaction> _transactions, _inboundTransactions, _outgoingTransactions;
+  List<Transaction> _transactions, _inboundTransactions, _outboundTransactions;
 
   final _interactor = mainInjector.getDependency<TransactionListInteractor>();
 
@@ -33,9 +33,11 @@ class _TransactionListPageState extends State<TransactionListPage> {
         child: Column(
           children: <Widget>[
             _filterChips(),
-            TransactionList(
-              transactions: _obtainFilteredTransactions(),
-              onTransactionPressed: (transaction) => _showDetailsDialog(ctx, transaction),
+            Flexible(
+              child: TransactionList(
+                transactions: _obtainFilteredTransactions(),
+                onTransactionPressed: (transaction) => _showDetailsDialog(ctx, transaction),
+              )
             )
           ],
         ),
@@ -62,9 +64,9 @@ class _TransactionListPageState extends State<TransactionListPage> {
     final transactionLists = await _interactor.obtainTransactionLists();
 
     setState(() {
-      _transactions = transactionLists[0];
-      _inboundTransactions = transactionLists[1];
-      _outgoingTransactions = transactionLists[2];
+      _transactions = transactionLists.all;
+      _inboundTransactions = transactionLists.inbound;
+      _outboundTransactions = transactionLists.outbound;
     });
   }
 
@@ -76,7 +78,7 @@ class _TransactionListPageState extends State<TransactionListPage> {
         case _TransactionFilterType.INBOUND:
           return _inboundTransactions;
         case _TransactionFilterType.OUTGOING:
-          return _outgoingTransactions;
+          return _outboundTransactions;
         default:
           return _transactions;
       }
