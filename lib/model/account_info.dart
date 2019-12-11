@@ -6,5 +6,7 @@ class AccountInfo {
   final double balance;
   final AccountStatus status;
 
+  int get balanceMicro => (balance * 1000000).round();
+
   const AccountInfo(this.account, this.balance, this.status);
 }
