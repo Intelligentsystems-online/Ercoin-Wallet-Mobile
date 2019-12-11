@@ -37,7 +37,10 @@ class InteractorConfiguration {
       injector.getDependency<AddressService>()
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
-    injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor());
+    injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor(
+        injector.getDependency<ActiveAccountService>(),
+        injector.getDependency<TransactionListService>()
+    ));
     injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
       injector.getDependency<AddressService>()
     ));
