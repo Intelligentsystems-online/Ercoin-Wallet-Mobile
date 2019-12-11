@@ -5,6 +5,7 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,31 +25,21 @@ class BackupRoute extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Account backup"),
         ),
-        body: Container(
-            padding: standardPadding,
-            child: Stack(
-              children: <Widget>[
-                Align(
-                  alignment: FractionalOffset.topLeft,
-                  child: Column(
-                    children: <Widget>[
-                      const Text("Write down following keys:"),
-                      Padding(padding: standardColumnSpacing),
-                      _box(name: "Account name", value: account.accountName),
-                      Padding(padding: standardColumnSpacing),
-                      _box(name: "Public key", value: account.publicKey),
-                      Padding(padding: standardColumnSpacing),
-                      _box(name: "Private key", value: account.privateKey),
-                      Builder(builder: _backupBtn),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: (onProceed == null) ? Container() : Builder(builder: _proceedBtn),
-                )
-              ],
-            )),
+        body: TopAndBottomContainer(
+          top: Column(
+            children: <Widget>[
+              const Text("Write down following keys:"),
+              Padding(padding: standardColumnSpacing),
+              _box(name: "Account name", value: account.accountName),
+              Padding(padding: standardColumnSpacing),
+              _box(name: "Public key", value: account.publicKey),
+              Padding(padding: standardColumnSpacing),
+              _box(name: "Private key", value: account.privateKey),
+              Builder(builder: _backupBtn),
+            ],
+          ),
+          bottom: (onProceed == null) ? Container() : Builder(builder: _proceedBtn),
+        ),
       );
 
   Widget _box({String name, String value}) => ExpandedRow(

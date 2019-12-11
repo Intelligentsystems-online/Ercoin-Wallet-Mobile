@@ -6,7 +6,6 @@ import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/import_account/import_account_route.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 
 import 'configure_account_name/configure_account_name_route.dart';
 
@@ -59,6 +58,7 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
   _createAccount() async {
     setState(() => _isLoading = true);
     final keys = await _interactor.generateAccountKeys();
+    setState(() => _isLoading = false);
     pushRoute(Navigator.of(context), () => ConfigureAccountNameRoute(onAdded: onAdded, keys: keys));
   }
 }
