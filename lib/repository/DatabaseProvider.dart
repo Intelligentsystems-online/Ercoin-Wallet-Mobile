@@ -26,7 +26,7 @@ class DatabaseProvider
           onOpen: (db) {},
           onCreate: (Database database, int version) {
             executeQuery(database, accountTableQuery());
-            executeQuery(database, addressTableQuery());
+            executeQuery(database, addressBookTableQuery());
           }
         );
   }
@@ -41,8 +41,8 @@ class DatabaseProvider
       "privateKey varchar(255),"
       "accountName varchar(255));";
 
-  String addressTableQuery() =>
-      "CREATE TABLE Address ("
+  String addressBookTableQuery() =>
+      "CREATE TABLE AddressBook ("
       "publicKey varchar(255) PRIMARY KEY,"
       "accountName varchar(255));";
 }

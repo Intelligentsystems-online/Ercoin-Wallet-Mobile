@@ -1,18 +1,18 @@
-import 'package:ercoin_wallet/repository/address/Address.dart';
+import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AddressDetailsWidget extends StatelessWidget {
-  final Address address;
+class AddressBookEntryDetailsWidget extends StatelessWidget {
+  final AddressBookEntry addressBookEntry;
 
-  const AddressDetailsWidget(this.address);
+  const AddressBookEntryDetailsWidget(this.addressBookEntry);
 
   @override
   Widget build(BuildContext ctx) => Column(
     children: <Widget>[
-      Text("Name: ${address.accountName}"),
-      Text("Address: ${address.publicKey}"),
+      Text("Name: ${addressBookEntry.accountName}"),
+      Text("Address: ${addressBookEntry.publicKey}"),
       _closeBtn(ctx)
     ]
   );
