@@ -16,15 +16,15 @@ class ImportAccountInteractor {
       .then((accounts) => _obtainPublicKeys(accounts));
 
   Future<AccountKeys> importFromFile(String path) async {
-    final json = await _fileUtil.readAsJson(path);
+    final jsonContent = await _fileUtil.readAsJson(path);
 
-    if(_isJsonCorrect(json)) {
-      final publicKey = json['publicKey'];
-      final privateKey = json['privateKey'];
+    if(_isJsonCorrect(jsonContent)) {
+      final publicKey = jsonContent['publicKey'];
+      final privateKey = jsonContent['privateKey'];
 
       return AccountKeys(publicKey, privateKey);
     }
-    else throw FormatException("Incorrect json content.");
+    else throw FormatException();
   }
 
   List<String> _obtainPublicKeys(List<Account> accounts) => accounts

@@ -118,14 +118,13 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         _privKeyController.text = keys.privateKey;
         _formKey.currentState.validate();
       }
-      on FormatException catch(exception) {
-        showDialog(context: ctx, builder: (ctx) => _prepareFileExceptionAlert(exception.message));
+      on FormatException {
+        showDialog(context: ctx, builder: (ctx) => _prepareFileExceptionAlert());
       }
     }
   }
 
-  _prepareFileExceptionAlert(String message) => AlertDialog(
-    title: Text("File error"),
-    content: Text(message)
+  _prepareFileExceptionAlert() => AlertDialog(
+    content: Text("Incorrect file.")
   );
 }

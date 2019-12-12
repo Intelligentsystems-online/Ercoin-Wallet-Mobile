@@ -12,7 +12,7 @@ class FileUtil {
 
       return jsonDecode(content);
     }
-    else throw FormatException("Incorrect file format.");
+    else throw FormatException();
   }
 
   bool _isCorrectFormat(String path) => FileFormat
