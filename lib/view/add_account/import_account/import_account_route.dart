@@ -1,6 +1,7 @@
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
+import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -25,6 +26,7 @@ class ImportAccountRoute extends StatefulWidget {
 class _ImportAccountRouteState extends State<ImportAccountRoute> {
   final Function(BuildContext) onAdded;
 
+  List<String> _accountKeys;
   String _pubKey;
   String _privKey;
 
@@ -36,6 +38,12 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   final _privKeyController = TextEditingController();
 
   _ImportAccountRouteState(this.onAdded);
+
+  @override
+  void initState() {
+    _loadAccountKeys();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
@@ -51,7 +59,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
                   child: Form(
                     key: _formKey,
                     child: Column(
-                      children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn()],
+                      children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn(ctx)],
                     ),
                   )),
               Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
@@ -64,7 +72,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         child: StandardTextFormField(
           hintText: 'Public key',
           controller: _pubKeyController,
-          validator: (value) => _keysValidationUtil.validatePublicKey(value),
+          validator: (value) => _keysValidationUtil.validatePublicKey(value, _accountKeys),
           onSaved: (value) => setState(() => _pubKey = value),
         ),
       );
@@ -79,9 +87,9 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         ),
       );
 
-  Widget _importFromFileBtn() => ExpandedRaisedTextButton(
+  Widget _importFromFileBtn(BuildContext ctx) => ExpandedRaisedTextButton(
         text: "Import from file",
-        onPressed: () => _importFromFile(),
+        onPressed: () => _importFromFile(ctx),
       );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
@@ -95,13 +103,29 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         },
       );
 
-  _importFromFile() async {
+  _loadAccountKeys() async {
+    final keys = await _interactor.obtainAccountKeys();
+    setState(() => _accountKeys = keys);
+  }
+
+  _importFromFile(BuildContext ctx) async {
     final filePath = await FilePicker.getFilePath();
     if (filePath != null) {
-      final keys = await _interactor.importFromFile(filePath);
-      _pubKeyController.text = keys.publicKey;
-      _privKeyController.text = keys.privateKey;
-      _formKey.currentState.validate();
+      try {
+        final keys = await _interactor.importFromFile(filePath);
+
+        _pubKeyController.text = keys.publicKey;
+        _privKeyController.text = keys.privateKey;
+        _formKey.currentState.validate();
+      }
+      on FormatException catch(exception) {
+        showDialog(context: ctx, builder: (ctx) => _prepareFileExceptionAlert(exception.message));
+      }
     }
   }
+
+  _prepareFileExceptionAlert(String message) => AlertDialog(
+    title: Text("File error"),
+    content: Text(message)
+  );
 }

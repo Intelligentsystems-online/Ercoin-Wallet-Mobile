@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:ercoin_wallet/interactor/enter_address_entry/enter_address_entry_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
@@ -7,11 +6,9 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
-import 'package:ercoin_wallet/utils/view/values.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
 class EnterAddressBookRoute extends StatefulWidget {
@@ -28,16 +25,24 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
+  List<String> _addresses;
   String _publicKey;
   String _name;
   bool _shouldSave = false;
 
+  final _interactor = mainInjector.getDependency<EnterAddressEntryInteractor>();
   final _keyValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
 
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
   _EnterAddressBookState(this.onProceed, this.isNameOptional);
+
+  @override
+  void initState() {
+    _loadAddresses();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -70,7 +75,7 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
           hintText: "Public key",
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
-          validator: (value) => _keyValidationUtil.validatePublicKey(value),
+          validator: (value) => _keyValidationUtil.validatePublicKey(value, _addresses),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );
@@ -104,5 +109,10 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
 
       onProceed(context, _publicKey, _name);
     }
+  }
+
+  _loadAddresses() async {
+    final addresses = await _interactor.obtainAddresses();
+    setState(() => _addresses = addresses);
   }
 }
