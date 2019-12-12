@@ -5,7 +5,7 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
-import 'package:ercoin_wallet/view/enter_address_entry/enter_address_book_route.dart';
+import 'package:ercoin_wallet/view/enter_address_book_entry/enter_address_book_entry_route.dart';
 import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class SelectTransferDestinationRoute extends StatelessWidget {
 
   _newAddress(BuildContext ctx) => pushRoute(
         Navigator.of(ctx),
-        () => EnterAddressBookRoute(
+        () => EnterAddressBookEntryRoute(
           isNameOptional: true,
           onProceed: (ctx, address, name) {
             if (name != null) {

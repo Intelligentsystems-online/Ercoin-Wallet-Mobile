@@ -7,7 +7,7 @@ import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:ercoin_wallet/view/enter_address_entry/enter_address_book_route.dart';
+import 'package:ercoin_wallet/view/enter_address_book_entry/enter_address_book_entry_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -48,7 +48,7 @@ class AddressBookPage extends StatelessWidget {
 
   _navigateToAddAddress(BuildContext ctx) => pushRoute(
     Navigator.of(ctx),
-        () => EnterAddressBookRoute(
+        () => EnterAddressBookEntryRoute(
           isNameOptional: false,
           onProceed: (ctx, address, name) {
             _interactor.addAddressBookEntry(address, name);

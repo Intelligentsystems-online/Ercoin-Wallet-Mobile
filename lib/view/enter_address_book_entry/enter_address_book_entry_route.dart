@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/interactor/enter_address_entry/enter_address_entry_interactor.dart';
+import 'package:ercoin_wallet/interactor/enter_address_book_entry/enter_address_book_entry_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
@@ -11,17 +11,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
-class EnterAddressBookRoute extends StatefulWidget {
+class EnterAddressBookEntryRoute extends StatefulWidget {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
-  const EnterAddressBookRoute({@required this.onProceed, @required this.isNameOptional});
+  const EnterAddressBookEntryRoute({@required this.onProceed, @required this.isNameOptional});
 
   @override
-  State<StatefulWidget> createState() => _EnterAddressBookState(onProceed, isNameOptional);
+  State<StatefulWidget> createState() => _EnterAddressBookEntryState(onProceed, isNameOptional);
 }
 
-class _EnterAddressBookState extends State<EnterAddressBookRoute> {
+class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
@@ -30,13 +30,13 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
   String _name;
   bool _shouldSave = false;
 
-  final _interactor = mainInjector.getDependency<EnterAddressEntryInteractor>();
+  final _interactor = mainInjector.getDependency<EnterAddressBookEntryInteractor>();
   final _keyValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
 
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
-  _EnterAddressBookState(this.onProceed, this.isNameOptional);
+  _EnterAddressBookEntryState(this.onProceed, this.isNameOptional);
 
   @override
   void initState() {
