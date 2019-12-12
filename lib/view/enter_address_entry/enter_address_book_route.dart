@@ -25,7 +25,7 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
-  List<String> _addresses;
+  List<String> _addressBookKeys;
   String _publicKey;
   String _name;
   bool _shouldSave = false;
@@ -75,7 +75,7 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
           hintText: "Public key",
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
-          validator: (value) => _keyValidationUtil.validatePublicKey(value, _addresses),
+          validator: (value) => _keyValidationUtil.validatePublicKey(value, _addressBookKeys),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );
@@ -112,7 +112,7 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
   }
 
   _loadAddresses() async {
-    final addresses = await _interactor.obtainAddresses();
-    setState(() => _addresses = addresses);
+    final keys = await _interactor.obtainAddressBookKeys();
+    setState(() => _addressBookKeys = keys);
   }
 }
