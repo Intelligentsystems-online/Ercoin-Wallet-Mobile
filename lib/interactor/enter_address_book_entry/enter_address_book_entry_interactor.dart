@@ -6,9 +6,7 @@ class EnterAddressBookEntryInteractor {
 
   EnterAddressBookEntryInteractor(this._addressBookService);
 
-  Future<List<String>> obtainAddressBookKeys() => _addressBookService
-      .obtainAddressBookEntries()
-      .then((entries) => _obtainPublicKeys(entries));
+  Future<List<String>> obtainAddressBookKeys() async => _obtainPublicKeys(await _addressBookService.obtainAddressBookEntries());
 
   List<String> _obtainPublicKeys(List<AddressBookEntry> entries) => entries
       .map((entry) => entry.publicKey)
