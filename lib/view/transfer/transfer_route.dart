@@ -105,7 +105,7 @@ class _TransferRouteState extends State<TransferRoute> {
     if(result == ApiResponseStatus.INSUFFICIENT_FUNDS) {
       setState(() => _isInsufficientFundsError = true);
       _formKey.currentState.validate();
-    } else if(result == ApiResponseStatus.FAILURE) {
+    } else if(result == ApiResponseStatus.GENERIC_ERROR) {
       _onTransferUnknownError();
     }
     else {
@@ -113,8 +113,7 @@ class _TransferRouteState extends State<TransferRoute> {
     }
   }
 
-  _onTransferUnknownError() =>
-      showDialog(context: context, builder: (ctx) => AlertDialog(
-        content: Text("Ops, something went wrong.")
-      ));
+  _onTransferUnknownError() => Scaffold.of(context).showSnackBar(SnackBar(
+    content: const Text("Something went wrong, try again")
+  ));
 }

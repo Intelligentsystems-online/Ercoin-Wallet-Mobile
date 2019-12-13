@@ -1,6 +1,6 @@
 enum ApiResponseStatus {
   SUCCESS,
-  FAILURE,
+  GENERIC_ERROR,
   ACCOUNT_NOT_FOUND,
   INSUFFICIENT_FUNDS,
 }
