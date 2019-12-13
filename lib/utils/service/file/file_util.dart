@@ -6,9 +6,8 @@ import 'package:path/path.dart' as pathService;
 
 class FileUtil {
   Future<Map<String, dynamic>> readAsJson(String path) async {
-    final file = File(path);
     if(_isCorrectFormat(path)) {
-      final content = await file.readAsString();
+      final content = await File(path).readAsString();
 
       return jsonDecode(content);
     }
