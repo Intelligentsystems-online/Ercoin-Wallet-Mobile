@@ -15,8 +15,6 @@ class CodeMapperUtil {
       return ApiResponseStatus.SUCCESS;
     else if(responseCode == 4)
       return ApiResponseStatus.INSUFFICIENT_FUNDS;
-    else if(responseCode == 5)
-      return ApiResponseStatus.INVALID_TIMESTAMP;
     else
       return ApiResponseStatus.FAILURE;
   }
