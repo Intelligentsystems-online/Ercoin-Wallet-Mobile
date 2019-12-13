@@ -11,20 +11,17 @@ class ImportAccountInteractor {
 
   ImportAccountInteractor(this._accountService, this._fileUtil);
 
-  Future<List<String>> obtainAccountKeys() => _accountService
-      .obtainAccounts()
-      .then((accounts) => _obtainPublicKeys(accounts));
+  Future<List<String>> obtainAccountKeys() async => _obtainPublicKeys(await _accountService.obtainAccounts());
 
   Future<AccountKeys> importFromFile(String path) async {
     final jsonContent = await _fileUtil.readAsJson(path);
 
-    if(_isJsonCorrect(jsonContent)) {
-      final publicKey = jsonContent['publicKey'];
-      final privateKey = jsonContent['privateKey'];
+    if(!_isJsonCorrect(jsonContent)) throw FormatException();
 
-      return AccountKeys(publicKey, privateKey);
-    }
-    else throw FormatException();
+    final publicKey = jsonContent['publicKey'];
+    final privateKey = jsonContent['privateKey'];
+
+    return AccountKeys(publicKey, privateKey);
   }
 
   List<String> _obtainPublicKeys(List<Account> accounts) => accounts

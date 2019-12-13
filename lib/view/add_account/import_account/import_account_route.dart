@@ -119,12 +119,10 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         _formKey.currentState.validate();
       }
       on FormatException {
-        showDialog(context: ctx, builder: (ctx) => _prepareFileExceptionAlert());
+        showDialog(context: ctx, builder: (ctx) =>  AlertDialog(
+            content: const Text("Incorrect file.")
+        ));
       }
     }
   }
-
-  _prepareFileExceptionAlert() => AlertDialog(
-    content: Text("Incorrect file.")
-  );
 }
