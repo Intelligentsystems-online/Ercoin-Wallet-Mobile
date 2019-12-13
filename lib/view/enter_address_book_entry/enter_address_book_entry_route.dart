@@ -75,7 +75,8 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
           hintText: "Public key",
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
-          validator: (value) => _keyValidationUtil.validatePublicKey(value, _addressBookKeys),
+          validator: (value) =>
+              _shouldSave ? _keyValidationUtil.validatePublicKey(value, _addressBookKeys) : _keyValidationUtil.validatePublicKey(value, []),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );
