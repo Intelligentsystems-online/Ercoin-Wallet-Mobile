@@ -16,7 +16,7 @@ class ApiConsumerService {
 
   Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
       .get(_uriFactory.createTransferUri(transactionHex))
-      .then((response) => _codeMapperUtil.genericCodeToStatus(_obtainTransferResponseCode(response.body)));
+      .then((response) => _codeMapperUtil.transferCodeToStatus(_obtainTransferResponseCode(response.body)));
 
   int _obtainTransferResponseCode(String response) =>
       jsonDecode(response)['result']['code'] as int;
