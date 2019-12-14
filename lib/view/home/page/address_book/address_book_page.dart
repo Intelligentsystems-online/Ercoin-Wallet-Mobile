@@ -6,7 +6,6 @@ import 'package:ercoin_wallet/utils/view/address_book_entry_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
-import 'package:ercoin_wallet/utils/view/standard_search_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/enter_address_entry/enter_address_book_route.dart';
@@ -21,7 +20,7 @@ class AddressBookPage extends StatefulWidget {
 }
 
 class _AddressBookPageState extends State<AddressBookPage> {
-  List<AddressBookEntry> allAddressBookEntries, filteredAddressBookEntries;
+  List<AddressBookEntry> _allAddressBookEntries, _filteredAddressBookEntries;
 
   final _interactor = mainInjector.getDependency<AddressBookInteractor>();
 
@@ -39,28 +38,24 @@ class _AddressBookPageState extends State<AddressBookPage> {
   );
 
   Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: allAddressBookEntries == null,
+    overlayEnabled: _allAddressBookEntries == null,
     child: SearchableList(
       onSearchChanged: (value) => _onSearchChanged(value),
       listWidget: AddressBookEntryList(
-          addresseBookEntries: filteredAddressBookEntries == null ? [] : filteredAddressBookEntries,
+          addresseBookEntries: _filteredAddressBookEntries == null ? [] : _filteredAddressBookEntries,
           onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
       ),
     )
   );
 
   _onSearchChanged(String value) {
-    if(filteredAddressBookEntries != null) {
+    if(_filteredAddressBookEntries != null) {
       if(value.isNotEmpty)
-        setState(() => filteredAddressBookEntries = _filterAddressBookEntries(value));
+        setState(() => _filteredAddressBookEntries = _interactor.filterAddressBookEntriesBy(value, _allAddressBookEntries));
       else
-        setState(() => filteredAddressBookEntries = allAddressBookEntries);
+        setState(() => _filteredAddressBookEntries = _allAddressBookEntries);
     }
   }
-
-  _filterAddressBookEntries(String value) => allAddressBookEntries
-      .where((entry) => entry.accountName.contains(value))
-      .toList();
 
   _onAddressPressed(BuildContext ctx, AddressBookEntry address) =>
       showDialog(context: ctx, builder: (ctx) => _prepareAlertDialog(ctx, address));
@@ -90,8 +85,8 @@ class _AddressBookPageState extends State<AddressBookPage> {
   _loadAddressBookEntries() async {
     final obtainedEntries = await _interactor.obtainAddressBookEntries();
     setState(() {
-      allAddressBookEntries = obtainedEntries;
-      filteredAddressBookEntries = obtainedEntries;
+      _allAddressBookEntries = obtainedEntries;
+      _filteredAddressBookEntries = obtainedEntries;
     });
   }
 }

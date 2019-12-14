@@ -3,11 +3,9 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_info.dart';
 import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
-import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
-import 'package:ercoin_wallet/utils/view/standard_search_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
@@ -22,7 +20,7 @@ class AccountListPage extends StatefulWidget {
 }
 
 class _AccountListPageState extends State<AccountListPage> {
-  List<AccountInfo> _accountInfoList, _filteredAccountInfoList;
+  List<AccountInfo> _allAccountInfoList, _filteredAccountInfoList;
   String _activeAccountPk;
 
   final _interactor = mainInjector.getDependency<AccountListInteractor>();
@@ -41,7 +39,7 @@ class _AccountListPageState extends State<AccountListPage> {
   );
 
   Widget _accountListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _accountInfoList == null || _activeAccountPk == null,
+    overlayEnabled: _allAccountInfoList == null || _activeAccountPk == null,
     child: SearchableList(
       onSearchChanged: (value) => _onSearchChanged(value),
       listWidget: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account))
@@ -58,15 +56,11 @@ class _AccountListPageState extends State<AccountListPage> {
   _onSearchChanged(String value) {
     if(_filteredAccountInfoList != null) {
       if(value.isNotEmpty)
-        setState(() => _filteredAccountInfoList = _filterAccountInfoList(value));
+        setState(() => _filteredAccountInfoList = _interactor.filterAccountsInfoBy(value, _allAccountInfoList));
       else
-        setState(() => _filteredAccountInfoList = _accountInfoList);
+        setState(() => _filteredAccountInfoList = _allAccountInfoList);
     }
   }
-
-  _filterAccountInfoList(String value) => _accountInfoList
-      .where((account) => account.account.accountName.contains(value))
-      .toList();
 
   AlertDialog _prepareAlertDialog(BuildContext ctx, AccountInfo account) => AlertDialog(
       title: Center(child: Text("Account detail")),
@@ -96,7 +90,7 @@ class _AccountListPageState extends State<AccountListPage> {
     final activePk = await _interactor.obtainActiveAccountPk();
     setState(() {
       _activeAccountPk = activePk;
-      _accountInfoList = accounts;
+      _allAccountInfoList = accounts;
       _filteredAccountInfoList = accounts;
     });
   }

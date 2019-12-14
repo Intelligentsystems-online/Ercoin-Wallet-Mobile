@@ -10,6 +10,7 @@ import 'package:ercoin_wallet/interactor/transfer/select_destination/select_tran
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_service.dart';
@@ -23,7 +24,8 @@ class InteractorConfiguration {
     ));
     injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
       injector.getDependency<AccountService>(),
-      injector.getDependency<ActiveAccountService>()
+      injector.getDependency<ActiveAccountService>(),
+      injector.getDependency<CommonAccountUtil>()
     ));
     injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
       injector.getDependency<AccountService>()

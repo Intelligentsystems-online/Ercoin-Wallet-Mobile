@@ -11,4 +11,8 @@ class AddressBookService {
   Future<List<AddressBookEntry>> obtainAddressBookEntries() => _addressBookRepository.findAll();
 
   Future<AddressBookEntry> addAddressBookEntry(String publicKey, String accountName) => _addressBookRepository.createAddressBookEntry(publicKey, accountName);
+
+  List<AddressBookEntry> filterAddressBookEntriesBy(String value, List<AddressBookEntry> entries) => entries
+      .where((entry) => entry.accountName.contains(value))
+      .toList();
 }

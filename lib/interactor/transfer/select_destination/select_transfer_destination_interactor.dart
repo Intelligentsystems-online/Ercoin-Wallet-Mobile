@@ -11,4 +11,7 @@ class SelectTransferDestinationInteractor {
   Future<List<AddressBookEntry>> obtainAddressBookEntries() => _addressBookService.obtainAddressBookEntries();
 
   Future<AddressBookEntry> addAddressBookEntry(String address, String name) => _addressBookService.addAddressBookEntry(address, name);
+
+  List<AddressBookEntry> filterAddressBookEntriesBy(String value, List<AddressBookEntry> entries) =>
+      _addressBookService.filterAddressBookEntriesBy(value, entries);
 }

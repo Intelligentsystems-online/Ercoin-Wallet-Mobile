@@ -6,7 +6,6 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
-import 'package:ercoin_wallet/utils/view/standard_search_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/enter_address_entry/enter_address_book_route.dart';
 import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
@@ -19,7 +18,7 @@ class SelectTransferDestinationRoute extends StatefulWidget {
 }
 
 class _SelectTransferDestinationRouteState extends State<SelectTransferDestinationRoute> {
-  List<AddressBookEntry> allAddressBookEntries, filteredAddressBookEntries;
+  List<AddressBookEntry> _allAddressBookEntries, _filteredAddressBookEntries;
 
   final _interactor = mainInjector.getDependency<SelectTransferDestinationInteractor>();
 
@@ -35,12 +34,12 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
           title: const Text("Select address"),
         ),
         body: ProgressOverlayContainer(
-          overlayEnabled: allAddressBookEntries == null,
+          overlayEnabled: _allAddressBookEntries == null,
           child: TopAndBottomContainer(
             top: SearchableList(
               onSearchChanged: (value) => _onSearchChanged(value),
               listWidget: AddressBookEntryList(
-                addresseBookEntries: filteredAddressBookEntries == null ? [] : filteredAddressBookEntries,
+                addresseBookEntries: _filteredAddressBookEntries == null ? [] : _filteredAddressBookEntries,
                 onAddressPressed: (ctx, address) => _selectDestination(ctx, address.publicKey, address.accountName),
               ),
             ),
@@ -55,23 +54,19 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
   _loadAddressBookEntries() async {
     final obtainedEntries = await _interactor.obtainAddressBookEntries();
     setState(() {
-      allAddressBookEntries = obtainedEntries;
-      filteredAddressBookEntries = obtainedEntries;
+      _allAddressBookEntries = obtainedEntries;
+      _filteredAddressBookEntries = obtainedEntries;
     });
   }
 
   _onSearchChanged(String value) {
-    if(filteredAddressBookEntries != null) {
+    if(_filteredAddressBookEntries != null) {
       if(value.isNotEmpty)
-        setState(() => filteredAddressBookEntries = _filterAddressBookEntries(value));
+        setState(() => _filteredAddressBookEntries = _interactor.filterAddressBookEntriesBy(value, _allAddressBookEntries));
       else
-        setState(() => filteredAddressBookEntries = allAddressBookEntries);
+        setState(() => _filteredAddressBookEntries = _allAddressBookEntries);
     }
   }
-
-  _filterAddressBookEntries(String value) => allAddressBookEntries
-      .where((entry) => entry.accountName.contains(value))
-      .toList();
 
   _selectDestination(BuildContext ctx, String address, [String name]) =>
       pushRoute(Navigator.of(ctx), () => TransferRoute(destinationAddress: address, destinationName: name));
