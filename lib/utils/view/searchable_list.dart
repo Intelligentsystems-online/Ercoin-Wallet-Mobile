@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/utils/view/standard_text_field.dart';
+import 'package:ercoin_wallet/utils/view/standard_search_text_field.dart';
 import 'package:flutter/cupertino.dart';
 
 class SearchableList extends StatelessWidget {
@@ -10,7 +10,7 @@ class SearchableList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: <Widget>[
-      StandardTextField((value) => onSearchChanged(value)),
+      StandardSearchTextField((value) => onSearchChanged(value)),
       Flexible(child: listWidget)
     ],
   );

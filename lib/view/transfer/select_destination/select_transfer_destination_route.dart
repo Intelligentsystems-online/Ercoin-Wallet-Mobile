@@ -6,7 +6,7 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
-import 'package:ercoin_wallet/utils/view/standard_text_field.dart';
+import 'package:ercoin_wallet/utils/view/standard_search_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/enter_address_entry/enter_address_book_route.dart';
 import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
