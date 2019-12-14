@@ -13,7 +13,7 @@ class ProgressOverlayContainer extends StatelessWidget {
   Widget _buildWithOverlay() => Stack(
         children: <Widget>[
           child,
-          Positioned.fill(child: Container(color: Colors.black.withOpacity(overlayOpacity))),
+          Positioned.fill(child: Container(color: Colors.white.withOpacity(overlayOpacity))),
           Center(child: CircularProgressIndicator())
         ],
       );

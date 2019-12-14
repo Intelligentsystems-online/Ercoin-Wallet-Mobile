@@ -2,8 +2,10 @@ import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.da
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
 import 'package:ercoin_wallet/utils/view/address_book_entry_details_widget.dart';
+import 'package:ercoin_wallet/utils/view/address_book_entry_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
-import 'package:ercoin_wallet/utils/view/searchable_address_book_entry_list.dart';
+import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/enter_address_entry/enter_address_book_route.dart';
@@ -18,7 +20,7 @@ class AddressBookPage extends StatefulWidget {
 }
 
 class _AddressBookPageState extends State<AddressBookPage> {
-  List<AddressBookEntry> addressBookEntries, filteredAddressBookEntries;
+  List<AddressBookEntry> allAddressBookEntries, filteredAddressBookEntries;
 
   final _interactor = mainInjector.getDependency<AddressBookInteractor>();
 
@@ -35,21 +37,32 @@ class _AddressBookPageState extends State<AddressBookPage> {
     bottomAlignment: FractionalOffset.bottomRight,
   );
 
-  Widget _addressListBuilder(BuildContext ctx) => SearchableAddressBookEntryList(
-    addresseBookEntries: filteredAddressBookEntries,
-    onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address),
-    onSearchChanged: (value) => _onSearchChanged(value)
+  Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
+    overlayEnabled: allAddressBookEntries == null,
+    child: Column(
+      children: <Widget>[
+        StandardTextField((value) => _onSearchChanged(value)),
+        Flexible(
+            child: AddressBookEntryList(
+                addresseBookEntries: filteredAddressBookEntries == null ? [] : filteredAddressBookEntries,
+                onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
+            )
+        )
+      ],
+    ),
   );
 
   _onSearchChanged(String value) {
-    if(value.isNotEmpty) {
-      setState(() => filteredAddressBookEntries = _filterAddressBookEntries(value));
-    } else {
-      setState(() => filteredAddressBookEntries = addressBookEntries);
+    if(filteredAddressBookEntries != null) {
+      if(value.isNotEmpty) {
+        setState(() => filteredAddressBookEntries = _filterAddressBookEntries(value));
+      } else {
+        setState(() => filteredAddressBookEntries = allAddressBookEntries);
+      }
     }
   }
 
-  _filterAddressBookEntries(String value) => addressBookEntries
+  _filterAddressBookEntries(String value) => allAddressBookEntries
       .where((entry) => entry.accountName.contains(value))
       .toList();
 
@@ -70,8 +83,8 @@ class _AddressBookPageState extends State<AddressBookPage> {
   _loadAddressBookEntries() async {
     final obtainedEntries = await _interactor.obtainAddressBookEntries();
     setState(() {
+      allAddressBookEntries = obtainedEntries;
       filteredAddressBookEntries = obtainedEntries;
-      addressBookEntries = obtainedEntries;
     });
   }
 
