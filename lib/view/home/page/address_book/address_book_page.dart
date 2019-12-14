@@ -54,11 +54,10 @@ class _AddressBookPageState extends State<AddressBookPage> {
 
   _onSearchChanged(String value) {
     if(filteredAddressBookEntries != null) {
-      if(value.isNotEmpty) {
+      if(value.isNotEmpty)
         setState(() => filteredAddressBookEntries = _filterAddressBookEntries(value));
-      } else {
+      else
         setState(() => filteredAddressBookEntries = allAddressBookEntries);
-      }
     }
   }
 
