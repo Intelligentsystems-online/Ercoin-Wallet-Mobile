@@ -80,14 +80,6 @@ class _AddressBookPageState extends State<AddressBookPage> {
     onPressed: () => _navigateToAddAddress(ctx),
   );
 
-  _loadAddressBookEntries() async {
-    final obtainedEntries = await _interactor.obtainAddressBookEntries();
-    setState(() {
-      allAddressBookEntries = obtainedEntries;
-      filteredAddressBookEntries = obtainedEntries;
-    });
-  }
-
   _navigateToAddAddress(BuildContext ctx) => pushRoute(
     Navigator.of(ctx),
         () => EnterAddressBookRoute(
@@ -98,4 +90,12 @@ class _AddressBookPageState extends State<AddressBookPage> {
       },
     ),
   );
+
+  _loadAddressBookEntries() async {
+    final obtainedEntries = await _interactor.obtainAddressBookEntries();
+    setState(() {
+      allAddressBookEntries = obtainedEntries;
+      filteredAddressBookEntries = obtainedEntries;
+    });
+  }
 }
