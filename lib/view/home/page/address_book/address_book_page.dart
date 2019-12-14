@@ -5,6 +5,7 @@ import 'package:ercoin_wallet/utils/view/address_book_entry_details_widget.dart'
 import 'package:ercoin_wallet/utils/view/address_book_entry_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -39,17 +40,13 @@ class _AddressBookPageState extends State<AddressBookPage> {
 
   Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
     overlayEnabled: allAddressBookEntries == null,
-    child: Column(
-      children: <Widget>[
-        StandardTextField((value) => _onSearchChanged(value)),
-        Flexible(
-            child: AddressBookEntryList(
-                addresseBookEntries: filteredAddressBookEntries == null ? [] : filteredAddressBookEntries,
-                onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
-            )
-        )
-      ],
-    ),
+    child: SearchableList(
+      onSearchChanged: (value) => _onSearchChanged(value),
+      listWidget: AddressBookEntryList(
+          addresseBookEntries: filteredAddressBookEntries == null ? [] : filteredAddressBookEntries,
+          onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
+      ),
+    )
   );
 
   _onSearchChanged(String value) {

@@ -6,6 +6,7 @@ import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -41,13 +42,9 @@ class _AccountListPageState extends State<AccountListPage> {
 
   Widget _accountListBuilder(BuildContext ctx) => ProgressOverlayContainer(
     overlayEnabled: _accountInfoList == null || _activeAccountPk == null,
-    child: Column(
-      children: <Widget>[
-        StandardTextField((value) => _onSearchChanged(value)),
-        Flexible(
-          child: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account)),
-        ),
-      ],
+    child: SearchableList(
+      onSearchChanged: (value) => _onSearchChanged(value),
+      listWidget: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account))
     )
   );
 
