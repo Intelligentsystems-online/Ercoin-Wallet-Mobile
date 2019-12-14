@@ -30,8 +30,14 @@ class CommonAccountUtil {
   }
 
   List<AccountInfo> filterAccountsInfoBy(String value, List<AccountInfo> accounts) => accounts
-      .where((account) => account.account.accountName.contains(value))
+      .where((account) => _contains(value, account))
       .toList();
+
+  _contains(String value, AccountInfo account) => account
+      .account
+      .accountName
+      .toLowerCase()
+      .contains(value.toLowerCase());
 
   Uint8List _balanceBytesFrom(Uint8List accountDataBytes) => accountDataBytes.sublist(4, 12);
 
