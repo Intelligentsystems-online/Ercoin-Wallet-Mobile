@@ -36,7 +36,7 @@ class HomeRouteState extends State<HomeRoute> {
         currentIndex: _selectedPageIndex,
         onTap: (index) => setState(() => _selectedPageIndex = index),
         items: [
-          _navigationBarItem(Icons.info, "Info"),
+          _navigationBarItem(Icons.home, "Home"),
           _navigationBarItem(Icons.list, "Transactions"),
           _navigationBarItem(Icons.supervisor_account, "Addresses"),
           _navigationBarItem(Icons.account_circle, "Accounts")

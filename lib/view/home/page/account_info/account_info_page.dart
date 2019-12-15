@@ -2,6 +2,7 @@ import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dar
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/account_info.dart';
+import 'package:ercoin_wallet/utils/view/enlarged_image.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/transaction_details_widget.dart';
@@ -12,6 +13,7 @@ import 'package:ercoin_wallet/view/transfer/select_destination/select_transfer_d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
@@ -41,7 +43,7 @@ class AccountInfoPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _accountNameRow(info),
-            _accountAddressRow(info),
+            _accountAddressRow(ctx, info),
             _accountBalanceRow(info),
           ],
         ),
@@ -53,7 +55,7 @@ class AccountInfoPage extends StatelessWidget {
         Text(info.account.accountName, style: const TextStyle(fontWeight: FontWeight.bold))
       ]);
 
-  Widget _accountAddressRow(AccountInfo info) => Row(children: <Widget>[
+  Widget _accountAddressRow(BuildContext ctx, AccountInfo info) => Row(children: <Widget>[
         Text(info.account.publicKey.substring(0, 15) + "...", maxLines: 1),
         SizedBox(
           width: 25.0,
@@ -62,7 +64,7 @@ class AccountInfoPage extends StatelessWidget {
             icon: const Icon(Icons.content_copy),
             iconSize: 15.0,
             padding: EdgeInsets.zero,
-            onPressed: () => null,
+            onPressed: () => _onCopyPressed(ctx, info),
           ),
         ),
       ]);
@@ -77,9 +79,20 @@ class AccountInfoPage extends StatelessWidget {
         ],
       );
 
-  Widget _qrCodeSection(BuildContext ctx, AccountInfo info) => QrImage(
+  Widget _qrCodeSection(BuildContext ctx, AccountInfo info) => GestureDetector(
+    onTap: () => _onQrCodePressed(ctx, info),
+    child: _qrCodeImage(info, 150)
+  );
+
+  _onQrCodePressed(BuildContext ctx, AccountInfo info) =>
+      showDialog(context: ctx, builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.transparent,
+        content: EnlargedImage(_qrCodeImage(info, 230)),
+      ));
+
+  Widget _qrCodeImage(AccountInfo info, double imageSize) => QrImage(
     data: info.account.publicKey,
-    size: 150,
+    size: imageSize,
     padding: standardPadding,
     backgroundColor: Colors.white,
   );
@@ -116,6 +129,15 @@ class AccountInfoPage extends StatelessWidget {
         ),
         onPressed: () => pushRoute(Navigator.of(ctx), () => SelectTransferDestinationRoute()),
       );
+
+  _onCopyPressed(BuildContext ctx, AccountInfo info) {
+    Clipboard.setData(new ClipboardData(text: info.account.publicKey));
+
+    Scaffold.of(ctx).showSnackBar(SnackBar(
+        content: const Text("Address copied to clipboard"),
+        duration: standardSnackBarDuration
+    ));
+  }
 
   _onTransactionPressed(BuildContext ctx, Transaction transaction) =>
       showDialog(context: ctx, builder: (ctx) => prepareAlertDialog(ctx, transaction));

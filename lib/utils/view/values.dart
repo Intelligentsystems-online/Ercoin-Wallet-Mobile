@@ -11,6 +11,8 @@ const standardTextFieldContentPadding = const EdgeInsets.symmetric(vertical: 17,
 const standardTextFieldLabelFontSize = 16.0;
 const standardTextFieldBorder = const OutlineInputBorder(borderRadius: standardBorderRadius, borderSide: BorderSide());
 
+const standardSnackBarDuration = const Duration(seconds: 2);
+
 final standardThemeData = ThemeData(
   brightness: Brightness.light,
   accentColor: Colors.indigoAccent,
