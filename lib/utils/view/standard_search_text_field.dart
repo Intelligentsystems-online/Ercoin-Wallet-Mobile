@@ -10,11 +10,11 @@ class StandardSearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TextField(
     onChanged: (value) => onChanged(value),
-    style: TextStyle(fontSize: 16),
+    style: TextStyle(fontSize: 16.0),
     decoration: InputDecoration(
-      hintText: "Search",
-      prefixIcon: Icon(Icons.search),
-      contentPadding: standardTextFieldContentPadding,
-      border: standardTextFieldBorder),
+        hintText: "Search",
+        prefixIcon: Icon(Icons.search),
+        contentPadding: const EdgeInsets.symmetric(vertical: 5),
+        border: standardTextFieldBorder),
   );
 }
