@@ -12,9 +12,13 @@ class AddressBookService {
 
   Future<AddressBookEntry> addAddressBookEntry(String publicKey, String accountName) => _addressBookRepository.createAddressBookEntry(publicKey, accountName);
 
-  List<AddressBookEntry> filterAddressBookEntriesBy(String value, List<AddressBookEntry> entries) => entries
-      .where((entry) => _contains(value, entry))
-      .toList();
+  Future<List<AddressBookEntry>> obtainAddressBookEntriesByName(String name) async {
+    final entries = await _addressBookRepository.findAll();
+
+    return entries
+        .where((entry) => _contains(name, entry))
+        .toList();
+  }
 
   _contains(String value, AddressBookEntry entry) => entry
       .accountName
