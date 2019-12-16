@@ -18,7 +18,7 @@ class SelectTransferDestinationRoute extends StatefulWidget {
 }
 
 class _SelectTransferDestinationRouteState extends State<SelectTransferDestinationRoute> {
-  List<AddressBookEntry> _allAddressBookEntries, _filteredAddressBookEntries;
+  List<AddressBookEntry> _addressBookEntries;
 
   final _interactor = mainInjector.getDependency<SelectTransferDestinationInteractor>();
 
@@ -34,12 +34,12 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
           title: const Text("Select address"),
         ),
         body: ProgressOverlayContainer(
-          overlayEnabled: _allAddressBookEntries == null,
+          overlayEnabled: _addressBookEntries == null,
           child: TopAndBottomContainer(
             top: SearchableList(
               onSearchChanged: (value) => _onSearchChanged(value),
               listWidget: AddressBookEntryList(
-                addresseBookEntries: _filteredAddressBookEntries == null ? [] : _filteredAddressBookEntries,
+                addresseBookEntries: _addressBookEntries == null ? [] : _addressBookEntries,
                 onAddressPressed: (ctx, address) => _selectDestination(ctx, address.publicKey, address.accountName),
               ),
             ),
@@ -51,21 +51,23 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
       )
   );
 
+  _onSearchChanged(String value) {
+    if(_addressBookEntries != null) {
+      value.isEmpty ? _loadAddressBookEntries() : _loadFilteredAddressBookEntries(value);
+    }
+  }
+
+  _loadFilteredAddressBookEntries(String name) async {
+    final filteredEntries = await _interactor.obtainAddressBookEntriesByName(name);
+
+    setState(() => _addressBookEntries = filteredEntries);
+  }
+
   _loadAddressBookEntries() async {
     final obtainedEntries = await _interactor.obtainAddressBookEntries();
     setState(() {
-      _allAddressBookEntries = obtainedEntries;
-      _filteredAddressBookEntries = obtainedEntries;
+      _addressBookEntries = obtainedEntries;
     });
-  }
-
-  _onSearchChanged(String value) {
-    if(_filteredAddressBookEntries != null) {
-      if(value.isNotEmpty)
-        setState(() => _filteredAddressBookEntries = _interactor.filterAddressBookEntriesBy(value, _allAddressBookEntries));
-      else
-        setState(() => _filteredAddressBookEntries = _allAddressBookEntries);
-    }
   }
 
   _selectDestination(BuildContext ctx, String address, [String name]) =>

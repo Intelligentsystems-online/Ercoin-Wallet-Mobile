@@ -18,6 +18,10 @@ class AccountListInteractor {
 
   Future<void> activateAccount(String publicKey) => _activeAccountService.activateAccount(publicKey);
 
-  List<AccountInfo> filterAccountsInfoBy(String value, List<AccountInfo> accounts) => _commonAccountUtil
-      .filterAccountsInfoBy(value, accounts);
+  Future<List<AccountInfo>> obtainAccountsInfoByName(String value) async {
+    final accounts = await _accountService.obtainAccountsInfo();
+
+    return _commonAccountUtil
+        .filterAccountsInfoBy(value, accounts);
+  }
 }

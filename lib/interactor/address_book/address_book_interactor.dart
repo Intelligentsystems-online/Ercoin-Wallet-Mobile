@@ -12,6 +12,11 @@ class AddressBookInteractor {
 
   Future<AddressBookEntry> addAddressBookEntry(String address, String name) => _addressBookService.addAddressBookEntry(address, name);
 
-  List<AddressBookEntry> filterAddressBookEntriesBy(String value, List<AddressBookEntry> entries) =>
-      _addressBookService.filterAddressBookEntriesBy(value, entries);
+  Future<List<AddressBookEntry>> obtainAddressBookEntriesByName(String name) async {
+    final entries = await _addressBookService.obtainAddressBookEntries();
+
+    return _addressBookService
+        .filterAddressBookEntriesBy(name, entries)
+        .toList();
+  }
 }

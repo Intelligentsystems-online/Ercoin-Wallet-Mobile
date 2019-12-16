@@ -20,7 +20,7 @@ class AddressBookPage extends StatefulWidget {
 }
 
 class _AddressBookPageState extends State<AddressBookPage> {
-  List<AddressBookEntry> _allAddressBookEntries, _filteredAddressBookEntries;
+  List<AddressBookEntry> _addressBookEntries;
 
   final _interactor = mainInjector.getDependency<AddressBookInteractor>();
 
@@ -38,23 +38,33 @@ class _AddressBookPageState extends State<AddressBookPage> {
   );
 
   Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _allAddressBookEntries == null,
+    overlayEnabled: _addressBookEntries == null,
     child: SearchableList(
       onSearchChanged: (value) => _onSearchChanged(value),
       listWidget: AddressBookEntryList(
-          addresseBookEntries: _filteredAddressBookEntries == null ? [] : _filteredAddressBookEntries,
+          addresseBookEntries: _addressBookEntries == null ? [] : _addressBookEntries,
           onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
       ),
     )
   );
 
   _onSearchChanged(String value) {
-    if(_filteredAddressBookEntries != null) {
-      if(value.isNotEmpty)
-        setState(() => _filteredAddressBookEntries = _interactor.filterAddressBookEntriesBy(value, _allAddressBookEntries));
-      else
-        setState(() => _filteredAddressBookEntries = _allAddressBookEntries);
+    if(_addressBookEntries != null) {
+      value.isEmpty ? _loadAddressBookEntries() : _loadFilteredAddressBookEntries(value);
     }
+  }
+
+  _loadFilteredAddressBookEntries(String name) async {
+    final filteredEntries = await _interactor.obtainAddressBookEntriesByName(name);
+
+    setState(() => _addressBookEntries = filteredEntries);
+  }
+
+  _loadAddressBookEntries() async {
+    final obtainedEntries = await _interactor.obtainAddressBookEntries();
+    setState(() {
+      _addressBookEntries = obtainedEntries;
+    });
   }
 
   _onAddressPressed(BuildContext ctx, AddressBookEntry address) =>
@@ -81,12 +91,4 @@ class _AddressBookPageState extends State<AddressBookPage> {
       },
     ),
   );
-
-  _loadAddressBookEntries() async {
-    final obtainedEntries = await _interactor.obtainAddressBookEntries();
-    setState(() {
-      _allAddressBookEntries = obtainedEntries;
-      _filteredAddressBookEntries = obtainedEntries;
-    });
-  }
 }

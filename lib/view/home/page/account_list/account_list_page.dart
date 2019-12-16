@@ -20,14 +20,15 @@ class AccountListPage extends StatefulWidget {
 }
 
 class _AccountListPageState extends State<AccountListPage> {
-  List<AccountInfo> _allAccountInfoList, _filteredAccountInfoList;
+  List<AccountInfo> _accountsInfo;
   String _activeAccountPk;
 
   final _interactor = mainInjector.getDependency<AccountListInteractor>();
 
   @override
   void initState() {
-    _loadAccountInfoLists();
+    _loadAccountsInfo();
+    _loadActivePublicKey();
     super.initState();
   }
 
@@ -39,14 +40,14 @@ class _AccountListPageState extends State<AccountListPage> {
   );
 
   Widget _accountListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _allAccountInfoList == null || _activeAccountPk == null,
+    overlayEnabled: _accountsInfo == null || _activeAccountPk == null,
     child: SearchableList(
       onSearchChanged: (value) => _onSearchChanged(value),
       listWidget: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account))
     )
   );
 
-  List<AccountInfo> _obtainFilteredList() => _filteredAccountInfoList == null ? [] : _filteredAccountInfoList;
+  List<AccountInfo> _obtainFilteredList() => _accountsInfo == null ? [] : _accountsInfo;
 
   _onAccountPressed(BuildContext ctx, AccountInfo account) => showDialog(
       context: ctx,
@@ -54,11 +55,8 @@ class _AccountListPageState extends State<AccountListPage> {
   );
 
   _onSearchChanged(String value) {
-    if(_filteredAccountInfoList != null) {
-      if(value.isNotEmpty)
-        setState(() => _filteredAccountInfoList = _interactor.filterAccountsInfoBy(value, _allAccountInfoList));
-      else
-        setState(() => _filteredAccountInfoList = _allAccountInfoList);
+    if(_accountsInfo != null) {
+      value.isEmpty ? _loadAccountsInfo() : _loadFilteredAccountsInfo(value);
     }
   }
 
@@ -85,13 +83,18 @@ class _AccountListPageState extends State<AccountListPage> {
       Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()))
   );
 
-  _loadAccountInfoLists() async {
+  _loadFilteredAccountsInfo(String name) async {
+    final accounts = await _interactor.obtainAccountsInfoByName(name);
+    setState(() => _accountsInfo = accounts);
+  }
+
+  _loadAccountsInfo() async {
     final accounts = await _interactor.obtainAccountsWithBalance();
+    setState(() => _accountsInfo = accounts);
+  }
+
+  _loadActivePublicKey() async {
     final activePk = await _interactor.obtainActiveAccountPk();
-    setState(() {
-      _activeAccountPk = activePk;
-      _allAccountInfoList = accounts;
-      _filteredAccountInfoList = accounts;
-    });
+    setState(() => _activeAccountPk = activePk);
   }
 }
