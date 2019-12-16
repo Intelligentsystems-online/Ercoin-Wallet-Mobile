@@ -2,12 +2,14 @@ import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dar
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
 import 'package:ercoin_wallet/model/account_info.dart';
-import 'package:ercoin_wallet/utils/view/enlarged_image.dart';
+import 'package:ercoin_wallet/utils/view/image_dialog.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/transaction_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/transaction_list.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
+import 'package:ercoin_wallet/view/home/page/transaction_list/transaction_list_page.dart';
 import 'package:ercoin_wallet/view/transfer/select_destination/select_transfer_destination_route.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -18,6 +20,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
   final _interactor = mainInjector.getDependency<AccountInfoInteractor>();
+
+  final _transactionListPageIndex = 1;
 
   @override
   Widget build(BuildContext ctx) => FutureBuilderWithProgress(
@@ -87,7 +91,7 @@ class AccountInfoPage extends StatelessWidget {
   _onQrCodePressed(BuildContext ctx, AccountInfo info) =>
       showDialog(context: ctx, builder: (ctx) => AlertDialog(
         backgroundColor: Colors.transparent,
-        content: EnlargedImage(_qrCodeImage(info, 230)),
+        content: ImageDialog(_qrCodeImage(info, 230)),
       ));
 
   Widget _qrCodeImage(AccountInfo info, double imageSize) => QrImage(
@@ -119,7 +123,7 @@ class AccountInfoPage extends StatelessWidget {
           children: <Widget>[const Text("Show full history"), const Icon(Icons.arrow_forward)],
           mainAxisSize: MainAxisSize.min,
         ),
-        onPressed: () => null,
+        onPressed: () => pushRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: _transactionListPageIndex)),
       );
 
   Widget _transferBtn(BuildContext ctx) => RaisedButton(
@@ -135,7 +139,6 @@ class AccountInfoPage extends StatelessWidget {
 
     Scaffold.of(ctx).showSnackBar(SnackBar(
         content: const Text("Address copied to clipboard"),
-        duration: standardSnackBarDuration
     ));
   }
 

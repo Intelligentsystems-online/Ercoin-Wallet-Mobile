@@ -7,12 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeRoute extends StatefulWidget {
+  int initialPageIndex = 0;
+
+  HomeRoute({this.initialPageIndex});
+
   @override
-  State<StatefulWidget> createState() => HomeRouteState();
+  State<StatefulWidget> createState() => HomeRouteState(this.initialPageIndex);
 }
 
 class HomeRouteState extends State<HomeRoute> {
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex;
+
+  HomeRouteState(this._selectedPageIndex);
 
   final List<Widget> _pages = [
     AccountInfoPage(),

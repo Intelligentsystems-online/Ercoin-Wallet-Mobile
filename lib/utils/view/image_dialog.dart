@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-class EnlargedImage extends StatelessWidget {
+class ImageDialog extends StatelessWidget {
   final Widget _image;
 
-  const EnlargedImage(this._image);
+  const ImageDialog(this._image);
 
   @override
   Widget build(BuildContext context) => GestureDetector(
