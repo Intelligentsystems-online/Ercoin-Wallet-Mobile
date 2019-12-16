@@ -56,15 +56,12 @@ class _AddressBookPageState extends State<AddressBookPage> {
 
   _loadFilteredAddressBookEntries(String name) async {
     final filteredEntries = await _interactor.obtainAddressBookEntriesByName(name);
-
     setState(() => _addressBookEntries = filteredEntries);
   }
 
   _loadAddressBookEntries() async {
     final obtainedEntries = await _interactor.obtainAddressBookEntries();
-    setState(() {
-      _addressBookEntries = obtainedEntries;
-    });
+    setState(() => _addressBookEntries = obtainedEntries);
   }
 
   _onAddressPressed(BuildContext ctx, AddressBookEntry address) =>
