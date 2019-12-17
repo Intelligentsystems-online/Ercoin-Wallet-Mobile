@@ -24,7 +24,7 @@ class AddressBookRepository
       .then((response) => _prepareEntryFrom(response));
 
   Future<List<AddressBookEntry>> findByNameLike(String value) => _database
-      .query(AddressBookTable.tableName, where: "${AddressBookTable.nameField} LIKE '%$value%'")
+      .query(AddressBookTable.tableName, where: "${AddressBookTable.nameProperty} LIKE '%$value%'")
       .then((response) => _prepareEntryFrom(response));
 
   List<AddressBookEntry> _prepareEntryFrom(List<Map<String, dynamic>> response) =>

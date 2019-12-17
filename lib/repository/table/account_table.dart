@@ -1,9 +1,9 @@
 class AccountTable {
   static final tableName = "Account";
-  static final publicKeyField = "publicKey";
-  static final privateKeyField = "privateKey";
-  static final nameField = "name";
+  static final publicKeyProperty = "publicKey";
+  static final privateKeyProperty = "privateKey";
+  static final nameProperty = "name";
 
   static final String createTableQuery =
-      "CREATE TABLE $tableName ($publicKeyField varchar(255) PRIMARY KEY, $privateKeyField varchar(255), $nameField varchar(255));";
+      "CREATE TABLE $tableName ($publicKeyProperty varchar(255) PRIMARY KEY, $privateKeyProperty varchar(255), $nameProperty varchar(255));";
 }

@@ -25,13 +25,13 @@ class AccountRepository
 
   Future<Account> findByPublicKey(String publicKey) async {
     final response = await _database
-        .query(AccountTable.tableName, where: "${AccountTable.publicKeyField} = ?", whereArgs: [publicKey]);
+        .query(AccountTable.tableName, where: "${AccountTable.publicKeyProperty} = ?", whereArgs: [publicKey]);
 
     return response.isNotEmpty ? Account.fromMap(response.first) : Null;
   }
 
   Future<List<Account>> findByNameLike(String value) => _database
-      .query(AccountTable.tableName, where: "${AccountTable.nameField} LIKE '%$value%'")
+      .query(AccountTable.tableName, where: "${AccountTable.nameProperty} LIKE '%$value%'")
       .then((response) => _prepareEntryFrom(response));
 
   List<Account> _prepareEntryFrom(List<Map<String, dynamic>> response) =>
