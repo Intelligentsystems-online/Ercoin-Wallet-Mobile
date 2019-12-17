@@ -28,7 +28,7 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
   String _name;
   bool _shouldSave;
 
-  String publicKeyValidationResult;
+  String _publicKeyValidationResult;
 
   final _interactor = mainInjector.getDependency<EnterAddressBookEntryInteractor>();
 
@@ -71,7 +71,7 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
           validator: (value) =>
-              _shouldSave ? publicKeyValidationResult : _interactor.validatePublicKeyFormat(value),
+              _shouldSave ? _publicKeyValidationResult : _interactor.validatePublicKeyFormat(value),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );
@@ -110,8 +110,8 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
   _validatePublicKey() async {
     final validationResult = await _interactor.validatePublicKey(_publicKey);
     if(validationResult != null)
-      setState(() => publicKeyValidationResult = validationResult);
+      setState(() => _publicKeyValidationResult = validationResult);
     else
-      setState(() => publicKeyValidationResult = null);
+      setState(() => _publicKeyValidationResult = null);
   }
 }

@@ -31,7 +31,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
 
   final _interactor = mainInjector.getDependency<ImportAccountInteractor>();
 
-  String publicKeyValidationResult;
+  String _publicKeyValidationResult;
 
   final _formKey = GlobalKey<FormState>();
   final _pubKeyController = TextEditingController();
@@ -71,7 +71,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
     child: StandardTextFormField(
       hintText: 'Public key',
       controller: _pubKeyController,
-      validator: (value) => publicKeyValidationResult,
+      validator: (value) => _publicKeyValidationResult,
       onSaved: (value) => setState(() => _pubKey = value),
     ),
   );
@@ -128,9 +128,9 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
   _validatePublicKey() async {
     final validationResult = await _interactor.validatePublicKey(_pubKey);
     if(validationResult != null)
-      setState(() => publicKeyValidationResult = validationResult);
+      setState(() => _publicKeyValidationResult = validationResult);
     else
-      setState(() => publicKeyValidationResult = null);
+      setState(() => _publicKeyValidationResult = null);
   }
 }
 
