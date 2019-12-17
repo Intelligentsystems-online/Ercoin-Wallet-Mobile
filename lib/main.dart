@@ -2,7 +2,7 @@ import 'package:ercoin_wallet/interactor/interactor_configuration.dart';
 import 'dart:ui';
 
 import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
+import 'package:ercoin_wallet/repository/account/local_account_repository.dart';
 import 'package:ercoin_wallet/repository/repository_configuration.dart';
 import 'package:ercoin_wallet/utils/service/service_utils_configuration.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
@@ -26,7 +26,7 @@ void main() async {
 }
 
 class App extends StatelessWidget {
-  final _accountRepository = mainInjector.getDependency<AccountRepository>();
+  final _accountRepository = mainInjector.getDependency<LocalAccountRepository>();
 
   @override
   Widget build(BuildContext context) => MaterialApp(

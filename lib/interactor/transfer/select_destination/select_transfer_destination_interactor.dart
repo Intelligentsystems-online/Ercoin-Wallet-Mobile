@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
-import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
+import 'package:ercoin_wallet/utils/service/addressBook/named_address_service.dart';
 
 class SelectTransferDestinationInteractor {
   final AddressBookService _addressBookService;

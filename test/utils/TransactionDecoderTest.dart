@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:ercoin_wallet/utils/service/transaction/transaction_decode_service.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transfer_data_decoding_service.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -26,6 +26,7 @@ dependencies:
   qrcode_reader: 0.4.4
   intl: ^0.16.0
   injector: 1.0.8
+  equatable: ^1.0.0
   test:
 
 dev_dependencies:

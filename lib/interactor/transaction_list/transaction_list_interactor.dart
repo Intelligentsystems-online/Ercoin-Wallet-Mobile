@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ercoin_wallet/interactor/transaction_list/transaction_lists.dart';
 import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 
 class TransactionListInteractor {

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/model/account_info.dart';
-import 'package:ercoin_wallet/utils/service/account/account_service.dart';
-import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/local_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
 
 class AccountListInteractor {
   final AccountService _accountService;

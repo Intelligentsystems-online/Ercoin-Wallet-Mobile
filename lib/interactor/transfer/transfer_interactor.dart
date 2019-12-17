@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/api_response_status.dart';
-import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
+import 'package:ercoin_wallet/model/api/api_response_status.dart';
+import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_service.dart';
 
 class TransferInteractor {

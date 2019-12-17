@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/utils/service/account/account_service.dart';
-import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/local_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
 
 class ConfigureAccountNameInteractor {
   final AccountService _accountService;

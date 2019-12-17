@@ -9,10 +9,10 @@ import 'package:ercoin_wallet/interactor/enter_address_book_entry/enter_address_
 import 'package:ercoin_wallet/interactor/transaction_list/transaction_list_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
-import 'package:ercoin_wallet/utils/service/account/account_service.dart';
-import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
-import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
-import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
+import 'package:ercoin_wallet/utils/service/account/local_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/local_account_details_util.dart';
+import 'package:ercoin_wallet/utils/service/addressBook/named_address_service.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/service/file/file_util.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';

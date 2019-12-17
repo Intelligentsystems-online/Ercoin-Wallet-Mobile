@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:ercoin_wallet/utils/service/common/byte_converter.dart';
-import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
+import 'package:ercoin_wallet/utils/service/common/byte_converter_service.dart';
+import 'package:ercoin_wallet/utils/service/transaction/transfer_data_encoding_service.dart';
 import 'package:test/test.dart';
 
 void main() {
