@@ -6,11 +6,7 @@ class KeysValidationUtil {
 
   final _regExp = RegExp("^[0-9a-f]+\$", caseSensitive: false);
 
-  validatePublicKey(String publicKey, List<String> keysInUse) {
-    final validationResult = _validateKey(publicKey, _publicKeyType, _publicKeyLength);
-
-    return validationResult == null ? _validateKeyInList(keysInUse, publicKey) : validationResult;
-  }
+  validatePublicKey(String publicKey) => _validateKey(publicKey, _publicKeyType, _publicKeyLength);
 
   validatePrivateKey(String privateKey) => _validateKey(privateKey, _privateKeyType, _privateKeyLength);
 
@@ -23,8 +19,6 @@ class KeysValidationUtil {
       return "Incorrect $keyType value";
     else return null;
   }
-
-  _validateKeyInList(List<String> keys, String key) => keys.contains(key) ? "Public key is already used" : null;
 
   bool _isHexadecimal(String text) => _regExp.hasMatch(text);
 }

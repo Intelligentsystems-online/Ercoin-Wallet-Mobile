@@ -26,12 +26,12 @@ class ImportAccountRoute extends StatefulWidget {
 class _ImportAccountRouteState extends State<ImportAccountRoute> {
   final Function(BuildContext) onAdded;
 
-  List<String> _accountKeys;
   String _pubKey;
   String _privKey;
 
   final _interactor = mainInjector.getDependency<ImportAccountInteractor>();
-  final _keysValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
+
+  String publicKeyValidationResult;
 
   final _formKey = GlobalKey<FormState>();
   final _pubKeyController = TextEditingController();
@@ -41,71 +41,68 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
 
   @override
   void initState() {
-    _loadAccountKeys();
     super.initState();
   }
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
-        appBar: AppBar(
-          title: const Text("Import account"),
-        ),
-        body: Container(
-          padding: standardPadding,
-          child: Stack(
-            children: <Widget>[
-              Align(
-                  alignment: FractionalOffset.topLeft,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn(ctx)],
-                    ),
-                  )),
-              Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
-            ],
-          ),
-        ),
-      );
+    appBar: AppBar(
+      title: const Text("Import account"),
+    ),
+    body: Container(
+      padding: standardPadding,
+      child: Stack(
+        children: <Widget>[
+          Align(
+              alignment: FractionalOffset.topLeft,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn(ctx)],
+                ),
+              )),
+          Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
+        ],
+      ),
+    ),
+  );
 
   Widget _pubKeyInput() => ExpandedRow(
-        child: StandardTextFormField(
-          hintText: 'Public key',
-          controller: _pubKeyController,
-          validator: (value) => _keysValidationUtil.validatePublicKey(value, _accountKeys),
-          onSaved: (value) => setState(() => _pubKey = value),
-        ),
-      );
+    child: StandardTextFormField(
+      hintText: 'Public key',
+      controller: _pubKeyController,
+      validator: (value) => publicKeyValidationResult,
+      onSaved: (value) => setState(() => _pubKey = value),
+    ),
+  );
 
   Widget _privKeyInput() => ExpandedRow(
-        child: StandardTextFormField(
-          hintText: 'Private key',
-          icon: const Icon(Icons.vpn_key),
-          controller: _privKeyController,
-          validator: (value) => _keysValidationUtil.validatePrivateKey(value),
-          onSaved: (value) => setState(() => _privKey = value),
-        ),
-      );
+    child: StandardTextFormField(
+      hintText: 'Private key',
+      icon: const Icon(Icons.vpn_key),
+      controller: _privKeyController,
+      validator: (value) => _interactor.validatePrivateKey(value),
+      onSaved: (value) => setState(() => _privKey = value),
+    ),
+  );
 
   Widget _importFromFileBtn(BuildContext ctx) => ExpandedRaisedTextButton(
-        text: "Import from file",
-        onPressed: () => _importFromFile(ctx),
-      );
+    text: "Import from file",
+    onPressed: () => _importFromFile(ctx),
+  );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-        text: "Proceed",
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            pushRoute(Navigator.of(context),
-                () => ConfigureAccountNameRoute(keys: AccountKeys(_pubKey, _privKey), onAdded: onAdded));
-          }
-        },
-      );
+    text: "Proceed",
+    onPressed: () => _onProceedPressed(),
+  );
 
-  _loadAccountKeys() async {
-    final keys = await _interactor.obtainAccountKeys();
-    setState(() => _accountKeys = keys);
+  _onProceedPressed() async {
+    _formKey.currentState.save();
+    await _validatePublicKey();
+    if(_formKey.currentState.validate()) {
+      pushRoute(Navigator.of(context),
+              () => ConfigureAccountNameRoute(keys: AccountKeys(_pubKey, _privKey), onAdded: onAdded));
+    }
   }
 
   _importFromFile(BuildContext ctx) async {
@@ -116,6 +113,8 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
 
         _pubKeyController.text = keys.publicKey;
         _privKeyController.text = keys.privateKey;
+        _formKey.currentState.save();
+        await _validatePublicKey();
         _formKey.currentState.validate();
       }
       on FormatException {
@@ -125,4 +124,13 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       }
     }
   }
+
+  _validatePublicKey() async {
+    final validationResult = await _interactor.validatePublicKey(_pubKey);
+    if(validationResult != null)
+      setState(() => publicKeyValidationResult = validationResult);
+    else
+      setState(() => publicKeyValidationResult = null);
+  }
 }
+

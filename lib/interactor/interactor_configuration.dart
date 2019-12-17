@@ -12,6 +12,7 @@ import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
 import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/service/file/file_util.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transfer/transfer_service.dart';
@@ -32,7 +33,8 @@ class InteractorConfiguration {
     ));
     injector.registerSingleton<ImportAccountInteractor>((_) => ImportAccountInteractor(
       injector.getDependency<AccountService>(),
-      injector.getDependency<FileUtil>()
+      injector.getDependency<FileUtil>(),
+      injector.getDependency<KeysValidationUtil>()
     ));
     injector.registerSingleton<ConfigureAccountNameInteractor>((injector) => ConfigureAccountNameInteractor(
       injector.getDependency<AccountService>(),
@@ -43,7 +45,8 @@ class InteractorConfiguration {
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
     injector.registerSingleton<EnterAddressBookEntryInteractor>((injector) => EnterAddressBookEntryInteractor(
-      injector.getDependency<AddressBookService>()
+      injector.getDependency<AddressBookService>(),
+      injector.getDependency<KeysValidationUtil>()
     ));
     injector.registerSingleton<TransactionListInteractor>((_) => TransactionListInteractor(
         injector.getDependency<ActiveAccountService>(),

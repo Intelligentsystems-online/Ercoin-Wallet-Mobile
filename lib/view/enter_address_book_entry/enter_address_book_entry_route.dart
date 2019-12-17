@@ -24,24 +24,19 @@ class EnterAddressBookEntryRoute extends StatefulWidget {
 class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
-
-  List<String> _addressBookKeys;
   String _publicKey;
   String _name;
-  bool _shouldSave = false;
+  bool _shouldSave;
+
+  String publicKeyValidationResult;
 
   final _interactor = mainInjector.getDependency<EnterAddressBookEntryInteractor>();
-  final _keyValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
 
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
-  _EnterAddressBookEntryState(this.onProceed, this.isNameOptional);
-
-  @override
-  void initState() {
-    _loadAddresses();
-    super.initState();
+  _EnterAddressBookEntryState(this.onProceed, this.isNameOptional) {
+    isNameOptional ? _shouldSave = false : _shouldSave = true;
   }
 
   @override
@@ -76,7 +71,7 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
           validator: (value) =>
-              _shouldSave ? _keyValidationUtil.validatePublicKey(value, _addressBookKeys) : _keyValidationUtil.validatePublicKey(value, []),
+              _shouldSave ? publicKeyValidationResult : _interactor.validatePublicKeyFormat(value),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );
@@ -104,16 +99,19 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
         onPressed: _onProceed,
       );
 
-  _onProceed() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-
+  _onProceed() async {
+    _formKey.currentState.save();
+    if(_shouldSave)
+      await _validatePublicKey();
+    if (_formKey.currentState.validate())
       onProceed(context, _publicKey, _name);
-    }
   }
 
-  _loadAddresses() async {
-    final keys = await _interactor.obtainAddressBookKeys();
-    setState(() => _addressBookKeys = keys);
+  _validatePublicKey() async {
+    final validationResult = await _interactor.validatePublicKey(_publicKey);
+    if(validationResult != null)
+      setState(() => publicKeyValidationResult = validationResult);
+    else
+      setState(() => publicKeyValidationResult = null);
   }
 }
