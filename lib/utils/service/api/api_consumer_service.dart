@@ -16,7 +16,7 @@ class ApiConsumerService {
 
   Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
       .get(_uriFactory.createTransferUri(transactionHex))
-      .then((response) => _codeMapperUtil.genericCodeToStatus(_obtainTransferResponseCode(response.body)));
+      .then((response) => _codeMapperUtil.transferCodeToStatus(_obtainTransferResponseCode(response.body)));
 
   int _obtainTransferResponseCode(String response) =>
       jsonDecode(response)['result']['code'] as int;
@@ -32,7 +32,7 @@ class ApiConsumerService {
     else  if(responseStatus == ApiResponseStatus.ACCOUNT_NOT_FOUND)
       return ApiResponse(ApiResponseStatus.ACCOUNT_NOT_FOUND, null);
     else
-      return ApiResponse(ApiResponseStatus.FAILURE, null);
+      return ApiResponse(ApiResponseStatus.GENERIC_ERROR, null);
   }
 
   Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(String address) async {

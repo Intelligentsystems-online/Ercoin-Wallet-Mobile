@@ -94,15 +94,26 @@ class _TransferRouteState extends State<TransferRoute> {
       if(_formKey.currentState.validate()) {
         _formKey.currentState.save();
         setState(() => _isLoading = true);
-        final error = await _interactor.sendTransfer(destinationAddress, _message, _amount);
+        final transferResult = await _interactor.sendTransfer(destinationAddress, _message, _amount);
         setState(() => _isLoading = false);
-        if(error == ApiResponseStatus.FAILURE) {
-          setState(() => _isInsufficientFundsError = true);
-          _formKey.currentState.validate();
-        } else {
-          resetRoute(Navigator.of(context), () => HomeRoute());
-        }
+        _processTransferResult(transferResult);
       }
     },
   );
+
+  _processTransferResult(ApiResponseStatus result) {
+    if(result == ApiResponseStatus.INSUFFICIENT_FUNDS) {
+      setState(() => _isInsufficientFundsError = true);
+      _formKey.currentState.validate();
+    } else if(result == ApiResponseStatus.GENERIC_ERROR) {
+      _onTransferUnknownError();
+    }
+    else {
+      resetRoute(Navigator.of(context), () => HomeRoute());
+    }
+  }
+
+  _onTransferUnknownError() => Scaffold.of(context).showSnackBar(SnackBar(
+    content: const Text("Something went wrong, try again")
+  ));
 }

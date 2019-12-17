@@ -2,14 +2,27 @@ import 'package:ercoin_wallet/model/api_response_status.dart';
 
 class CodeMapperUtil {
   ApiResponseStatus accountCodeToStatus(int responseCode) {
-    if(responseCode == 0)
-      return ApiResponseStatus.SUCCESS;
-    else if(responseCode == 2)
-      return ApiResponseStatus.ACCOUNT_NOT_FOUND;
-    else
-      return ApiResponseStatus.FAILURE;
+    switch(responseCode) {
+      case 0:
+        return ApiResponseStatus.SUCCESS;
+      case 2:
+        return ApiResponseStatus.ACCOUNT_NOT_FOUND;
+      default:
+        return ApiResponseStatus.GENERIC_ERROR;
+    }
+  }
+
+  ApiResponseStatus transferCodeToStatus(int responseCode) {
+    switch(responseCode) {
+      case 0:
+        return ApiResponseStatus.SUCCESS;
+      case 4:
+        return ApiResponseStatus.INSUFFICIENT_FUNDS;
+      default:
+        return ApiResponseStatus.GENERIC_ERROR;
+    }
   }
 
   ApiResponseStatus genericCodeToStatus(int responseCode) =>
-      responseCode == 0 ? ApiResponseStatus.SUCCESS : ApiResponseStatus.FAILURE;
+      responseCode == 0 ? ApiResponseStatus.SUCCESS : ApiResponseStatus.GENERIC_ERROR;
 }
