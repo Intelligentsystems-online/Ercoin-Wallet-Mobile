@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/repository/DatabaseProvider.dart';
 import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
 
 import 'package:sqflite/sqflite.dart';
@@ -9,25 +8,19 @@ class AddressBookRepository
 {
   final _tableName = "AddressBook";
 
+  Database _database;
+
+  AddressBookRepository(this._database);
+
   Future<AddressBookEntry> createAddressBookEntry(String publicKey, String accountName) {
     AddressBookEntry address = AddressBookEntry(publicKey, accountName);
 
-    return DatabaseProvider
-        .databaseProvider
-        .databaseInstance
-        .then((database) => executeInsertQueryOn(database, address))
+    return _database
+        .insert(_tableName, address.toMap())
         .then((_) => address);
   }
 
-  Future<List<AddressBookEntry>> findAll() => DatabaseProvider
-      .databaseProvider
-      .databaseInstance
-      .then((database) => executeFindAllQueryOn(database));
-
-  Future<int> executeInsertQueryOn(Database database, AddressBookEntry address) => database
-      .insert(_tableName, address.toMap());
-
-  Future<List<AddressBookEntry>> executeFindAllQueryOn(Database database) => database
+  Future<List<AddressBookEntry>> findAll() => _database
       .query(_tableName)
       .then((response) => prepareEntryFrom(response));
 

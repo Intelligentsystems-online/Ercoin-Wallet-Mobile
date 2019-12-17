@@ -1,32 +1,36 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/repository/DatabaseProvider.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
+
+import 'package:sqflite/sqflite.dart';
 
 class AccountRepository
 {
+  static final _tableName = "Account";
+
+  final Database _database;
+
+  AccountRepository(this._database);
+
   Future<Account> createAccount(String publicKey, String privateKey, String accountName) {
     final account = Account(publicKey, privateKey, accountName);
 
-    return DatabaseProvider
-        .databaseProvider
-        .databaseInstance
-        .then((database) => database.insert("Account", account.toMap()))
+    return _database
+        .insert(_tableName, account.toMap())
         .then((_) => account);
   }
-  Future<List<Account>> findAll() async {
-    final database = await DatabaseProvider.databaseProvider.databaseInstance;
 
-    var response = await database.query("Account");
-
-    return response.isNotEmpty ? response.map((account) => Account.fromMap(account)).toList() : [];
-  }
+  Future<List<Account>> findAll() async => _database
+      .query(_tableName)
+      .then((response) => _prepareEntryFrom(response));
 
   Future<Account> findByPublicKey(String publicKey) async {
-    final database = await DatabaseProvider.databaseProvider.databaseInstance;
-
-    var response = await  database.query("Account", where: "publicKey = ?", whereArgs: [publicKey]);
+    final response = await _database
+        .query("Account", where: "publicKey = ?", whereArgs: [publicKey]);
 
     return response.isNotEmpty ? Account.fromMap(response.first) : Null;
   }
+
+  List<Account> _prepareEntryFrom(List<Map<String, dynamic>> response) =>
+      response.isNotEmpty ? response.map((account) => Account.fromMap(account)).toList() : [];
 }
