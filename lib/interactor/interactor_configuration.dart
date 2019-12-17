@@ -11,6 +11,7 @@ import 'package:ercoin_wallet/interactor/transfer/select_destination/select_tran
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/utils/service/account/account_service.dart';
 import 'package:ercoin_wallet/utils/service/account/active_account_service.dart';
+import 'package:ercoin_wallet/utils/service/account/common_account_util.dart';
 import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/service/file/file_util.dart';

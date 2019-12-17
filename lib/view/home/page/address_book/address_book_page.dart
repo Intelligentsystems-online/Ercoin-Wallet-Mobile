@@ -3,8 +3,9 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
 import 'package:ercoin_wallet/utils/view/address_book_entry_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/address_book_entry_list.dart';
-import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/enter_address/enter_address_route.dart';
@@ -12,10 +13,22 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 
-class AddressBookPage extends StatelessWidget {
+class AddressBookPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _AddressBookPageState();
+}
+
+class _AddressBookPageState extends State<AddressBookPage> {
+  List<AddressBookEntry> _addressBookEntries;
+
   final _interactor = mainInjector.getDependency<AddressBookInteractor>();
+
+  @override
+  void initState() {
+    _loadAddressBookEntries();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) => TopAndBottomContainer(
@@ -24,13 +37,32 @@ class AddressBookPage extends StatelessWidget {
     bottomAlignment: FractionalOffset.bottomRight,
   );
 
-  Widget _addressListBuilder(BuildContext ctx) => FutureBuilderWithProgress(
-        future: _interactor.obtainAddressBookEntries(),
-        builder: (List<AddressBookEntry> addressBookEntries) => AddressBookEntryList(
-          addresseBookEntries: addressBookEntries,
-          onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address),
-        ),
-      );
+  Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
+    overlayEnabled: _addressBookEntries == null,
+    child: SearchableList(
+      onSearchChanged: (value) => _onSearchChanged(value),
+      listWidget: AddressBookEntryList(
+          addresseBookEntries: _addressBookEntries == null ? [] : _addressBookEntries,
+          onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
+      ),
+    )
+  );
+
+  _onSearchChanged(String value) {
+    if(_addressBookEntries != null) {
+      value.isEmpty ? _loadAddressBookEntries() : _loadFilteredAddressBookEntries(value);
+    }
+  }
+
+  _loadFilteredAddressBookEntries(String name) async {
+    final filteredEntries = await _interactor.obtainAddressBookEntriesByName(name);
+    setState(() => _addressBookEntries = filteredEntries);
+  }
+
+  _loadAddressBookEntries() async {
+    final obtainedEntries = await _interactor.obtainAddressBookEntries();
+    setState(() => _addressBookEntries = obtainedEntries);
+  }
 
   _onAddressPressed(BuildContext ctx, AddressBookEntry address) =>
       showDialog(context: ctx, builder: (ctx) => _prepareAlertDialog(ctx, address));

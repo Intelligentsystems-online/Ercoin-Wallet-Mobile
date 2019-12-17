@@ -27,7 +27,7 @@ class AccountList extends StatelessWidget {
     )
   );
 
-  Widget _accountNameLabel(Account account) => Text(account.accountName);
+  Widget _accountNameLabel(Account account) => Text(account.name);
 
   Widget _accountBalanceLabel(AccountInfo accountInfo) =>
       Text(accountInfo.balance.toString() + " ERC");

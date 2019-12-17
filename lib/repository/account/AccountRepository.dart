@@ -1,32 +1,39 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/repository/DatabaseProvider.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
+import 'package:ercoin_wallet/repository/table/account_table.dart';
+
+import 'package:sqflite/sqflite.dart';
 
 class AccountRepository
 {
+  final Database _database;
+
+  AccountRepository(this._database);
+
   Future<Account> createAccount(String publicKey, String privateKey, String accountName) {
     final account = Account(publicKey, privateKey, accountName);
 
-    return DatabaseProvider
-        .databaseProvider
-        .databaseInstance
-        .then((database) => database.insert("Account", account.toMap()))
+    return _database
+        .insert(AccountTable.tableName, account.toMap())
         .then((_) => account);
   }
-  Future<List<Account>> findAll() async {
-    final database = await DatabaseProvider.databaseProvider.databaseInstance;
 
-    var response = await database.query("Account");
-
-    return response.isNotEmpty ? response.map((account) => Account.fromMap(account)).toList() : [];
-  }
+  Future<List<Account>> findAll() async => _database
+      .query(AccountTable.tableName)
+      .then((response) => _prepareEntryFrom(response));
 
   Future<Account> findByPublicKey(String publicKey) async {
-    final database = await DatabaseProvider.databaseProvider.databaseInstance;
-
-    var response = await  database.query("Account", where: "publicKey = ?", whereArgs: [publicKey]);
+    final response = await _database
+        .query(AccountTable.tableName, where: "${AccountTable.publicKeyProperty} = ?", whereArgs: [publicKey]);
 
     return response.isNotEmpty ? Account.fromMap(response.first) : Null;
   }
+
+  Future<List<Account>> findByNameContains(String value) => _database
+      .query(AccountTable.tableName, where: "${AccountTable.nameProperty} LIKE ?", whereArgs: ["%$value%"])
+      .then((response) => _prepareEntryFrom(response));
+
+  List<Account> _prepareEntryFrom(List<Map<String, dynamic>> response) =>
+      response.isNotEmpty ? response.map((account) => Account.fromMap(account)).toList() : [];
 }

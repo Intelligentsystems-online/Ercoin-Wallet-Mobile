@@ -33,6 +33,13 @@ class AccountService {
     return _commonAccountUtil.obtainAccountInfoFrom(apiResponse, account);
   }
 
+  Future<List<AccountInfo>> obtainAccountsInfoByNameLike(String name) async {
+    final accounts = await _accountRepository.findByNameContains(name);
+    final futureAccounts = accounts.map((account) => _toAccountInfo(account));
+
+    return await Future.wait(futureAccounts);
+  }
+
   Future<Account> saveAccount(String publicKey, String privateKey, String accountName) =>
       _accountRepository.createAccount(publicKey, privateKey, accountName);
 

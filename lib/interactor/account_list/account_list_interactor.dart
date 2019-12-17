@@ -15,4 +15,6 @@ class AccountListInteractor {
   Future<String> obtainActiveAccountPk() => _activeAccountService.obtainActiveAccountPk();
 
   Future<void> activateAccount(String publicKey) => _activeAccountService.activateAccount(publicKey);
+
+  Future<List<AccountInfo>> obtainAccountsInfoByName(String value) => _accountService.obtainAccountsInfoByNameLike(value);
 }

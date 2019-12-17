@@ -17,8 +17,8 @@ import 'package:injector/injector.dart';
 
 final Injector mainInjector = Injector();
 
-void main() {
-  RepositoryConfiguration.configure(mainInjector);
+void main() async {
+  await RepositoryConfiguration.configure(mainInjector);
   ServiceUtilsConfiguration.configure(mainInjector);
   InteractorConfiguration.configure(mainInjector);
 
@@ -26,13 +26,13 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  final AccountRepository accountRepository = AccountRepository();
+  final _accountRepository = mainInjector.getDependency<AccountRepository>();
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         home: Scaffold(
           body: FutureBuilderWithProgress(
-            future: accountRepository.findAll(),
+            future: _accountRepository.findAll(),
             builder: (List<Account> accounts) {
               return accounts.isEmpty ? _onNewUser() : HomeRoute();
             },

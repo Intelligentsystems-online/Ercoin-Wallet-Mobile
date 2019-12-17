@@ -1,17 +1,17 @@
 class AddressBookEntry
 {
   final String publicKey;
-  final String accountName;
+  final String name;
 
-  AddressBookEntry(this.publicKey, this.accountName);
+  AddressBookEntry(this.publicKey, this.name);
 
   factory AddressBookEntry.fromMap(Map<String, dynamic> json) => AddressBookEntry(
     json['publicKey'],
-    json['accountName']
+    json['name']
   );
 
   Map<String, dynamic> toMap() => {
     'publicKey' : publicKey,
-    'accountName' : accountName
+    'name' : name
   };
 }
