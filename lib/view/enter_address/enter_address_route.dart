@@ -1,6 +1,5 @@
 import 'package:ercoin_wallet/interactor/enter_address_book_entry/enter_address_book_entry_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -11,17 +10,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
-class EnterAddressBookEntryRoute extends StatefulWidget {
+class EnterAddressRoute extends StatefulWidget {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
-  const EnterAddressBookEntryRoute({@required this.onProceed, @required this.isNameOptional});
+  const EnterAddressRoute({@required this.onProceed, @required this.isNameOptional});
 
   @override
-  State<StatefulWidget> createState() => _EnterAddressBookEntryState(onProceed, isNameOptional);
+  State<StatefulWidget> createState() => _EnterAddressState(onProceed, isNameOptional);
 }
 
-class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
+class _EnterAddressState extends State<EnterAddressRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
   String _publicKey;
@@ -35,7 +34,7 @@ class _EnterAddressBookEntryState extends State<EnterAddressBookEntryRoute> {
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
-  _EnterAddressBookEntryState(this.onProceed, this.isNameOptional) {
+  _EnterAddressState(this.onProceed, this.isNameOptional) {
     isNameOptional ? _shouldSave = false : _shouldSave = true;
   }
 
