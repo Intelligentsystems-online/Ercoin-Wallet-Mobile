@@ -50,7 +50,7 @@ class AccountInfoPage extends StatelessWidget {
   Widget _accountNameRow(AccountInfo info) => Row(children: <Widget>[
         const Icon(Icons.account_circle),
         const SizedBox(width: 8.0),
-        Text(info.account.accountName, style: const TextStyle(fontWeight: FontWeight.bold))
+        Text(info.account.name, style: const TextStyle(fontWeight: FontWeight.bold))
       ]);
 
   Widget _accountAddressRow(AccountInfo info) => Row(children: <Widget>[

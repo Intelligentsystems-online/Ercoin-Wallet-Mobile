@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/repository/account/Account.dart';
+import 'package:ercoin_wallet/repository/table/account_table.dart';
 
 import 'package:sqflite/sqflite.dart';
 
 class AccountRepository
 {
-  static final _tableName = "Account";
-
   final Database _database;
 
   AccountRepository(this._database);
@@ -16,17 +15,17 @@ class AccountRepository
     final account = Account(publicKey, privateKey, accountName);
 
     return _database
-        .insert(_tableName, account.toMap())
+        .insert(AccountTable.tableName, account.toMap())
         .then((_) => account);
   }
 
   Future<List<Account>> findAll() async => _database
-      .query(_tableName)
+      .query(AccountTable.tableName)
       .then((response) => _prepareEntryFrom(response));
 
   Future<Account> findByPublicKey(String publicKey) async {
     final response = await _database
-        .query("Account", where: "publicKey = ?", whereArgs: [publicKey]);
+        .query(AccountTable.tableName, where: "${AccountTable.publicKeyField} = ?", whereArgs: [publicKey]);
 
     return response.isNotEmpty ? Account.fromMap(response.first) : Null;
   }

@@ -40,7 +40,7 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
               onSearchChanged: (value) => _onSearchChanged(value),
               listWidget: AddressBookEntryList(
                 addresseBookEntries: _addressBookEntries == null ? [] : _addressBookEntries,
-                onAddressPressed: (ctx, address) => _selectDestination(ctx, address.publicKey, address.accountName),
+                onAddressPressed: (ctx, address) => _selectDestination(ctx, address.publicKey, address.name),
               ),
             ),
             bottom: ExpandedRaisedTextButton(

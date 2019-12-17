@@ -21,7 +21,7 @@ class AddressBookService {
   }
 
   _contains(String value, AddressBookEntry entry) => entry
-      .accountName
+      .name
       .toLowerCase()
       .contains(value.toLowerCase());
 }

@@ -21,7 +21,7 @@ class AddressBookEntryList extends StatelessWidget {
     child: Card(
       child: ListTile(
         leading: Icon(Icons.person, color: Colors.blue),
-        title: Text(address.accountName)
+        title: Text(address.name)
       ),
     )
   );

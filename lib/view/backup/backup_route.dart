@@ -30,7 +30,7 @@ class BackupRoute extends StatelessWidget {
             children: <Widget>[
               const Text("Write down following keys:"),
               Padding(padding: standardColumnSpacing),
-              _box(name: "Account name", value: account.accountName),
+              _box(name: "Account name", value: account.name),
               Padding(padding: standardColumnSpacing),
               _box(name: "Public key", value: account.publicKey),
               Padding(padding: standardColumnSpacing),

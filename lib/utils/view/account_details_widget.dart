@@ -12,7 +12,7 @@ class AccountDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => Column(
     children: <Widget>[
-      Text("Name: " + accountInfo.account.accountName),
+      Text("Name: " + accountInfo.account.name),
       Text("Public key: " + accountInfo.account.publicKey),
       Text("Balance: " + accountInfo.balance.toString()),
       Row(

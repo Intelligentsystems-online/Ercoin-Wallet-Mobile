@@ -2,18 +2,18 @@ class Account
 {
   final String publicKey;
   final String privateKey;
-  final String accountName;
+  final String name;
 
-  Account(this.publicKey, this.privateKey, this.accountName);
+  Account(this.publicKey, this.privateKey, this.name);
 
   factory Account.fromMap(Map<String, dynamic> json) => new Account(
     json["publicKey"],
     json["privateKey"],
-    json["accountName"]);
+    json["name"]);
 
   Map<String, dynamic> toMap() => {
     'publicKey' : publicKey,
     'privateKey' : privateKey,
-    'accountName' : accountName
+    'name' : name
   };
 }

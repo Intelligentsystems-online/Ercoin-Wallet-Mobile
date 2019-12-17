@@ -35,7 +35,7 @@ class CommonAccountUtil {
 
   _contains(String value, AccountInfo account) => account
       .account
-      .accountName
+      .name
       .toLowerCase()
       .contains(value.toLowerCase());
 

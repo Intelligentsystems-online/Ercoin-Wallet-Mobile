@@ -11,7 +11,7 @@ class AddressBookEntryDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => Column(
     children: <Widget>[
-      Text("Name: ${addressBookEntry.accountName}"),
+      Text("Name: ${addressBookEntry.name}"),
       Text("Address: ${addressBookEntry.publicKey}"),
       _closeBtn(ctx)
     ]
