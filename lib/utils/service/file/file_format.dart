@@ -1,0 +1,4 @@
+enum FileFormat {
+  TXT,
+  JSON
+}

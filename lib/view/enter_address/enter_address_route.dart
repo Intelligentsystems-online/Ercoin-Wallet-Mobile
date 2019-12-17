@@ -1,43 +1,42 @@
-import 'dart:async';
-
+import 'package:ercoin_wallet/interactor/enter_address_book_entry/enter_address_book_entry_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
-import 'package:ercoin_wallet/utils/view/values.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:injector/injector.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
-class EnterAddressBookRoute extends StatefulWidget {
+class EnterAddressRoute extends StatefulWidget {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
 
-  const EnterAddressBookRoute({@required this.onProceed, @required this.isNameOptional});
+  const EnterAddressRoute({@required this.onProceed, @required this.isNameOptional});
 
   @override
-  State<StatefulWidget> createState() => _EnterAddressBookState(onProceed, isNameOptional);
+  State<StatefulWidget> createState() => _EnterAddressState(onProceed, isNameOptional);
 }
 
-class _EnterAddressBookState extends State<EnterAddressBookRoute> {
+class _EnterAddressState extends State<EnterAddressRoute> {
   final Function(BuildContext, String, String) onProceed;
   final bool isNameOptional;
-
   String _publicKey;
   String _name;
-  bool _shouldSave = false;
+  bool _shouldSave;
 
-  final _keyValidationUtil = mainInjector.getDependency<KeysValidationUtil>();
+  String _publicKeyValidationResult;
+
+  final _interactor = mainInjector.getDependency<EnterAddressBookEntryInteractor>();
 
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
-  _EnterAddressBookState(this.onProceed, this.isNameOptional);
+  _EnterAddressState(this.onProceed, this.isNameOptional) {
+    isNameOptional ? _shouldSave = false : _shouldSave = true;
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -70,7 +69,8 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
           hintText: "Public key",
           icon: const Icon(Icons.vpn_key),
           controller: _publicKeyController,
-          validator: (value) => _keyValidationUtil.validatePublicKey(value),
+          validator: (value) =>
+              _shouldSave ? _publicKeyValidationResult : _interactor.validatePublicKeyFormat(value),
           onSaved: (value) => setState(() => _publicKey = value),
         ),
       );
@@ -98,11 +98,19 @@ class _EnterAddressBookState extends State<EnterAddressBookRoute> {
         onPressed: _onProceed,
       );
 
-  _onProceed() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-
+  _onProceed() async {
+    _formKey.currentState.save();
+    if(_shouldSave)
+      await _validatePublicKey();
+    if (_formKey.currentState.validate())
       onProceed(context, _publicKey, _name);
-    }
+  }
+
+  _validatePublicKey() async {
+    final validationResult = await _interactor.validatePublicKey(_publicKey);
+    if(validationResult != null)
+      setState(() => _publicKeyValidationResult = validationResult);
+    else
+      setState(() => _publicKeyValidationResult = null);
   }
 }

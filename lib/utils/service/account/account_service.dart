@@ -18,6 +18,8 @@ class AccountService {
 
   AccountService(this._commonAccountUtil, this._accountRepository, this._apiConsumerService, this._keyGenerator);
 
+  Future<List<Account>> obtainAccounts() => _accountRepository.findAll();
+
   Future<List<AccountInfo>> obtainAccountsInfo() async {
     final accounts = await _accountRepository.findAll();
     final futureAccounts = accounts.map((account) => _toAccountInfo(account));

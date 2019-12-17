@@ -1,12 +1,14 @@
 class KeysValidationUtil {
-  static final publicKeyType = "public key";
-  static final privateKeyType = "private key";
+  static final _publicKeyType = "public key";
+  static final _privateKeyType = "private key";
+  static final _publicKeyLength = 64;
+  static final _privateKeyLength = 128;
 
   final _regExp = RegExp("^[0-9a-f]+\$", caseSensitive: false);
 
-  validatePublicKey(String publicKey) => _validateKey(publicKey, publicKeyType, 64);
+  validatePublicKey(String publicKey) => _validateKey(publicKey, _publicKeyType, _publicKeyLength);
 
-  validatePrivateKey(String privateKey) => _validateKey(privateKey, privateKeyType, 128);
+  validatePrivateKey(String privateKey) => _validateKey(privateKey, _privateKeyType, _privateKeyLength);
 
   _validateKey(String key, String keyType, int length) {
     if(key.isEmpty)

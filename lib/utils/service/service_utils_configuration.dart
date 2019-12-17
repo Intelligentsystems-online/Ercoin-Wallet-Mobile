@@ -12,6 +12,7 @@ import 'package:ercoin_wallet/utils/service/common/date_util.dart';
 import 'package:ercoin_wallet/utils/service/common/key_generator.dart';
 import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
 import 'package:ercoin_wallet/utils/service/common/shared_preferences_util.dart';
+import 'package:ercoin_wallet/utils/service/file/file_util.dart';
 import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_decode_service.dart';
 import 'package:ercoin_wallet/utils/service/transaction/transaction_encode_service.dart';
@@ -21,11 +22,16 @@ import 'package:injector/injector.dart';
 
 class ServiceUtilsConfiguration {
   static configure(Injector injector) {
+    _configureFile(injector);
     _configureCommon(injector);
     _configureApi(injector);
     _configureAccount(injector);
     _configureAddress(injector);
     _configureTransaction(injector);
+  }
+
+  static _configureFile(Injector injector) {
+    injector.registerSingleton<FileUtil>((_) => FileUtil());
   }
 
   static _configureCommon(Injector injector) {
