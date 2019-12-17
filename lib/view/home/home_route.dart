@@ -7,9 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeRoute extends StatefulWidget {
-  int initialPageIndex = 0;
+  int initialPageIndex;
 
-  HomeRoute({this.initialPageIndex});
+  HomeRoute({this.initialPageIndex}) {
+    if(initialPageIndex == null)
+      initialPageIndex = 0;
+  }
 
   @override
   State<StatefulWidget> createState() => HomeRouteState(this.initialPageIndex);
