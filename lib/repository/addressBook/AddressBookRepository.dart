@@ -21,8 +21,12 @@ class AddressBookRepository
 
   Future<List<AddressBookEntry>> findAll() => _database
       .query(AddressBookTable.tableName)
-      .then((response) => prepareEntryFrom(response));
+      .then((response) => _prepareEntryFrom(response));
 
-  List<AddressBookEntry> prepareEntryFrom(List<Map<String, dynamic>> response) =>
+  Future<List<AddressBookEntry>> findByNameLike(String value) => _database
+      .query(AddressBookTable.tableName, where: "${AddressBookTable.nameField} LIKE '%$value%'")
+      .then((response) => _prepareEntryFrom(response));
+
+  List<AddressBookEntry> _prepareEntryFrom(List<Map<String, dynamic>> response) =>
       response.isNotEmpty ? response.map((address) => AddressBookEntry.fromMap(address)).toList() : [];
 }

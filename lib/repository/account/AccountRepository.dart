@@ -30,6 +30,10 @@ class AccountRepository
     return response.isNotEmpty ? Account.fromMap(response.first) : Null;
   }
 
+  Future<List<Account>> findByNameLike(String value) => _database
+      .query(AccountTable.tableName, where: "${AccountTable.nameField} LIKE '%$value%'")
+      .then((response) => _prepareEntryFrom(response));
+
   List<Account> _prepareEntryFrom(List<Map<String, dynamic>> response) =>
       response.isNotEmpty ? response.map((account) => Account.fromMap(account)).toList() : [];
 }

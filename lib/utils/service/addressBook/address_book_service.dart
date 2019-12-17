@@ -12,16 +12,5 @@ class AddressBookService {
 
   Future<AddressBookEntry> addAddressBookEntry(String publicKey, String accountName) => _addressBookRepository.createAddressBookEntry(publicKey, accountName);
 
-  Future<List<AddressBookEntry>> obtainAddressBookEntriesByName(String name) async {
-    final entries = await _addressBookRepository.findAll();
-
-    return entries
-        .where((entry) => _contains(name, entry))
-        .toList();
-  }
-
-  _contains(String value, AddressBookEntry entry) => entry
-      .name
-      .toLowerCase()
-      .contains(value.toLowerCase());
+  Future<List<AddressBookEntry>> obtainAddressBookEntriesByName(String name) => _addressBookRepository.findByNameLike(name);
 }

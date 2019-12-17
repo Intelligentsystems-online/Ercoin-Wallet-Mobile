@@ -24,8 +24,7 @@ class InteractorConfiguration {
     ));
     injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
       injector.getDependency<AccountService>(),
-      injector.getDependency<ActiveAccountService>(),
-      injector.getDependency<CommonAccountUtil>()
+      injector.getDependency<ActiveAccountService>()
     ));
     injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
       injector.getDependency<AccountService>()
