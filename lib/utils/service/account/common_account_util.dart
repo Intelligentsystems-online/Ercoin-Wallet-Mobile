@@ -29,16 +29,6 @@ class CommonAccountUtil {
     return _ridOfMicroPrefixFrom(microErcoinAmount);
   }
 
-  List<AccountInfo> filterAccountsInfoBy(String value, List<AccountInfo> accounts) => accounts
-      .where((account) => _contains(value, account))
-      .toList();
-
-  _contains(String value, AccountInfo account) => account
-      .account
-      .name
-      .toLowerCase()
-      .contains(value.toLowerCase());
-
   Uint8List _balanceBytesFrom(Uint8List accountDataBytes) => accountDataBytes.sublist(4, 12);
 
   double _ridOfMicroPrefixFrom(int amount) => amount / 1000000;
