@@ -11,7 +11,7 @@ class SearchableList extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     children: <Widget>[
       StandardSearchTextField((value) => onSearchChanged(value)),
-      Flexible(child: listWidget)
+      Expanded(child: listWidget)
     ],
   );
 }

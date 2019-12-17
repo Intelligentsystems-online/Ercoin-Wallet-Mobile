@@ -32,7 +32,7 @@ class AccountService {
   }
 
   Future<List<AccountInfo>> obtainAccountsInfoByNameLike(String name) async {
-    final accounts = await _accountRepository.findByNameLike(name);
+    final accounts = await _accountRepository.findByNameContains(name);
     final futureAccounts = accounts.map((account) => _toAccountInfo(account));
 
     return await Future.wait(futureAccounts);

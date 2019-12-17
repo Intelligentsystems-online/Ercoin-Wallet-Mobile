@@ -30,8 +30,8 @@ class AccountRepository
     return response.isNotEmpty ? Account.fromMap(response.first) : Null;
   }
 
-  Future<List<Account>> findByNameLike(String value) => _database
-      .query(AccountTable.tableName, where: "${AccountTable.nameProperty} LIKE '%$value%'")
+  Future<List<Account>> findByNameContains(String value) => _database
+      .query(AccountTable.tableName, where: "${AccountTable.nameProperty} LIKE ?", whereArgs: ["%$value%"])
       .then((response) => _prepareEntryFrom(response));
 
   List<Account> _prepareEntryFrom(List<Map<String, dynamic>> response) =>
