@@ -1,5 +1,6 @@
-import 'package:ercoin_wallet/model/address.dart';
-import 'package:ercoin_wallet/model/named_address.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/named_address.dart';
+import 'package:sqflite/sqflite.dart';
 
 class NamedAddressDb {
   static const tableName = "NamedAddress";
@@ -10,16 +11,20 @@ class NamedAddressDb {
       "$publicKeyRow varchar(${Address.requiredPublicKeyLength}) PRIMARY KEY, " +
       "$nameRow varchar(255));";
 
-  static const whereNameLikeClause =
-      "WHERE $nameRow LIKE ?";
-
-  static Map<String, dynamic> serialize(NamedAddress data) => {
-        publicKeyRow: data.address.publicKey,
-        nameRow: data.name,
-      };
-
-  static NamedAddress deserialize(Map<String, dynamic> data) => NamedAddress(
-        address: Address(publicKey: data[publicKeyRow]),
-        name: data[nameRow],
-      );
+  static const _whereNameLikeClause = "WHERE $nameRow LIKE ?";
+  static const _wherePublicKeyIsClause = "WHERE $publicKeyRow = ?";
+  
+  final Database _db;
+  
+  const NamedAddressDb(this._db);
+  
+  Future insert(Map<String, dynamic> data) async => await _db.insert(tableName, data);
+  
+  Future queryAll() async => await _db.query(tableName);
+  
+  Future queryByNameContains(String value) async => 
+      await _db.query(tableName, where: _whereNameLikeClause, whereArgs: ["%$value%"]);
+  
+  Future queryByPublicKey(String publicKey) async =>
+      await _db.query(tableName, where: _wherePublicKeyIsClause, whereArgs: [publicKey]);
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/address.dart';
-import 'package:ercoin_wallet/model/named_address.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/repository/named_address/named_address_repository.dart';
 
 class NamedAddressService {
@@ -16,4 +16,7 @@ class NamedAddressService {
 
   Future<List<NamedAddress>> obtainListByNameContains(String name) async =>
       await _repository.findByNameContains(name);
+
+  Future<NamedAddress> obtainByAddressOrNull(Address address) async =>
+      await _repository.findByAddressOrNull(address);
 }

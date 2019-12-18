@@ -1,6 +1,6 @@
 import 'package:convert/convert.dart';
-import 'package:ercoin_wallet/model/address.dart';
-import 'package:ercoin_wallet/model/private_key.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
 

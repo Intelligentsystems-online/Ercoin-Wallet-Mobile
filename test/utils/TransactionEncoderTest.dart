@@ -42,7 +42,7 @@ void main() {
   });
 
   test('Should correctly convert transaction bytes to hex', () {
-    var encodedTransactionHex = _transactionEncoder.convertTransactionBytesToHex(Uint8List.fromList(_transactionBytes));
+    var encodedTransactionHex = _transactionEncoder.convertTransferBytesToHex(Uint8List.fromList(_transactionBytes));
 
     expect(encodedTransactionHex, _transactionHex);
   });

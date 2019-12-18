@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ercoin_wallet/utils/service/file/file_format.dart';
+import 'package:ercoin_wallet/model/file/file_format.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as pathService;
 
-class FileUtil {
+class JsonFileService {
   Future<Map<String, dynamic>> readAsJson(String path) async {
     if(_isCorrectFormat(path)) {
       final content = await File(path).readAsString();

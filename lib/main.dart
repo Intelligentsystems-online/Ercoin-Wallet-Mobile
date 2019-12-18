@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/repository/account/local_account_repository.dart';
-import 'package:ercoin_wallet/repository/repository_configuration.dart';
+import 'package:ercoin_wallet/configuration/repositories_configuration.dart';
 import 'package:ercoin_wallet/utils/service/service_utils_configuration.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -18,7 +18,7 @@ import 'package:injector/injector.dart';
 final Injector mainInjector = Injector();
 
 void main() async {
-  await RepositoryConfiguration.configure(mainInjector);
+  await RepositoriesConfiguration.configure(mainInjector);
   ServiceUtilsConfiguration.configure(mainInjector);
   InteractorConfiguration.configure(mainInjector);
 

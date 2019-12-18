@@ -1,59 +1,57 @@
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/coins_amount.dart';
 
 // TODO(Refactor)
 class TransferDataDecodingService
 {
-  Uint8List convertTransactionHexToBytes(String transactionHex) => hex.decode(transactionHex);
+  Uint8List convertTransferHexToBytes(String transactionHex) => hex.decode(transactionHex);
 
-  String obtainReceiverAddress(Uint8List transactionBytes) => hex.encode(_receiverAddressBytesFrom(transactionBytes));
+  Address obtainToAddress(Uint8List transferBytes) =>
+      Address(publicKey: hex.encode(_obtainToAddressBytes(transferBytes)));
 
-  int obtainTimestampValue(Uint8List transactionBytes) {
-    ByteBuffer buffer = _timestampBytesFrom(transactionBytes).buffer;
-
-    return ByteData
-        .view(buffer)
-        .getInt32(0);
+  DateTime obtainTimestamp(Uint8List transferBytes) {
+    ByteBuffer buffer = _obtainTimestampBytes(transferBytes).buffer;
+    return DateTime.fromMillisecondsSinceEpoch(ByteData.view(buffer).getInt32(0) * 1000);
   }
 
-  int obtainTransactionValue(Uint8List transactionBytes) {
-    ByteBuffer buffer = _transactionValueBytesFrom(transactionBytes).buffer;
-
-    return ByteData
-        .view(buffer)
-        .getInt64(0);
+  CoinsAmount obtainCoinsAmount(Uint8List transferBytes) {
+    ByteBuffer buffer = _obtainCoinsAmountBytes(transferBytes).buffer;
+    return CoinsAmount.ofMicroErcoin(ByteData.view(buffer).getInt64(0));
   }
 
-  int obtainMessageLength(Uint8List transactionBytes) => transactionBytes.elementAt(45);
+  int obtainMessageLength(Uint8List transferBytes) => transferBytes.elementAt(45);
 
-  String obtainMessage(Uint8List transactionBytes, int messageLength) =>
-      messageLength == 0 ? "" : String.fromCharCodes(_messageBytesFrom(transactionBytes, messageLength));
+  String obtainMessage(Uint8List transferBytes, int messageLength) =>
+      messageLength == 0 ? "" : String.fromCharCodes(_obtainMessageBytes(transferBytes, messageLength));
 
-  String obtainSenderAddress(Uint8List transactionBytes, int messageLength) => hex.encode(_senderAddressBytesFrom(transactionBytes, messageLength));
+  Address obtainFromAddress(Uint8List transferBytes, int messageLength) =>
+      Address(publicKey: hex.encode(_obtainFromAddressBytes(transferBytes, messageLength)));
 
-  Uint8List _timestampBytesFrom(Uint8List transactionBytes) => transactionBytes.sublist(1, 5);
+  Uint8List _obtainTimestampBytes(Uint8List transferBytes) => transferBytes.sublist(1, 5);
 
-  Uint8List _receiverAddressBytesFrom(Uint8List transactionBytes) => transactionBytes.sublist(5, 37);
+  Uint8List _obtainToAddressBytes(Uint8List transferBytes) => transferBytes.sublist(5, 37);
 
-  Uint8List _transactionValueBytesFrom(Uint8List transactionBytes) => transactionBytes.sublist(37, 45);
+  Uint8List _obtainCoinsAmountBytes(Uint8List transferBytes) => transferBytes.sublist(37, 45);
 
-  Uint8List _messageBytesFrom(Uint8List transactionBytes, int messageLength) {
+  Uint8List _obtainMessageBytes(Uint8List transferBytes, int messageLength) {
     if(messageLength == 0)
       return Uint8List(0);
     else if(messageLength == 1)
-      return Uint8List.fromList([transactionBytes.elementAt(46)]);
+      return Uint8List.fromList([transferBytes.elementAt(46)]);
     else
-      return transactionBytes.sublist(46, 46 + messageLength);
+      return transferBytes.sublist(46, 46 + messageLength);
   }
 
   //TODO establishment: one public key always used to sign.
-  Uint8List _senderAddressBytesFrom(Uint8List transactionBytes, int messageLength) {
+  Uint8List _obtainFromAddressBytes(Uint8List transferBytes, int messageLength) {
     if(messageLength == 0)
-      return transactionBytes.sublist(47, 79); // 40, 71
+      return transferBytes.sublist(47, 79); // 40, 71
     else if(messageLength == 1)
-      return transactionBytes.sublist(48, 80); // 40, 72
+      return transferBytes.sublist(48, 80); // 40, 72
     else
-      return transactionBytes.sublist(47 + messageLength, 79 + messageLength);
+      return transferBytes.sublist(47 + messageLength, 79 + messageLength);
   }
 }

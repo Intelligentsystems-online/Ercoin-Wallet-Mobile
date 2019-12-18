@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
 import 'package:ercoin_wallet/utils/service/account/local_account_service.dart';
-import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
-import 'package:ercoin_wallet/utils/service/file/file_util.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_format_validator_service.dart';
+import 'package:ercoin_wallet/utils/service/file/json_file_service.dart';
 
 class ImportAccountInteractor {
   final AccountService _accountService;

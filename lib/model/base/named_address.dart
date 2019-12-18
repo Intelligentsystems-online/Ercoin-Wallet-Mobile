@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/model/address.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:flutter/cupertino.dart';
 
 @immutable

@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
 
-class CodeMapperUtil {
+class ApiResponseStatusDecoderService {
   ApiResponseStatus accountCodeToStatus(int responseCode) {
     switch(responseCode) {
       case 0:

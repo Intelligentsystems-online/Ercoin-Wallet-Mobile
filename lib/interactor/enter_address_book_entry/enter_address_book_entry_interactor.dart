@@ -1,6 +1,6 @@
 import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
 import 'package:ercoin_wallet/utils/service/addressBook/named_address_service.dart';
-import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_format_validator_service.dart';
 
 class EnterAddressBookEntryInteractor {
   final AddressBookService _addressBookService;

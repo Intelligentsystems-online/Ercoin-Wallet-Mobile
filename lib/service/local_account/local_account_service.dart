@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/address.dart';
-import 'package:ercoin_wallet/model/local_account.dart';
-import 'package:ercoin_wallet/model/local_account_details.dart';
-import 'package:ercoin_wallet/model/private_key.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
+import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
+import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
 import 'package:ercoin_wallet/service/local_account/api/local_account_api_service.dart';
 

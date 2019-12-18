@@ -10,7 +10,7 @@ void main() {
   final _transactionDecoder = TransactionDecodeService();
 
   test('Should correctly obtain timestamp', () {
-    var timestampValue = _transactionDecoder.obtainTimestampValue(_transactionBytes);
+    var timestampValue = _transactionDecoder.obtainTimestamp(_transactionBytes);
 
     expect(timestampValue, 1574182023);
   });
@@ -34,7 +34,7 @@ void main() {
   });
 
   test('Should corretly obtain sender address', () {
-    var senderAddressValue = _transactionDecoder.obtainSenderAddress(_transactionBytes, _messageLength);
+    var senderAddressValue = _transactionDecoder.obtainFromAddress(_transactionBytes, _messageLength);
 
     expect(senderAddressValue, "0b5d53e76f56fe2ef0ab133b8c5012b47fbf6e3719794ce6dc4ae683c69823c7");
   });

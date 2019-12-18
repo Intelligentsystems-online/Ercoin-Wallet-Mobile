@@ -2,7 +2,7 @@ import 'package:ercoin_wallet/interactor/add_account/import_account/import_accou
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/account_keys.dart';
 import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/utils/service/common/keys_validation_util.dart';
+import 'package:ercoin_wallet/utils/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';

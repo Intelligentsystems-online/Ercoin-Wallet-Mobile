@@ -8,7 +8,7 @@ class CoinsAmount extends Equatable {
   const CoinsAmount({@required this.ercoin}) : assert(ercoin >= 0);
   static ofMicroErcoin(int microErcoin) => CoinsAmount(ercoin: microErcoin / 1000000.0);
 
-  get microErcoin => ercoin * 1000000;
+  get microErcoin => (ercoin * 1000000).floor();
 
   @override
   get props => [ercoin];

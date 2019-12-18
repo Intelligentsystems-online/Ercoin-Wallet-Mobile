@@ -1,5 +1,6 @@
-import 'package:ercoin_wallet/model/address.dart';
-import 'package:ercoin_wallet/model/coins_amount.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/coins_amount.dart';
+import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
 import 'package:flutter/cupertino.dart';
 
 class TransferData {
@@ -16,4 +17,7 @@ class TransferData {
     @required this.message,
     @required this.timestamp,
   });
+
+  Address selectForeignAddressByDirection(TransferDirection direction) =>
+      direction == TransferDirection.IN ? from : to;
 }

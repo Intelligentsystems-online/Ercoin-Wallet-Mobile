@@ -3,11 +3,11 @@ import 'dart:typed_data';
 
 import 'package:ercoin_wallet/model/api/api_response.dart';
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
-import 'package:ercoin_wallet/model/coins_amount.dart';
-import 'package:ercoin_wallet/model/local_account.dart';
-import 'package:ercoin_wallet/model/local_account_details.dart';
+import 'package:ercoin_wallet/model/base/coins_amount.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
+import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 
-class LocalAccountDetailsUtil {
+class LocalAccountDetailsDecodingService {
   LocalAccountDetails buildAccountDetails(ApiResponse<String> apiResponse, LocalAccount account) {
     switch(apiResponse.status) {
       case ApiResponseStatus.SUCCESS:
