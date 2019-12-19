@@ -1,7 +1,8 @@
-import 'package:ercoin_wallet/interactor/transfer/send_transfer_error.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/coins_amount.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -94,7 +95,8 @@ class _TransferRouteState extends State<TransferRoute> {
       if(_formKey.currentState.validate()) {
         _formKey.currentState.save();
         setState(() => _isLoading = true);
-        final transferResult = await _interactor.sendTransfer(destinationAddress, _message, _amount);
+        final transferResult = await _interactor.sendTransfer(Address(publicKey: destinationAddress), _message, CoinsAmount(ercoin: _amount));
+        print("Transfer result: " + transferResult.toString());
         setState(() => _isLoading = false);
         _processTransferResult(transferResult);
       }
@@ -113,7 +115,9 @@ class _TransferRouteState extends State<TransferRoute> {
     }
   }
 
-  _onTransferUnknownError() => Scaffold.of(context).showSnackBar(SnackBar(
+  _onTransferUnknownError() => Builder(builder: (context) => _showSnackBar(context));
+
+  _showSnackBar(BuildContext context) => Scaffold.of(context).showSnackBar(SnackBar(
     content: const Text("Something went wrong, try again")
   ));
 }

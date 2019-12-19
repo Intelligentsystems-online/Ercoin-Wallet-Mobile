@@ -11,8 +11,8 @@ class NamedAddressDb {
       "$publicKeyRow varchar(${Address.requiredPublicKeyLength}) PRIMARY KEY, " +
       "$nameRow varchar(255));";
 
-  static const _whereNameLikeClause = "WHERE $nameRow LIKE ?";
-  static const _wherePublicKeyIsClause = "WHERE $publicKeyRow = ?";
+  static const _whereNameLikeClause = "$nameRow LIKE ?";
+  static const _wherePublicKeyIsClause = "$publicKeyRow = ?";
   
   final Database _db;
   

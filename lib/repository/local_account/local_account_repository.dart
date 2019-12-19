@@ -39,7 +39,7 @@ class LocalAccountRepository {
   Map<String, dynamic> _serialize(LocalAccount data) => {
     LocalAccountDb.publicKeyRow: data.namedAddress.address.publicKey,
     LocalAccountDb.privateKeyRow: data.privateKey.privateKey,
-    LocalAccountDb.nameRow: data.namedAddress,
+    LocalAccountDb.nameRow: data.namedAddress.name,
   };
 
   LocalAccount _deserialize(Map<String, dynamic> data) => LocalAccount(

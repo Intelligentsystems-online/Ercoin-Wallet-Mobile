@@ -1,8 +1,9 @@
 import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
-import 'package:ercoin_wallet/utils/view/address_book_entry_details_widget.dart';
-import 'package:ercoin_wallet/utils/view/address_book_entry_list.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/named_address.dart';
+import 'package:ercoin_wallet/utils/view/named_address_details_widget.dart';
+import 'package:ercoin_wallet/utils/view/named_address_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
@@ -20,13 +21,13 @@ class AddressBookPage extends StatefulWidget {
 }
 
 class _AddressBookPageState extends State<AddressBookPage> {
-  List<AddressBookEntry> _addressBookEntries;
+  List<NamedAddress> _namedAddressList;
 
   final _interactor = mainInjector.getDependency<AddressBookInteractor>();
 
   @override
   void initState() {
-    _loadAddressBookEntries();
+    _loadNamedAddressList();
     super.initState();
   }
 
@@ -38,37 +39,37 @@ class _AddressBookPageState extends State<AddressBookPage> {
   );
 
   Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _addressBookEntries == null,
+    overlayEnabled: _namedAddressList == null,
     child: SearchableList(
       onSearchChanged: (value) => _onSearchChanged(value),
-      listWidget: AddressBookEntryList(
-          addresseBookEntries: _addressBookEntries == null ? [] : _addressBookEntries,
+      listWidget: NamedAddressList(
+          namedAddressList: _namedAddressList == null ? [] : _namedAddressList,
           onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
       ),
     )
   );
 
   _onSearchChanged(String value) {
-    if(_addressBookEntries != null) {
-      value.isEmpty ? _loadAddressBookEntries() : _loadFilteredAddressBookEntries(value);
+    if(_namedAddressList != null) {
+      value.isEmpty ? _loadNamedAddressList() : _loadFilteredNamedAddressList(value);
     }
   }
 
-  _loadFilteredAddressBookEntries(String name) async {
-    final filteredEntries = await _interactor.obtainAddressBookEntriesByName(name);
-    setState(() => _addressBookEntries = filteredEntries);
+  _loadFilteredNamedAddressList(String value) async {
+    final filteredEntries = await _interactor.obtainNamedAddressListByNameContains(value);
+    setState(() => _namedAddressList = filteredEntries);
   }
 
-  _loadAddressBookEntries() async {
-    final obtainedEntries = await _interactor.obtainAddressBookEntries();
-    setState(() => _addressBookEntries = obtainedEntries);
+  _loadNamedAddressList() async {
+    final obtainedEntries = await _interactor.obtainNamedAddressList();//.obtainAddressBookEntries();
+    setState(() => _namedAddressList = obtainedEntries);
   }
 
-  _onAddressPressed(BuildContext ctx, AddressBookEntry address) =>
-      showDialog(context: ctx, builder: (ctx) => _prepareAlertDialog(ctx, address));
+  _onAddressPressed(BuildContext ctx, NamedAddress namedAddress) =>
+      showDialog(context: ctx, builder: (ctx) => _prepareAlertDialog(ctx, namedAddress));
 
-  Widget _prepareAlertDialog(BuildContext ctx, AddressBookEntry address) =>
-      AlertDialog(title: Center(child: Text("Address detail")), content: AddressBookEntryDetailsWidget(address));
+  Widget _prepareAlertDialog(BuildContext ctx, NamedAddress namedAddress) =>
+      AlertDialog(title: Center(child: Text("Address detail")), content: NamedAddressDetailsWidget(namedAddress));
 
   Widget _addAddressBtn(BuildContext ctx) => RawMaterialButton(
     shape: CircleBorder(),
@@ -83,7 +84,7 @@ class _AddressBookPageState extends State<AddressBookPage> {
         () => EnterAddressRoute(
           isNameOptional: false,
           onProceed: (ctx, address, name) {
-            _interactor.addAddressBookEntry(address, name);
+            _interactor.createNamedAddress(Address(publicKey: address), name);
             resetRoute(Navigator.of(ctx), () => HomeRoute());
       },
     ),
