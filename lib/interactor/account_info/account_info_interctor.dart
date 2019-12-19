@@ -1,29 +1,27 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/Transaction.dart';
-import 'package:ercoin_wallet/model/account_info.dart';
-import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
-import 'package:ercoin_wallet/utils/service/transaction/list/transaction_list_service.dart';
+import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
+import 'package:ercoin_wallet/model/transfer/transfer.dart';
+import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
+import 'package:ercoin_wallet/service/transfer/transfer_service.dart';
 
 class AccountInfoInteractor {
-  final ActiveAccountService _activeAccountService;
-  final TransactionListService _transactionListService;
+  final ActiveLocalAccountService _activeLocalAccountService;
+  final TransferService _transferService;
 
-  AccountInfoInteractor(this._activeAccountService, this._transactionListService);
+  AccountInfoInteractor(this._activeLocalAccountService, this._transferService);
 
-  Future<AccountInfo> obtainActiveAccountWithBalance() => _activeAccountService.obtainActiveAccountInfo();
+  Future<LocalAccountDetails> obtainActiveLocalAccountDetails() => _activeLocalAccountService.obtainActiveAccountDetails();
 
-  Future<List<Transaction>> obtainRecentTransactions() async {
-    final activeAccountPk = await _activeAccountService.obtainActiveAccountPk();
-    final transactions = await _transactionListService.obtainTransactionsFor(activeAccountPk);
+  Future<List<Transfer>> obtainRecentTransfers() async {
+    final transferList = await _transferService.obtainTransferList();
+    transferList.sort(_compareByTimestamp);
 
-    transactions.sort(_compareByTimestamp);
-
-    return _obtainLimitedTransactions(5, transactions);
+    return _obtainLimitedTransfers(5, transferList);
   }
 
-  int _compareByTimestamp(Transaction t1, Transaction t2) => t2.timestamp.compareTo(t1.timestamp);
+  int _compareByTimestamp(Transfer t1, Transfer t2) => t2.data.timestamp.compareTo(t1.data.timestamp);
 
-  List<Transaction> _obtainLimitedTransactions(int limit, List<Transaction> transactions) =>
-      (transactions.length < limit) ? transactions.sublist(0, transactions.length) : transactions.sublist(0, limit);
+  List<Transfer> _obtainLimitedTransfers(int limit, List<Transfer> transferList) =>
+      (transferList.length < limit) ? transferList.sublist(0, transferList.length) : transferList.sublist(0, limit);
 }
