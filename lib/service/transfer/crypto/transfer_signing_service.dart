@@ -25,9 +25,9 @@ class TransferSigningService {
     transactionBytes.addAll(_encodingService.encodeToAddress(destination));
     transactionBytes.addAll(_encodingService.encodeCoinsAmount(amount));
     transactionBytes.addAll(_encodingService.encodeMessageLength(message.length));
-    transactionBytes.addAll(_encodingService.encodeFromAddress(sender.namedAddress.address));
-    transactionBytes.addAll([1]);
     transactionBytes.addAll(_encodingService.encodeMessage(message));
+    transactionBytes.addAll([1]);
+    transactionBytes.addAll(_encodingService.encodeFromAddress(sender.namedAddress.address));
 
     return _convertToHex(await _signTransactionBytes(transactionBytes, sender.privateKey));
   }
