@@ -1,20 +1,23 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/account_info.dart';
-import 'package:ercoin_wallet/utils/service/account/local_account_service.dart';
-import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
+import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
+
 
 class AccountListInteractor {
-  final AccountService _accountService;
-  final ActiveAccountService _activeAccountService;
+  final LocalAccountService _localAccountService;
+  final ActiveLocalAccountService _activeLocalAccountService;
 
-  AccountListInteractor(this._accountService, this._activeAccountService);
+  AccountListInteractor(this._localAccountService, this._activeLocalAccountService);
 
-  Future<List<AccountInfo>> obtainAccountsWithBalance() => _accountService.obtainAccountsInfo();
+  Future<List<LocalAccountDetails>> obtainAccountDetailsList() => _localAccountService.obtainDetailsList();
 
-  Future<String> obtainActiveAccountPk() => _activeAccountService.obtainActiveAccountPk();
+  Future<Address> obtainActiveAccountAddress() => _activeLocalAccountService.obtainActiveAccountAddress();
 
-  Future<void> activateAccount(String publicKey) => _activeAccountService.activateAccount(publicKey);
+  Future<void> activateAccount(Address address) => _activeLocalAccountService.persistActiveAccountAddress(address);
 
-  Future<List<AccountInfo>> obtainAccountsInfoByName(String value) => _accountService.obtainAccountsInfoByNameLike(value);
+  Future<List<LocalAccountDetails>> obtainAccountDetailsListByNameContains(String value) =>
+      _localAccountService.obtainDetailsListByNameContains(value);
 }

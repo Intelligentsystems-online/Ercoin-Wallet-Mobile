@@ -1,20 +1,20 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/model/account_keys.dart';
-import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/utils/service/account/local_account_service.dart';
-import 'package:ercoin_wallet/utils/service/account/active_local_account_service.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
+import 'package:ercoin_wallet/model/local_account/local_account_data.dart';
+import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 
 class ConfigureAccountNameInteractor {
-  final AccountService _accountService;
-  final ActiveAccountService _activeAccountService;
+  final LocalAccountService _localAccountService;
+  final ActiveLocalAccountService _activeLocalAccountService;
 
-  ConfigureAccountNameInteractor(this._accountService, this._activeAccountService);
+  ConfigureAccountNameInteractor(this._localAccountService, this._activeLocalAccountService);
 
-  Future<Account> addAccount(AccountKeys keys, String name) async {
-    final account = await _accountService.saveAccount(keys.publicKey, keys.privateKey, name);
-    await _activeAccountService.activateAccount(keys.publicKey);
+  Future<LocalAccount> createLocalAccount(LocalAccountKeys keys, String name) async {
+    final localAccount = await _localAccountService.create(keys.address, name, keys.privateKey);
+    await _activeLocalAccountService.persistActiveAccountAddress(keys.address);
 
-    return account;
+    return localAccount;
   }
 }
