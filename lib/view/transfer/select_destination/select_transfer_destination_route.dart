@@ -1,8 +1,10 @@
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
-import 'package:ercoin_wallet/utils/view/address_book_entry_list.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/named_address.dart';
+
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
+import 'package:ercoin_wallet/utils/view/named_address_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
@@ -18,13 +20,13 @@ class SelectTransferDestinationRoute extends StatefulWidget {
 }
 
 class _SelectTransferDestinationRouteState extends State<SelectTransferDestinationRoute> {
-  List<AddressBookEntry> _addressBookEntries;
+  List<NamedAddress> _namedAddressList;
 
   final _interactor = mainInjector.getDependency<SelectTransferDestinationInteractor>();
 
   @override
   void initState() {
-    _loadAddressBookEntries();
+    _loadNamedAddressList();
     super.initState();
   }
 
@@ -34,13 +36,13 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
           title: const Text("Select address"),
         ),
         body: ProgressOverlayContainer(
-          overlayEnabled: _addressBookEntries == null,
+          overlayEnabled: _namedAddressList == null,
           child: TopAndBottomContainer(
             top: SearchableList(
               onSearchChanged: (value) => _onSearchChanged(value),
-              listWidget: AddressBookEntryList(
-                addresseBookEntries: _addressBookEntries == null ? [] : _addressBookEntries,
-                onAddressPressed: (ctx, address) => _selectDestination(ctx, address.publicKey, address.name),
+              listWidget: NamedAddressList(
+                namedAddressList: _namedAddressList == null ? [] : _namedAddressList,
+                onAddressPressed: (ctx, address) => _selectDestination(ctx, address.address.publicKey, address.name),
               ),
             ),
             bottom: ExpandedRaisedTextButton(
@@ -52,21 +54,21 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
   );
 
   _onSearchChanged(String value) {
-    if(_addressBookEntries != null) {
-      value.isEmpty ? _loadAddressBookEntries() : _loadFilteredAddressBookEntries(value);
+    if(_namedAddressList != null) {
+      value.isEmpty ? _loadNamedAddressList() : _loadFilteredNamedAddressList(value);
     }
   }
 
-  _loadFilteredAddressBookEntries(String name) async {
-    final filteredEntries = await _interactor.obtainAddressBookEntriesByName(name);
+  _loadFilteredNamedAddressList(String value) async {
+    final filteredEntries = await _interactor.obtainNamedAddressListByNameContains(value);
 
-    setState(() => _addressBookEntries = filteredEntries);
+    setState(() => _namedAddressList = filteredEntries);
   }
 
-  _loadAddressBookEntries() async {
-    final obtainedEntries = await _interactor.obtainAddressBookEntries();
+  _loadNamedAddressList() async {
+    final obtainedEntries = await _interactor.obtainNamedAddressList();
     setState(() {
-      _addressBookEntries = obtainedEntries;
+      _namedAddressList = obtainedEntries;
     });
   }
 
@@ -79,7 +81,7 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
           isNameOptional: true,
           onProceed: (ctx, address, name) {
             if (name != null) {
-              _interactor.addAddressBookEntry(address, name);
+              _interactor.createNamedAddress(Address(publicKey: address), name);
             }
             _selectDestination(ctx, address, name);
           },

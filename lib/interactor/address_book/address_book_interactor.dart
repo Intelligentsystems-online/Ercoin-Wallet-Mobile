@@ -1,16 +1,17 @@
 import 'dart:async';
 
-import 'package:ercoin_wallet/repository/addressBook/AddressBookEntry.dart';
-import 'package:ercoin_wallet/utils/service/addressBook/address_book_service.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/named_address.dart';
+import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 
 class AddressBookInteractor {
-  final AddressBookService _addressBookService;
+  final NamedAddressService _namedAddressService;
 
-  AddressBookInteractor(this._addressBookService);
+  AddressBookInteractor(this._namedAddressService);
 
-  Future<List<AddressBookEntry>> obtainAddressBookEntries() => _addressBookService.obtainAddressBookEntries();
+  Future<List<NamedAddress>> obtainNamedAddressList() => _namedAddressService.obtainList();
 
-  Future<AddressBookEntry> addAddressBookEntry(String address, String name) => _addressBookService.addAddressBookEntry(address, name);
+  Future<NamedAddress> createNamedAddress(Address address, String name) => _namedAddressService.create(address, name);
 
-  Future<List<AddressBookEntry>> obtainAddressBookEntriesByName(String name) => _addressBookService.obtainAddressBookEntriesByName(name);
+  Future<List<NamedAddress>> obtainNamedAddressListByNameContains(String value) =>  _namedAddressService.obtainListByNameContains(value);
 }

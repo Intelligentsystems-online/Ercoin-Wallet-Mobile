@@ -1,10 +1,8 @@
-import 'package:ercoin_wallet/interactor/interactor_configuration.dart';
-import 'dart:ui';
-
-import 'package:ercoin_wallet/repository/account/Account.dart';
-import 'package:ercoin_wallet/repository/account/AccountRepository.dart';
-import 'package:ercoin_wallet/repository/repository_configuration.dart';
-import 'package:ercoin_wallet/utils/service/service_utils_configuration.dart';
+import 'package:ercoin_wallet/configuration/interactors_configuration.dart';
+import 'package:ercoin_wallet/configuration/repositories_configuration.dart';
+import 'package:ercoin_wallet/configuration/services_configuration.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
+import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -18,22 +16,26 @@ import 'package:injector/injector.dart';
 final Injector mainInjector = Injector();
 
 void main() async {
-  await RepositoryConfiguration.configure(mainInjector);
-  ServiceUtilsConfiguration.configure(mainInjector);
-  InteractorConfiguration.configure(mainInjector);
+  WidgetsFlutterBinding.ensureInitialized();
+
+  RepositoriesConfiguration.configure(mainInjector);
+  ServicesConfiguration.configure(mainInjector);
+  InteractorsConfiguration.configure(mainInjector);
+
+  await ServicesConfiguration.initialize(mainInjector);
 
   runApp(App());
 }
 
 class App extends StatelessWidget {
-  final _accountRepository = mainInjector.getDependency<AccountRepository>();
+  final _localAccountRepository = mainInjector.getDependency<LocalAccountRepository>();
 
   @override
   Widget build(BuildContext context) => MaterialApp(
         home: Scaffold(
           body: FutureBuilderWithProgress(
-            future: _accountRepository.findAll(),
-            builder: (List<Account> accounts) {
+            future: _localAccountRepository.findAll(),
+            builder: (List<LocalAccount> accounts) {
               return accounts.isEmpty ? _onNewUser() : HomeRoute();
             },
           ),

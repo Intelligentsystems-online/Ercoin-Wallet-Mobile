@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/repository/account/Account.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 class BackupPromptRoute extends StatelessWidget {
   final Function(BuildContext) onAdded;
-  final Account account;
+  final LocalAccount localAccount;
 
-  const BackupPromptRoute({@required this.onAdded, @required this.account});
+  const BackupPromptRoute({@required this.onAdded, @required this.localAccount});
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
@@ -45,6 +45,6 @@ class BackupPromptRoute extends StatelessWidget {
 
   _createBackup(BuildContext ctx) {
     final navigator = Navigator.of(ctx);
-    pushRoute(navigator, () => BackupRoute(account: account, onProceed: onAdded));
+    pushRoute(navigator, () => BackupRoute(localAccount: localAccount, onProceed: onAdded));
   }
 }

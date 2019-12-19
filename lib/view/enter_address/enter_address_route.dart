@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/interactor/enter_address_book_entry/enter_address_book_entry_interactor.dart';
+import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
@@ -29,7 +29,7 @@ class _EnterAddressState extends State<EnterAddressRoute> {
 
   String _publicKeyValidationResult;
 
-  final _interactor = mainInjector.getDependency<EnterAddressBookEntryInteractor>();
+  final _interactor = mainInjector.getDependency<EnterAddressInteractor>();
 
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
