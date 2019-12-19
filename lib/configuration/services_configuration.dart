@@ -23,18 +23,14 @@ import 'package:injector/injector.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class ServicesConfiguration {
-  static configure(Injector injector) {
+  static configure(Injector injector) async {
     _configureApi(injector);
     _configureCommon(injector);
-    _configureDatabase(injector);
+    await _configureDatabase(injector);
     _configureFile(injector);
     _configureLocalAccount(injector);
     _configureNamedAddress(injector);
     _configureTransfer(injector);
-  }
-
-  static Future initialize(Injector injector) async {
-    await injector.getDependency<DatabaseService>().initialize();
   }
 
   static _configureApi(Injector injector) {
@@ -57,23 +53,25 @@ class ServicesConfiguration {
     injector.registerSingleton<JsonFileService>((_) => JsonFileService());
   }
 
-  static _configureDatabase(Injector injector) {
+  static _configureDatabase(Injector injector) async {
     injector.registerSingleton<DatabaseService>((_) => DatabaseService());
+    await injector.getDependency<DatabaseService>().initialize();
     injector.registerSingleton<Database>((injector) => injector.getDependency<DatabaseService>().obtainDatabase());
   }
 
   static _configureLocalAccount(Injector injector) {
-    injector.registerSingleton<ActiveLocalAccountService>((injector) => ActiveLocalAccountService(
-        injector.getDependency<LocalAccountService>(),
-        injector.getDependency<SharedPreferencesService>(),
-    ));
+    injector.registerSingleton<LocalAccountDetailsDecodingService>((_) => LocalAccountDetailsDecodingService());
     injector.registerSingleton<LocalAccountApiService>((injector) => LocalAccountApiService(
       injector.getDependency<ApiConsumerService>(),
       injector.getDependency<LocalAccountDetailsDecodingService>(),
     ));
     injector.registerSingleton<LocalAccountService>((injector) => LocalAccountService(
-        injector.getDependency<LocalAccountRepository>(),
-        injector.getDependency<LocalAccountApiService>(),
+      injector.getDependency<LocalAccountRepository>(),
+      injector.getDependency<LocalAccountApiService>(),
+    ));
+    injector.registerSingleton<ActiveLocalAccountService>((injector) => ActiveLocalAccountService(
+        injector.getDependency<LocalAccountService>(),
+        injector.getDependency<SharedPreferencesService>(),
     ));
   }
 
@@ -84,17 +82,17 @@ class ServicesConfiguration {
   }
 
   static _configureTransfer(Injector injector) {
+    injector.registerSingleton<TransferDataDecodingService>((_) => TransferDataDecodingService());
+    injector.registerSingleton<TransferDataEncodingService>((injector) => TransferDataEncodingService(
+      injector.getDependency<ByteConverterService>(),
+    ));
+    injector.registerSingleton<TransferSigningService>((injector) => TransferSigningService(
+      injector.getDependency<TransferDataEncodingService>(),
+    ));
     injector.registerSingleton<TransferApiService>((injector) => TransferApiService(
       injector.getDependency<ApiConsumerService>(),
       injector.getDependency<TransferDataDecodingService>(),
       injector.getDependency<TransferSigningService>(),
-    ));
-    injector.registerSingleton<TransferDataDecodingService>((_) => TransferDataDecodingService());
-    injector.registerSingleton<TransferDataEncodingService>((injector) => TransferDataEncodingService(
-        injector.getDependency<ByteConverterService>(),
-    ));
-    injector.registerSingleton<TransferSigningService>((injector) => TransferSigningService(
-        injector.getDependency<TransferDataEncodingService>(),
     ));
     injector.registerSingleton<TransferService>((injector) => TransferService(
         injector.getDependency<TransferApiService>(),

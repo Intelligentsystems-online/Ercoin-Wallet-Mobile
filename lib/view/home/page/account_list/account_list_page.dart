@@ -1,6 +1,7 @@
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/model/account_info.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -20,14 +21,14 @@ class AccountListPage extends StatefulWidget {
 }
 
 class _AccountListPageState extends State<AccountListPage> {
-  List<AccountInfo> _accountsInfo;
+  List<LocalAccountDetails> _localAccountDetailsList;
   String _activeAccountPk;
 
   final _interactor = mainInjector.getDependency<AccountListInteractor>();
 
   @override
   void initState() {
-    _loadAccountsInfo();
+    _loadLocalAccountDetailsList();
     _loadActivePublicKey();
     super.initState();
   }
@@ -40,33 +41,33 @@ class _AccountListPageState extends State<AccountListPage> {
   );
 
   Widget _accountListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _accountsInfo == null || _activeAccountPk == null,
+    overlayEnabled: _localAccountDetailsList == null || _activeAccountPk == null,
     child: SearchableList(
       onSearchChanged: (value) => _onSearchChanged(value),
       listWidget: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account))
     )
   );
 
-  List<AccountInfo> _obtainFilteredList() => _accountsInfo == null ? [] : _accountsInfo;
+  List<LocalAccountDetails> _obtainFilteredList() => _localAccountDetailsList == null ? [] : _localAccountDetailsList;
 
-  _onAccountPressed(BuildContext ctx, AccountInfo account) => showDialog(
+  _onAccountPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) => showDialog(
       context: ctx,
-      builder: (ctx) => _prepareAlertDialog(ctx, account)
+      builder: (ctx) => _prepareAlertDialog(ctx, localAccountDetails)
   );
 
   _onSearchChanged(String value) {
-    if(_accountsInfo != null) {
-      value.isEmpty ? _loadAccountsInfo() : _loadFilteredAccountsInfo(value);
+    if(_localAccountDetailsList != null) {
+      value.isEmpty ? _loadLocalAccountDetailsList() : _loadFilteredLocalAccountDetailsList(value);
     }
   }
 
-  AlertDialog _prepareAlertDialog(BuildContext ctx, AccountInfo account) => AlertDialog(
+  AlertDialog _prepareAlertDialog(BuildContext ctx, LocalAccountDetails localAccountDetails) => AlertDialog(
       title: Center(child: Text("Account detail")),
-      content: AccountDetailsWidget(account, (ctx, publicKey) => _onActivate(ctx, publicKey))
+      content: AccountDetailsWidget(localAccountDetails, (ctx, publicKey) => _onActivate(ctx, publicKey))
   );
 
   _onActivate(BuildContext ctx, String publicKey) {
-    _interactor.activateAccount(publicKey);
+    _interactor.activateAccount(Address(publicKey: publicKey));
 
     resetRoute(Navigator.of(ctx), () => HomeRoute());
   }
@@ -83,18 +84,18 @@ class _AccountListPageState extends State<AccountListPage> {
       Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()))
   );
 
-  _loadFilteredAccountsInfo(String name) async {
-    final accounts = await _interactor.obtainAccountsInfoByName(name);
-    setState(() => _accountsInfo = accounts);
+  _loadFilteredLocalAccountDetailsList(String value) async {
+    final accounts = await _interactor.obtainAccountDetailsListByNameContains(value);
+    setState(() => _localAccountDetailsList = accounts);
   }
 
-  _loadAccountsInfo() async {
-    final accounts = await _interactor.obtainAccountsWithBalance();
-    setState(() => _accountsInfo = accounts);
+  _loadLocalAccountDetailsList() async {
+    final accounts = await _interactor.obtainAccountDetailsList();
+    setState(() => _localAccountDetailsList = accounts);
   }
 
   _loadActivePublicKey() async {
-    final activePk = await _interactor.obtainActiveAccountPk();
-    setState(() => _activeAccountPk = activePk);
+    final activePk = await _interactor.obtainActiveAccountAddress();
+    setState(() => _activeAccountPk = activePk.publicKey);
   }
 }

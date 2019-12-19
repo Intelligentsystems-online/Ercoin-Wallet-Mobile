@@ -1,24 +1,21 @@
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/repository/account/Account.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
-import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:folder_picker/folder_picker.dart';
-import 'package:injector/injector.dart';
 
 class BackupRoute extends StatelessWidget {
   final Function(BuildContext) onProceed;
-  final Account account;
+  final LocalAccount localAccount;
 
   final _interactor = mainInjector.getDependency<BackupInteractor>();
 
-  BackupRoute({this.onProceed, @required this.account});
+  BackupRoute({this.onProceed, @required this.localAccount});
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
@@ -30,11 +27,11 @@ class BackupRoute extends StatelessWidget {
             children: <Widget>[
               const Text("Write down following keys:"),
               Padding(padding: standardColumnSpacing),
-              _box(name: "Account name", value: account.name),
+              _box(name: "Account name", value: localAccount.namedAddress.name),
               Padding(padding: standardColumnSpacing),
-              _box(name: "Public key", value: account.publicKey),
+              _box(name: "Public key", value: localAccount.namedAddress.address.publicKey),
               Padding(padding: standardColumnSpacing),
-              _box(name: "Private key", value: account.privateKey),
+              _box(name: "Private key", value: localAccount.privateKey.privateKey),
               Builder(builder: _backupBtn),
             ],
           ),
@@ -55,7 +52,7 @@ class BackupRoute extends StatelessWidget {
   Widget _proceedBtn(BuildContext ctx) => ExpandedRaisedTextButton(text: "Proceed", onPressed: () => onProceed(ctx));
 
   _backupToFile(BuildContext ctx) async {
-    final filePath = await _interactor.createBackup(account);
+    final filePath = await _interactor.createBackup(localAccount);
     Scaffold.of(ctx).showSnackBar(SnackBar(content: Text("Account saved to $filePath")));
   }
 }

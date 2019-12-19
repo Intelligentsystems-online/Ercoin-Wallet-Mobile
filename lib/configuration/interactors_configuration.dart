@@ -5,7 +5,7 @@ import 'package:ercoin_wallet/interactor/add_account/configure_account_name/conf
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
 import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.dart';
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
-import 'package:ercoin_wallet/interactor/enter_named_address/enter_named_address_interactor.dart';
+import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
@@ -44,7 +44,7 @@ class InteractorsConfiguration {
       injector.getDependency<NamedAddressService>()
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
-    injector.registerSingleton<EnterNamedAddressInteractor>((injector) => EnterNamedAddressInteractor(
+    injector.registerSingleton<EnterAddressInteractor>((injector) => EnterAddressInteractor(
       injector.getDependency<NamedAddressService>(),
       injector.getDependency<KeysFormatValidatorService>()
     ));

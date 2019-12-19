@@ -1,14 +1,12 @@
-
-
 import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 
-class EnterNamedAddressInteractor {
+class EnterAddressInteractor {
   final NamedAddressService _namedAddressService;
   final KeysFormatValidatorService _keysFormatValidatorService;
 
-  EnterNamedAddressInteractor(this._namedAddressService, this._keysFormatValidatorService);
+  EnterAddressInteractor(this._namedAddressService, this._keysFormatValidatorService);
 
   String validatePublicKeyFormat(String publicKey) => _keysFormatValidatorService.validatePublicKey(publicKey);
 

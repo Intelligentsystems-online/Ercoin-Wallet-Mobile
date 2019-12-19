@@ -14,11 +14,11 @@ class TransferListInteractor {
     final inbound = _filterBy(TransferDirection.IN, all);
     final outbound = _filterBy(TransferDirection.OUT, all);
 
+    all.sort(_compareByTimestamp);
     inbound.sort(_compareByTimestamp);
     outbound.sort(_compareByTimestamp);
-    all.sort(_compareByTimestamp);
 
-    return [inbound, outbound, all];
+    return [all, inbound, outbound];
   }
 
   List<Transfer> _filterBy(TransferDirection direction, List<Transfer> transferList) => transferList
