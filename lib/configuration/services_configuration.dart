@@ -23,14 +23,18 @@ import 'package:injector/injector.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class ServicesConfiguration {
-  static configure(Injector injector) async {
+  static configure(Injector injector) {
     _configureApi(injector);
     _configureCommon(injector);
-    await _configureDatabase(injector);
+    _configureDatabase(injector);
     _configureFile(injector);
     _configureLocalAccount(injector);
     _configureNamedAddress(injector);
     _configureTransfer(injector);
+  }
+
+  static initialize(Injector injector) async {
+    await injector.getDependency<DatabaseService>().initialize();
   }
 
   static _configureApi(Injector injector) {
@@ -53,9 +57,8 @@ class ServicesConfiguration {
     injector.registerSingleton<JsonFileService>((_) => JsonFileService());
   }
 
-  static _configureDatabase(Injector injector) async {
+  static _configureDatabase(Injector injector) {
     injector.registerSingleton<DatabaseService>((_) => DatabaseService());
-    await injector.getDependency<DatabaseService>().initialize();
     injector.registerSingleton<Database>((injector) => injector.getDependency<DatabaseService>().obtainDatabase());
   }
 

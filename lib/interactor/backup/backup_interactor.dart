@@ -11,7 +11,10 @@ class BackupInteractor {
     final directory = await getApplicationDocumentsDirectory();
     final file = File(_prepareFilePath(directory.path, localAccount.namedAddress.name));
 
-    final jsonContent = jsonEncode(LocalAccountKeys(address: localAccount.namedAddress.address, privateKey: localAccount.privateKey));
+    final jsonContent = jsonEncode({
+      "publicKey": localAccount.namedAddress.address.publicKey,
+      "privateKey": localAccount.privateKey.privateKey,
+    });
 
     await file.writeAsString(jsonContent);
 

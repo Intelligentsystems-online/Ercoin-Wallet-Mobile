@@ -24,7 +24,7 @@ class AccountInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) => FutureBuilderWithProgress(
-        future: _interactor.obtainActiveLocalAccountDetails(),//.obtainActiveAccountWithBalance(),
+        future: _interactor.obtainActiveLocalAccountDetails(),
         builder: (localAccountDetails) => Container(
           padding: standardPadding,
           child: Column(
@@ -34,8 +34,8 @@ class AccountInfoPage extends StatelessWidget {
                 Expanded(child: _accountInfoSection(ctx, localAccountDetails)),
                 _qrCodeSection(ctx, localAccountDetails),
               ]),
-              Expanded(child: _transferList(ctx)),
-              _transferBtn(ctx),
+              if(localAccountDetails.isRegistered) Expanded(child: _transferList(ctx)),
+              if(localAccountDetails.isRegistered) _transferBtn(ctx),
             ],
           ),
         ),
@@ -46,6 +46,7 @@ class AccountInfoPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _accountNameRow(localAccountDetails),
+            if(!localAccountDetails.isRegistered) _accountNotRegisteredRow(),
             _accountAddressRow(ctx, localAccountDetails),
             _accountBalanceRow(localAccountDetails),
           ],
@@ -57,6 +58,12 @@ class AccountInfoPage extends StatelessWidget {
         const SizedBox(width: 8.0),
         Text(localAccountDetails.localAccount.namedAddress.name, style: const TextStyle(fontWeight: FontWeight.bold))
       ]);
+
+  Widget _accountNotRegisteredRow() => Row(children: <Widget>[
+    const Icon(Icons.warning, color: Colors.red),
+    const SizedBox(width: 8.0),
+    const Text("Account not registered", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+  ]);
 
   Widget _accountAddressRow(BuildContext ctx, LocalAccountDetails localAccountDetails) => Row(children: <Widget>[
         Text(localAccountDetails.localAccount.namedAddress.address.publicKey.substring(0, 15) + "...", maxLines: 1),
