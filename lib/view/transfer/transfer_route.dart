@@ -96,7 +96,6 @@ class _TransferRouteState extends State<TransferRoute> {
         _formKey.currentState.save();
         setState(() => _isLoading = true);
         final transferResult = await _interactor.sendTransfer(Address(publicKey: destinationAddress), _message, CoinsAmount(ercoin: _amount));
-        print("Transfer result: " + transferResult.toString());
         setState(() => _isLoading = false);
         _processTransferResult(transferResult);
       }
