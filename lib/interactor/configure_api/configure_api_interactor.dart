@@ -16,9 +16,8 @@ class ConfigureApiInteractor {
      return null;
   }
 
-  Future<void> persistNodeUri(String uri) async {
+  Future<void> persistNodeUri(String uri) async =>
     _sharedPreferencesService.setSharedPreference(nodeUriPreferenceKey, uri);
-  }
 
   Future<String> obtainNodeUri() async {
     final nodeUri = await _sharedPreferencesService.getSharedPreference(nodeUriPreferenceKey);
