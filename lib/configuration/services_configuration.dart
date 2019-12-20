@@ -39,7 +39,9 @@ class ServicesConfiguration {
 
   static _configureApi(Injector injector) {
     injector.registerSingleton<ApiResponseStatusDecoderService>((_) => ApiResponseStatusDecoderService());
-    injector.registerSingleton<ApiUriFactoryService>((_) => ApiUriFactoryService());
+    injector.registerSingleton<ApiUriFactoryService>((injector) => ApiUriFactoryService(
+      injector.getDependency<SharedPreferencesService>()
+    ));
     injector.registerSingleton<ApiConsumerService>((injector) => ApiConsumerService(
         injector.getDependency<ApiResponseStatusDecoderService>(),
         injector.getDependency<ApiUriFactoryService>(),

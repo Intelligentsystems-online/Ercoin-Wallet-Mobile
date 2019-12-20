@@ -14,12 +14,14 @@ class ApiConsumerService {
 
   ApiConsumerService(this._statusDecoderService, this._uriFactoryService);
 
-  Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
-      .get(_uriFactoryService.createTransferUri(transactionHex))
-      .then((response) => _statusDecoderService.transferCodeToStatus(_obtainTransferResponseCode(response.body)));
+  Future<ApiResponseStatus> makeTransaction(String transactionHex) async {
+    final response = await http.get(await _uriFactoryService.createTransferUri(transactionHex));
+
+    return _statusDecoderService.transferCodeToStatus(_obtainTransferResponseCode(response.body));
+  }
 
   Future<ApiResponse<String>> fetchAccountDataBase64For(Address address) async {
-    final response = await http.get(_uriFactoryService.createAccountDataUri(address));
+    final response = await http.get(await _uriFactoryService.createAccountDataUri(address));
     final jsonResponse = jsonDecode(response.body)['result']['response'];
     final responseCode = jsonResponse['code'] as int;
     final responseStatus = _statusDecoderService.accountCodeToStatus(responseCode);
@@ -33,13 +35,13 @@ class ApiConsumerService {
   }
 
   Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(Address address) async {
-    final response = await http.get(_uriFactoryService.createOutboundTransactionsUri(address));
+    final response = await http.get(await _uriFactoryService.createOutboundTransactionsUri(address));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
   Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(Address address) async {
-    final response = await http.get(_uriFactoryService.createIncomingTransactionsUri(address));
+    final response = await http.get(await _uriFactoryService.createIncomingTransactionsUri(address));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }

@@ -5,12 +5,14 @@ import 'package:ercoin_wallet/interactor/add_account/configure_account_name/conf
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
 import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.dart';
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
+import 'package:ercoin_wallet/interactor/configure_api/configure_api_interactor.dart';
 import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
+import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
 import 'package:ercoin_wallet/service/file/json_file_service.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
@@ -44,6 +46,9 @@ class InteractorsConfiguration {
       injector.getDependency<NamedAddressService>()
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
+    injector.registerSingleton<ConfigureApiInteractor>((injector) => ConfigureApiInteractor(
+      injector.getDependency<SharedPreferencesService>()
+    ));
     injector.registerSingleton<EnterAddressInteractor>((injector) => EnterAddressInteractor(
       injector.getDependency<NamedAddressService>(),
       injector.getDependency<KeysFormatValidatorService>()
