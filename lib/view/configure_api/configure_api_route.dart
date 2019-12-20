@@ -36,9 +36,7 @@ class _ConfigureApiState extends State<ConfigureApiRoute> {
     body: TopAndBottomContainer(
       top: Form(
         key: _formKey,
-        child: Column(
-          children: <Widget>[_nodeUriInput()],
-        ),
+        child: _nodeUriInput(),
       ),
       bottom: _proceedBtn(),
     )
