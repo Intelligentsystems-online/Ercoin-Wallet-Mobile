@@ -16,6 +16,7 @@ class ConfigureApiRoute extends StatefulWidget {
 
 class _ConfigureApiState extends State<ConfigureApiRoute> {
   String _nodeUri;
+  String _nodeUriValidationResult;
 
   final _interactor = mainInjector.getDependency<ConfigureApiInteractor>();
 
@@ -46,7 +47,7 @@ class _ConfigureApiState extends State<ConfigureApiRoute> {
     child: StandardTextFormField(
       hintText: "Node endpoint",
       controller: _nodeUriController,
-      validator: (value) => _interactor.validateNodeUri(value),
+      validator: (_) => _nodeUriValidationResult,
       onSaved: (value) => setState(() => _nodeUri = value)
     ),
   );
@@ -57,11 +58,20 @@ class _ConfigureApiState extends State<ConfigureApiRoute> {
   );
 
   _onProceed() async {
+    _formKey.currentState.save();
+    await _validateNodeUri();
     if(_formKey.currentState.validate()) {
-      _formKey.currentState.save();
       await _interactor.persistNodeUri(_nodeUri);
       pushRoute(Navigator.of(context), () => HomeRoute());
     }
+  }
+
+  _validateNodeUri() async {
+    final validationResult = await _interactor.validateNodeUri(_nodeUri);
+    if(validationResult != null)
+      setState(() => _nodeUriValidationResult = validationResult);
+    else
+      setState(() => _nodeUriValidationResult = null);
   }
 
   _loadNodeEndpointUri() async {

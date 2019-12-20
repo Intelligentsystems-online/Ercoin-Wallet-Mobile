@@ -10,6 +10,7 @@ import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.
 import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
+import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
@@ -47,7 +48,8 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
     injector.registerSingleton<ConfigureApiInteractor>((injector) => ConfigureApiInteractor(
-      injector.getDependency<SharedPreferencesService>()
+      injector.getDependency<SharedPreferencesService>(),
+      injector.getDependency<ApiConsumerService>()
     ));
     injector.registerSingleton<EnterAddressInteractor>((injector) => EnterAddressInteractor(
       injector.getDependency<NamedAddressService>(),
