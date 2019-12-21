@@ -1,11 +1,9 @@
 import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
-import 'package:ercoin_wallet/model/transfer/transfer.dart';
 import 'package:ercoin_wallet/utils/view/image_dialog.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
-import 'package:ercoin_wallet/utils/view/transfer_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/transfer/destination/select_transfer_destination_route.dart';
@@ -138,10 +136,4 @@ class AccountInfoPage extends StatelessWidget {
 
     showTextSnackBar(Scaffold.of(ctx), "Address copied to clipboard");
   }
-
-  _onTransactionPressed(BuildContext ctx, Transfer transfer) =>
-      showDialog(context: ctx, builder: (ctx) => prepareAlertDialog(ctx, transfer));
-
-  AlertDialog prepareAlertDialog(BuildContext ctx, Transfer transfer) =>
-      AlertDialog(title: Center(child: Text("Transaction detail")), content: TransferDetailsWidget(transfer));
 }

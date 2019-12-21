@@ -3,7 +3,6 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/transfer/transfer.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
-import 'package:ercoin_wallet/utils/view/transfer_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,12 +76,4 @@ class _TransferListPageState extends State<TransferListPage> {
       }
     }
   }
-
-  _showDetailsDialog(BuildContext ctx, Transfer transfer) => showDialog(
-        context: ctx,
-        builder: (_) => AlertDialog(
-          title: const Text("Transaction details"),
-          content: TransferDetailsWidget(transfer),
-        ),
-      );
 }
