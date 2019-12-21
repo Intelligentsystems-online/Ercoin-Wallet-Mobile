@@ -17,6 +17,4 @@ class Transfer {
     @required this.direction,
     this.foreignAddressNamed
   });
-
-  get foreignAddress => data.selectForeignAddressByDirection(direction);
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ercoin_wallet/const_values/api_const_values.dart';
+import 'package:ercoin_wallet/model/api/api_health_status.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/api/api_response.dart';
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
@@ -14,12 +16,24 @@ class ApiConsumerService {
 
   ApiConsumerService(this._statusDecoderService, this._uriFactoryService);
 
-  Future<ApiResponseStatus> makeTransaction(String transactionHex) => http
-      .get(_uriFactoryService.createTransferUri(transactionHex))
-      .then((response) => _statusDecoderService.transferCodeToStatus(_obtainTransferResponseCode(response.body)));
+  Future<ApiHealthStatus> healthCheck(String uri) async {
+    try {
+      final response = await http.get("$uri/$healthEndpoint");
+      return jsonDecode(response.body)
+          .containsKey("jsonrpc") ? ApiHealthStatus.NODE_AVAILABLE : ApiHealthStatus.NODE_NOT_AVAILABLE;
+    } catch (_) {
+      return ApiHealthStatus.NODE_NOT_AVAILABLE;
+    }
+  }
+
+  Future<ApiResponseStatus> makeTransaction(String transactionHex) async {
+    final response = await http.get(await _uriFactoryService.createTransferUri(transactionHex));
+
+    return _statusDecoderService.transferCodeToStatus(_obtainTransferResponseCode(response.body));
+  }
 
   Future<ApiResponse<String>> fetchAccountDataBase64For(Address address) async {
-    final response = await http.get(_uriFactoryService.createAccountDataUri(address));
+    final response = await http.get(await _uriFactoryService.createAccountDataUri(address));
     final jsonResponse = jsonDecode(response.body)['result']['response'];
     final responseCode = jsonResponse['code'] as int;
     final responseStatus = _statusDecoderService.accountCodeToStatus(responseCode);
@@ -33,13 +47,13 @@ class ApiConsumerService {
   }
 
   Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(Address address) async {
-    final response = await http.get(_uriFactoryService.createOutboundTransactionsUri(address));
+    final response = await http.get(await _uriFactoryService.createOutboundTransactionsUri(address));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
   Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(Address address) async {
-    final response = await http.get(_uriFactoryService.createIncomingTransactionsUri(address));
+    final response = await http.get(await _uriFactoryService.createIncomingTransactionsUri(address));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }

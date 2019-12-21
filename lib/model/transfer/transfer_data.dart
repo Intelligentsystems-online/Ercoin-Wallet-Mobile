@@ -17,7 +17,4 @@ class TransferData {
     @required this.message,
     @required this.timestamp,
   });
-
-  Address selectForeignAddressByDirection(TransferDirection direction) =>
-      direction == TransferDirection.IN ? from : to;
 }

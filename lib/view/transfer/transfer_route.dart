@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
 class TransferRoute extends StatefulWidget {
-  final String destinationAddress;
+  final Address destinationAddress;
   final String destinationName;
 
   const TransferRoute({@required this.destinationAddress, this.destinationName});
@@ -26,7 +26,7 @@ class TransferRoute extends StatefulWidget {
 }
 
 class _TransferRouteState extends State<TransferRoute> {
-  final String destinationAddress;
+  final Address destinationAddress;
   final String destinationName;
 
   double _amount;
@@ -51,7 +51,7 @@ class _TransferRouteState extends State<TransferRoute> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Text("Destination address: $destinationAddress"),
+                Text("Destination address: ${destinationAddress.publicKey}"),
                 destinationName != null ? Text("Name: $destinationName") : Container(),
                 _amountInput(),
                 _messageInput(),
@@ -89,34 +89,30 @@ class _TransferRouteState extends State<TransferRoute> {
     }
   }
 
-  Widget _sendBtn() => ExpandedRaisedTextButton(
+  Widget _sendBtn() => Builder(builder: (ctx) => 
+      ExpandedRaisedTextButton(
     text: "Send",
     onPressed: () async {
       if(_formKey.currentState.validate()) {
         _formKey.currentState.save();
         setState(() => _isLoading = true);
-        final transferResult = await _interactor.sendTransfer(Address(publicKey: destinationAddress), _message, CoinsAmount(ercoin: _amount));
+        final transferResult = await _interactor.sendTransfer(destinationAddress, _message, CoinsAmount(ercoin: _amount));
         setState(() => _isLoading = false);
-        _processTransferResult(transferResult);
+        _processTransferResult(ctx, transferResult);
       }
     },
+      ),
   );
 
-  _processTransferResult(ApiResponseStatus result) {
+  _processTransferResult(BuildContext ctx, ApiResponseStatus result) {
     if(result == ApiResponseStatus.INSUFFICIENT_FUNDS) {
       setState(() => _isInsufficientFundsError = true);
       _formKey.currentState.validate();
     } else if(result == ApiResponseStatus.GENERIC_ERROR) {
-      _onTransferUnknownError();
+      showTextSnackBar(Scaffold.of(ctx), "Something went wrong, try again");
     }
     else {
       resetRoute(Navigator.of(context), () => HomeRoute());
     }
   }
-
-  _onTransferUnknownError() => Builder(builder: (context) => _showSnackBar(context));
-
-  _showSnackBar(BuildContext context) => Scaffold.of(context).showSnackBar(SnackBar(
-    content: const Text("Something went wrong, try again")
-  ));
 }
