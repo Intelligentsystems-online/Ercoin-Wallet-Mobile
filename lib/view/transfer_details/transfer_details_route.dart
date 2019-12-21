@@ -48,16 +48,21 @@ class TransferDetailsRoute extends StatelessWidget {
               StandardCopyTextBox(
                 value: transfer.data.message,
                 labelText: "Message",
-              )
+              ),
+              const SizedBox(height: 16.0),
+              StandardCopyTextBox(
+                value: transfer.data.timestamp.toIso8601String(),
+                labelText: "Timestamp",
+              ),
             ],
           ),
           bottom: ExpandedRaisedTextButton(
             text: transfer.foreignAddressNamed == null ? "Add to address book" : "View address details",
             onPressed: () {
-              if(transfer.foreignAddressNamed == null) {
+              if (transfer.foreignAddressNamed == null) {
                 pushRoute(
-                    Navigator.of(ctx),
-                        () => AddAddressRoute(initialAddress: Transfers.foreignAddress(transfer)),
+                  Navigator.of(ctx),
+                  () => AddAddressRoute(initialAddress: Transfers.foreignAddress(transfer)),
                 );
               } else {
                 // TODO(Address details)

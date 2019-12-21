@@ -29,7 +29,6 @@ class EnterAddressForm extends StatefulWidget {
 class _EnterAddressState extends State<EnterAddressForm> {
   final Function(BuildContext, Address, String) onProceed;
   final bool isNameOptional;
-  final Address initialAddress;
   String _publicKey;
   String _name;
   bool _shouldSave;
@@ -41,8 +40,9 @@ class _EnterAddressState extends State<EnterAddressForm> {
   final _formKey = GlobalKey<FormState>();
   final _publicKeyController = TextEditingController();
 
-  _EnterAddressState(this.onProceed, this.isNameOptional, this.initialAddress) {
+  _EnterAddressState(this.onProceed, this.isNameOptional, Address initialAddress) {
     _shouldSave = !isNameOptional;
+    _publicKeyController.value = TextEditingValue(text: initialAddress.publicKey);
   }
 
   @override
@@ -74,7 +74,6 @@ class _EnterAddressState extends State<EnterAddressForm> {
 
   Widget _publicKeyInput() => StandardTextFormField(
         hintText: "Address",
-        initialValue: initialAddress?.publicKey,
         icon: const Icon(Icons.vpn_key),
         controller: _publicKeyController,
         validator: (value) => _publicKeyValidationResult,

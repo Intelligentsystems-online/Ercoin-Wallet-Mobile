@@ -65,6 +65,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
           contentPadding: standardTextFieldContentPadding,
         ),
         validator: _validate,
+        initialValue: initialValue,
         onSaved: onSaved,
         controller: controller,
         keyboardType: keyboardType,
