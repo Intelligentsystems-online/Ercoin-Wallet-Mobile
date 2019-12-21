@@ -46,6 +46,7 @@ class InteractorsConfiguration {
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
     injector.registerSingleton<EnterAddressInteractor>((injector) => EnterAddressInteractor(
       injector.getDependency<NamedAddressService>(),
+      injector.getDependency<LocalAccountService>(),
       injector.getDependency<KeysFormatValidatorService>()
     ));
     injector.registerSingleton<TransferListInteractor>((_) => TransferListInteractor(
