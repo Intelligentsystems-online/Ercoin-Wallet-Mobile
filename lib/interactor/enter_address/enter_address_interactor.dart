@@ -1,5 +1,4 @@
-import 'package:ercoin_wallet/model/base/named_address.dart';
-import 'package:ercoin_wallet/model/local_account/local_account.dart';
+import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
@@ -11,28 +10,21 @@ class EnterAddressFormInteractor {
 
   EnterAddressFormInteractor(this._namedAddressService, this._localAccountService, this._keysFormatValidatorService);
 
-  String validatePublicKeyFormat(String publicKey) => _keysFormatValidatorService.validatePublicKey(publicKey);
+  Future<String> validateAddress(Address address) async {
+    final validationResult = _keysFormatValidatorService.validatePublicKey(address.publicKey);
 
-  Future<String> validatePublicKey(String publicKey) async {
-    final addresses = await _namedAddressService.obtainList();
-    final accounts = await _localAccountService.obtainList();
-
-    final validationResult = _keysFormatValidatorService.validatePublicKey(publicKey);
-
-    return validationResult == null ? _validateKeyInLists(accounts, addresses, publicKey) : validationResult;
+    return validationResult == null ? await _validateAddressExistence(address) : validationResult;
   }
 
-  _validateKeyInLists(List<LocalAccount> localAccounts, List<NamedAddress> namedAddresses, String key) {
-    final validationAccountsResult = _validateKeyInAccountList(localAccounts, key);
+  _validateAddressExistence(Address address) async {
+    final validationResult = await _validateNamedAddressExistence(address);
 
-    return validationAccountsResult == null ? _validateKeyInAddressList(namedAddresses, key) : validationAccountsResult;
+    return validationResult == null ? await _validateLocalAccountExistence(address) : validationResult;
   }
 
-  _validateKeyInAddressList(List<NamedAddress> namedAddresses, String key) => namedAddresses
-      .map((namedAddress) => namedAddress.address.publicKey)
-      .contains(key) ? "Address is already used" : null;
+  _validateNamedAddressExistence(Address address) async =>
+      await _namedAddressService.exists(address) ? "Address already exists" : null;
 
-  _validateKeyInAccountList(List<LocalAccount> localAccounts, String key) => localAccounts
-      .map((localAccount) => localAccount.namedAddress.address.publicKey)
-      .contains(key) ? "Address is already used as account" : null;
+  _validateLocalAccountExistence(Address address) async =>
+      await _localAccountService.exists(address) ? "Address already exists as account" : null;
 }
