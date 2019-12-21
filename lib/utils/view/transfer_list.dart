@@ -1,47 +1,73 @@
 import 'package:ercoin_wallet/model/transfer/transfer.dart';
+import 'package:ercoin_wallet/model/transfer/utils/transfers.dart';
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/view/transfer_details/transfer_details_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/rendering.dart';
 
 class TransferList extends StatelessWidget {
-  final List<Transfer> transferList;
-  final Function(Transfer) onTransactionPressed;
+  final List<Transfer> list;
 
-  final _formatter =  DateFormat('yyyy-MM-dd HH:mm:ss');
-
-  TransferList({this.transferList, this.onTransactionPressed});
+  TransferList({this.list});
 
   @override
-  Widget build(BuildContext context) => ListView.builder(
+  Widget build(BuildContext ctx) => ListView.builder(
       shrinkWrap: true,
-      itemCount: transferList.length,
-      itemBuilder: (context, index) => _transactionRow(transferList[index])
-  );
+      itemCount: list.length,
+      itemBuilder: (ctx, index) => _transactionRow(ctx, list[index]));
 
-  Widget _transactionRow(Transfer transfer) => GestureDetector(
-    onTap: () => onTransactionPressed(transfer),
-    child: Card(
-      child: ListTile(
-        title: Text(transfer.data.message),
-        subtitle: _subtitleRow(transfer)
-      ),
-    ),
-  );
+  Widget _transactionRow(BuildContext ctx, Transfer transfer) => GestureDetector(
+        onTap: () => pushRoute(Navigator.of(ctx), () => TransferDetailsRoute(transfer: transfer)),
+        child: Card(
+          child: Container(
+            padding: standardPadding + standardPadding,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                _transferIcon(transfer),
+                const SizedBox(width: 8.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      _messageText(transfer, ctx),
+                      _addressText(transfer, ctx),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                _amountText(transfer),
+              ],
+            ),
+          ),
+        ),
+      );
 
-  Widget _subtitleRow(Transfer transfer) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Text(dateTimeFrom(transfer.data.timestamp)),
-      _transactionValueLabel(transfer)
-    ],
-  );
+  Widget _transferIcon(Transfer transfer) =>
+      Icon(Transfers.byDirection(transfer, onIn: Icons.call_received, onOut: Icons.call_made));
 
-  Widget _transactionValueLabel(Transfer transfer) =>
-      Text(transfer.data.amount.ercoin.toString() + " ERN");
+  Widget _amountText(Transfer transfer) => Text(
+        Transfers.deltaAmountMicroErcoinSigned(transfer),
+        style: TextStyle(color: Transfers.byDirection(transfer, onIn: Colors.green, onOut: Colors.black)),
+      );
 
-  String dateTimeFrom(DateTime timestamp) {
-    final datetime = DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
-
-    return _formatter.format(datetime);
+  Widget _addressText(Transfer transfer, BuildContext ctx) {
+    final direction = Transfers.byDirection(transfer, onIn: "From", onOut: "To");
+    final name = Transfers.foreignAddressNameOrPublicKey(transfer);
+    return Text(
+      "$direction:\u00A0$name",
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: Theme.of(ctx).textTheme.caption,
+    );
   }
+
+  Text _messageText(Transfer transfer, BuildContext ctx) => Text(
+        transfer.data.message.isEmpty ? "No message" : transfer.data.message,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(ctx).textTheme.body2,
+      );
 }

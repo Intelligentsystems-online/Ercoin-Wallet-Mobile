@@ -1,6 +1,5 @@
 import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/utils/view/named_address_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/named_address_list.dart';
@@ -9,8 +8,7 @@ import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:ercoin_wallet/view/enter_address/enter_address_route.dart';
-import 'package:ercoin_wallet/view/home/home_route.dart';
+import 'package:ercoin_wallet/view/add_address/add_address_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,17 +74,6 @@ class _AddressBookPageState extends State<AddressBookPage> {
     padding: standardPadding,
     fillColor: Colors.white,
     child: Icon(Icons.add, color: Colors.blue, size: 35.0),
-    onPressed: () => _navigateToAddAddress(ctx),
-  );
-
-  _navigateToAddAddress(BuildContext ctx) => pushRoute(
-    Navigator.of(ctx),
-        () => EnterAddressRoute(
-          isNameOptional: false,
-          onProceed: (ctx, address, name) {
-            _interactor.createNamedAddress(Address(publicKey: address), name);
-            resetRoute(Navigator.of(ctx), () => HomeRoute());
-      },
-    ),
+    onPressed: () => pushRoute(Navigator.of(ctx), () => AddAddressRoute()),
   );
 }

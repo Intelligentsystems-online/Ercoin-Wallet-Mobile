@@ -5,7 +5,7 @@ class ProgressOverlayContainer extends StatelessWidget {
   final Widget child;
   final double overlayOpacity;
 
-  ProgressOverlayContainer({@required this.overlayEnabled, @required this.child, this.overlayOpacity = 0.2});
+  ProgressOverlayContainer({@required this.overlayEnabled, @required this.child, this.overlayOpacity = 0.0});
 
   @override
   Widget build(BuildContext context) => overlayEnabled ? _buildWithOverlay() : child;

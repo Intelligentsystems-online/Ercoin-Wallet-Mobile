@@ -45,64 +45,70 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
-    appBar: AppBar(
-      title: const Text("Import account"),
-    ),
-    body: Container(
-      padding: standardPadding,
-      child: Stack(
-        children: <Widget>[
-          Align(
-              alignment: FractionalOffset.topLeft,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn(ctx)],
-                ),
-              )),
-          Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
-        ],
-      ),
-    ),
-  );
+        appBar: AppBar(
+          title: const Text("Import account"),
+        ),
+        body: Container(
+          padding: standardPadding,
+          child: Stack(
+            children: <Widget>[
+              Align(
+                  alignment: FractionalOffset.topLeft,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn(ctx)],
+                    ),
+                  )),
+              Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
+            ],
+          ),
+        ),
+      );
 
   Widget _pubKeyInput() => ExpandedRow(
-    child: StandardTextFormField(
-      hintText: 'Public key',
-      controller: _pubKeyController,
-      validator: (value) => _publicKeyValidationResult,
-      onSaved: (value) => setState(() => _pubKey = value),
-    ),
-  );
+        child: StandardTextFormField(
+          hintText: 'Public key',
+          controller: _pubKeyController,
+          validator: (value) => _publicKeyValidationResult,
+          onSaved: (value) => setState(() => _pubKey = value),
+        ),
+      );
 
   Widget _privKeyInput() => ExpandedRow(
-    child: StandardTextFormField(
-      hintText: 'Private key',
-      icon: const Icon(Icons.vpn_key),
-      controller: _privKeyController,
-      validator: (value) => _interactor.validatePrivateKey(value),
-      onSaved: (value) => setState(() => _privKey = value),
-    ),
-  );
+        child: StandardTextFormField(
+          hintText: 'Private key',
+          icon: const Icon(Icons.vpn_key),
+          controller: _privKeyController,
+          validator: (value) => _interactor.validatePrivateKey(value),
+          onSaved: (value) => setState(() => _privKey = value),
+        ),
+      );
 
   Widget _importFromFileBtn(BuildContext ctx) => ExpandedRaisedTextButton(
-    text: "Import from file",
-    onPressed: () => _importFromFile(ctx),
-  );
+        text: "Import from file",
+        onPressed: () => _importFromFile(ctx),
+      );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-    text: "Proceed",
-    onPressed: () => _onProceedPressed(),
-  );
+        text: "Proceed",
+        onPressed: () => _onProceedPressed(),
+      );
 
   _onProceedPressed() async {
     _formKey.currentState.save();
     await _validatePublicKey();
-    if(_formKey.currentState.validate()) {
-      pushRoute(Navigator.of(context),
-              () => ConfigureAccountNameRoute(
-                  keys: LocalAccountKeys(address: Address(publicKey: _pubKey), privateKey: PrivateKey(privateKey: _privKey)),
-                  onAdded: onAdded));
+    if (_formKey.currentState.validate()) {
+      pushRoute(
+        Navigator.of(context),
+        () => ConfigureAccountNameRoute(
+          keys: LocalAccountKeys(
+            address: Address(publicKey: _pubKey),
+            privateKey: PrivateKey(privateKey: _privKey),
+          ),
+          onAdded: onAdded,
+        ),
+      );
     }
   }
 
@@ -117,21 +123,17 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         _formKey.currentState.save();
         await _validatePublicKey();
         _formKey.currentState.validate();
-      }
-      on FormatException {
-        showDialog(context: ctx, builder: (ctx) =>  AlertDialog(
-            content: const Text("Incorrect file.")
-        ));
+      } on FormatException {
+        showDialog(context: ctx, builder: (ctx) => AlertDialog(content: const Text("Incorrect file.")));
       }
     }
   }
 
   _validatePublicKey() async {
     final validationResult = await _interactor.validatePublicKey(_pubKey);
-    if(validationResult != null)
+    if (validationResult != null)
       setState(() => _publicKeyValidationResult = validationResult);
     else
       setState(() => _publicKeyValidationResult = null);
   }
 }
-

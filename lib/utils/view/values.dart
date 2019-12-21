@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 const standardPadding = const EdgeInsets.all(8.0);
+const standardDialogPadding = const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0);
 const standardColumnSpacing = const EdgeInsets.symmetric(vertical: 5.0);
 const standardBorderRadius = const BorderRadius.all(const Radius.circular(7));
 
