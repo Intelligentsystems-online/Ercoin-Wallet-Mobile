@@ -8,8 +8,7 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/transfer_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:ercoin_wallet/view/home/home_route.dart';
-import 'package:ercoin_wallet/view/transfer/select_destination/select_transfer_destination_route.dart';
+import 'package:ercoin_wallet/view/transfer/destination/select_transfer_destination_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +18,14 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class AccountInfoPage extends StatelessWidget {
   final _interactor = mainInjector.getDependency<AccountInfoInteractor>();
+  final Function(int) _pageIndexSetter;
 
-  final _transactionListPageIndex = 1;
+  AccountInfoPage(this._pageIndexSetter);
 
   @override
   Widget build(BuildContext ctx) => FutureBuilderWithProgress(
         future: _interactor.obtainActiveLocalAccountDetails(),
-        builder: (localAccountDetails) => Container(
-          padding: standardPadding,
-          child: Column(
+        builder: (localAccountDetails) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(children: <Widget>[
@@ -38,7 +36,6 @@ class AccountInfoPage extends StatelessWidget {
               if(localAccountDetails.isRegistered) _transferBtn(ctx),
             ],
           ),
-        ),
       );
 
   Widget _accountInfoSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Center(
@@ -101,20 +98,16 @@ class AccountInfoPage extends StatelessWidget {
       ));
 
   Widget _qrCodeImage(LocalAccountDetails localAccountDetails, double imageSize) => QrImage(
-    data: localAccountDetails.localAccount.namedAddress.address.publicKey,
-    size: imageSize,
-    padding: standardPadding,
-    backgroundColor: Colors.white,
-  );
+        data: localAccountDetails.localAccount.namedAddress.address.publicKey,
+        size: imageSize,
+        padding: standardPadding,
+        backgroundColor: Colors.white,
+      );
 
   Widget _transferList(BuildContext ctx) => FutureBuilderWithProgress(
         future: _interactor.obtainRecentTransfers(),
         builder: (transfers) => Stack(children: <Widget>[
-          Positioned.fill(
-              child: TransferList(
-                transferList: transfers,
-                onTransactionPressed: (transfer) => _onTransactionPressed(ctx, transfer),
-              )),
+          Positioned.fill(child: TransferList(list: transfers)),
           Align(
             alignment: Alignment.bottomRight,
             child: _showHistoryBtn(ctx),
@@ -129,7 +122,7 @@ class AccountInfoPage extends StatelessWidget {
           children: <Widget>[const Text("Show full history"), const Icon(Icons.arrow_forward)],
           mainAxisSize: MainAxisSize.min,
         ),
-        onPressed: () => pushRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: _transactionListPageIndex)),
+        onPressed: () => _pageIndexSetter(1),
       );
 
   Widget _transferBtn(BuildContext ctx) => RaisedButton(
@@ -143,9 +136,7 @@ class AccountInfoPage extends StatelessWidget {
   _onCopyPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) {
     Clipboard.setData(new ClipboardData(text: localAccountDetails.localAccount.namedAddress.address.publicKey));
 
-    Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: const Text("Address copied to clipboard"),
-    ));
+    showTextSnackBar(Scaffold.of(ctx), "Address copied to clipboard");
   }
 
   _onTransactionPressed(BuildContext ctx, Transfer transfer) =>

@@ -31,32 +31,27 @@ class _TransferListPageState extends State<TransferListPage> {
         child: Column(
           children: <Widget>[
             _filterChips(),
-            Flexible(
-              child: TransferList(
-                transferList: _obtainFilteredTransferList(),
-                onTransactionPressed: (transaction) => _showDetailsDialog(ctx, transaction),
-              )
-            )
+            Expanded(child: TransferList(list: _obtainFilteredTransferList())),
           ],
         ),
       );
 
   Widget _filterChips() => Row(
-        children: <Widget>[
-          ChoiceChip(
-            label: const Text("Inbound"),
-            selected: _transferDirection == TransferDirection.IN,
-            onSelected: (isSelected) =>
-                setState(() => _transferDirection = isSelected ? TransferDirection.IN : null),
-          ),
-          ChoiceChip(
-            label: const Text("Outgoing"),
-            selected: _transferDirection == TransferDirection.OUT,
-            onSelected: (isSelected) =>
-                setState(() => _transferDirection = isSelected ? TransferDirection.OUT : null),
-          )
-        ],
-      );
+    children: <Widget>[
+      const SizedBox(width: 8.0), const Text("Show only:"),
+      const SizedBox(width: 8.0), _filterChip(text: "Inbound", direction: TransferDirection.IN),
+      const SizedBox(width: 8.0), _filterChip(text: "Outgoing", direction: TransferDirection.OUT),
+    ],
+  );
+
+  Widget _filterChip({TransferDirection direction, String text}) => FilterChip(
+    backgroundColor: Colors.transparent,
+    shape: StadiumBorder(side: BorderSide(color: Colors.black.withOpacity(0.1))),
+    selectedColor: Colors.black.withOpacity(0.1),
+    label: Text(text),
+    selected: _transferDirection == direction,
+    onSelected: (isSelected) => setState(() => _transferDirection = isSelected ? direction : null),
+  );
 
   _loadTransactions() async {
     final transferLists = await _interactor.obtainTransferLists();
