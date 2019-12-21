@@ -69,7 +69,7 @@ class _AccountListPageState extends State<AccountListPage> {
   _onActivate(BuildContext ctx, String publicKey) {
     _interactor.activateAccount(Address(publicKey: publicKey));
 
-    resetRoute(Navigator.of(ctx), () => HomeRoute());
+    //resetRoute(Navigator.of(ctx), () => HomeRoute());
   }
 
   Widget _addAccountBtn(BuildContext ctx) => RawMaterialButton(

@@ -1,4 +1,3 @@
-import 'dart:core' as prefix0;
 import 'dart:core';
 
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
@@ -7,6 +6,7 @@ import 'package:ercoin_wallet/model/base/coins_amount.dart';
 import 'package:ercoin_wallet/model/transfer/transfer.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_data.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
+import 'package:ercoin_wallet/model/transfer/utils/transfers.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/transfer/api/transfer_api_service.dart';
@@ -42,7 +42,8 @@ class TransferService {
       await Future.wait(dataList.map((data) async => Transfer(
             data: data,
             direction: direction,
-            foreignAddressNamed:
-                await _namedAddressService.obtainByAddressOrNull(data.selectForeignAddressByDirection(direction)),
+            foreignAddressNamed: await _namedAddressService.obtainByAddressOrNull(
+              Transfers.foreignAddressWithDirection(data, direction),
+            ),
           )));
 }

@@ -3,6 +3,7 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
@@ -53,6 +54,6 @@ class BackupRoute extends StatelessWidget {
 
   _backupToFile(BuildContext ctx) async {
     final filePath = await _interactor.createBackup(localAccount);
-    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text("Account saved to $filePath")));
+    showTextSnackBar(Scaffold.of(ctx), "Account saved to $filePath");
   }
 }

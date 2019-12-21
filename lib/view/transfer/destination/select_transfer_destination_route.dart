@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/interactor/transfer/select_destination/select_transfer_destination_interactor.dart';
+import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
@@ -9,7 +9,7 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
-import 'package:ercoin_wallet/view/enter_address/enter_address_route.dart';
+import 'package:ercoin_wallet/view/transfer/destination/enter_transfer_destination_route.dart';
 import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
               onSearchChanged: (value) => _onSearchChanged(value),
               listWidget: NamedAddressList(
                 namedAddressList: _namedAddressList == null ? [] : _namedAddressList,
-                onAddressPressed: (ctx, address) => _selectDestination(ctx, address.address.publicKey, address.name),
+                onAddressPressed: (ctx, address) => _selectDestination(ctx, address.address, address.name),
               ),
             ),
             bottom: ExpandedRaisedTextButton(
@@ -72,19 +72,8 @@ class _SelectTransferDestinationRouteState extends State<SelectTransferDestinati
     });
   }
 
-  _selectDestination(BuildContext ctx, String address, [String name]) =>
+  _selectDestination(BuildContext ctx, Address address, [String name]) =>
       pushRoute(Navigator.of(ctx), () => TransferRoute(destinationAddress: address, destinationName: name));
 
-  _newAddress(BuildContext ctx) => pushRoute(
-        Navigator.of(ctx),
-        () => EnterAddressRoute(
-          isNameOptional: true,
-          onProceed: (ctx, address, name) {
-            if (name != null) {
-              _interactor.createNamedAddress(Address(publicKey: address), name);
-            }
-            _selectDestination(ctx, address, name);
-          },
-        ),
-      );
+  _newAddress(BuildContext ctx) => pushRoute(Navigator.of(ctx), () => EnterTransferDestinationRoute());
 }
