@@ -42,7 +42,7 @@ class _HomeRouteState extends State<HomeRoute> {
             IconButton(
               icon: Icon(Icons.settings),
               disabledColor: Colors.white,
-              onPressed: pushRoute(Navigator.of(context), () => SettingsRoute()),
+              onPressed: () => pushRoute(Navigator.of(context), () => SettingsRoute()),
             )
           ],
         ),
