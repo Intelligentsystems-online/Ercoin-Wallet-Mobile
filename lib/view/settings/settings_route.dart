@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/interactor/configure_api/configure_api_interactor.dart';
+import 'package:ercoin_wallet/interactor/settings/settings_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
@@ -9,16 +9,16 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ConfigureApiRoute extends StatefulWidget {
+class SettingsRoute extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ConfigureApiState();
+  State<StatefulWidget> createState() => _SettingsState();
 }
 
-class _ConfigureApiState extends State<ConfigureApiRoute> {
+class _SettingsState extends State<SettingsRoute> {
   String _nodeUri;
   String _nodeUriValidationResult;
 
-  final _interactor = mainInjector.getDependency<ConfigureApiInteractor>();
+  final _interactor = mainInjector.getDependency<SettingsInteractor>();
 
   final _formKey = GlobalKey<FormState>();
   final _nodeUriController = TextEditingController();

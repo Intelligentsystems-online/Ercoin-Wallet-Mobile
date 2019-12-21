@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:ercoin_wallet/const_values/api_const_values.dart';
+import 'package:ercoin_wallet/model/api/api_health_status.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/api/api_response.dart';
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
@@ -15,14 +16,16 @@ class ApiConsumerService {
 
   ApiConsumerService(this._statusDecoderService, this._uriFactoryService);
 
-  Future<ApiResponseStatus> healthCheck(String uri) async {
+  Future<ApiHealthStatus> healthCheck(String uri) async {
     try {
-      await http.get("$uri/$healthEndpoint");
-      return ApiResponseStatus.NODE_AVAILABLE;
+      final response = await http.get("$uri/$healthEndpoint");
+      return jsonDecode(response.body)
+          .containsKey("jsonrpc") ? ApiHealthStatus.NODE_AVAILABLE : ApiHealthStatus.NODE_NOT_AVAILABLE;
     } catch (_) {
-      return ApiResponseStatus.NODE_NOT_AVAILABLE;
+      return ApiHealthStatus.NODE_NOT_AVAILABLE;
     }
   }
+
   Future<ApiResponseStatus> makeTransaction(String transactionHex) async {
     final response = await http.get(await _uriFactoryService.createTransferUri(transactionHex));
 

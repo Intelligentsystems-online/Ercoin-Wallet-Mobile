@@ -14,6 +14,7 @@ import 'package:ercoin_wallet/service/local_account/api/local_account_api_servic
 import 'package:ercoin_wallet/service/local_account/api/local_account_details_decoding_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
+import 'package:ercoin_wallet/service/settings/settings_service.dart';
 import 'package:ercoin_wallet/service/transfer/api/transfer_api_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_decoding_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_encoding_service.dart';
@@ -30,6 +31,7 @@ class ServicesConfiguration {
     _configureFile(injector);
     _configureLocalAccount(injector);
     _configureNamedAddress(injector);
+    _configureSettings(injector);
     _configureTransfer(injector);
   }
 
@@ -83,6 +85,12 @@ class ServicesConfiguration {
   static _configureNamedAddress(Injector injector) {
     injector.registerSingleton<NamedAddressService>((injector) => NamedAddressService(
         injector.getDependency<NamedAddressRepository>(),
+    ));
+  }
+
+  static _configureSettings(Injector injector) {
+    injector.registerSingleton<SettingsService>((injector) => SettingsService(
+      injector.getDependency<SharedPreferencesService>()
     ));
   }
 
