@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 class PrivateKey extends Equatable {
-  static const requiredLength = 128;
+  static const requiredLength = 88;
 
   final String privateKey;
 

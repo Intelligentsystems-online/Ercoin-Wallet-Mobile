@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class Address extends Equatable {
-  static const requiredPublicKeyLength = 64;
+  static const requiredPublicKeyLength = 44;
 
   final String publicKey;
 

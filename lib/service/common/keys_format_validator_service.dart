@@ -16,8 +16,8 @@ class KeysFormatValidatorService {
       return "Enter $keyType";
     if(key.length != length)
       return "Incorrect $keyType length";
-    if(!_isHexadecimal(key))
-      return "Incorrect $keyType value";
+//    if(!_isHexadecimal(key))
+//      return "Incorrect $keyType value";
     else return null;
   }
 

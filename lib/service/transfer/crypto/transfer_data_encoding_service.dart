@@ -1,5 +1,6 @@
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
 import 'package:ercoin_wallet/service/common/byte_converter_service.dart';
 
@@ -18,9 +19,9 @@ class TransferDataEncodingService {
   Uint8List encodeCoinsAmount(CoinsAmount value) =>
       _byteConverter.convertIntToBytes(BigInt.from(value.microErcoin), 8);
 
-  Uint8List encodeToAddress(Address address) => hex.decode(address.publicKey);
+  Uint8List encodeToAddress(Address address) => Addresses.toBytes(address);
 
-  Uint8List encodeFromAddress(Address address) => hex.decode(address.publicKey);
+  Uint8List encodeFromAddress(Address address) => Addresses.toBytes(address);
 
   Uint8List encodeMessageLength(int messageLength) => Uint8List.fromList([messageLength]);
 
