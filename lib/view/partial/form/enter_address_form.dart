@@ -77,7 +77,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
         initialValue: initialAddress?.publicKey,
         icon: const Icon(Icons.vpn_key),
         controller: _publicKeyController,
-        validator: (value) => _interactor.validatePublicKeyFormat(value),
+        validator: (value) => _publicKeyValidationResult,
         onSaved: (value) => setState(() => _publicKey = value),
       );
 
