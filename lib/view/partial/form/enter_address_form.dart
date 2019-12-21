@@ -42,7 +42,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
 
   _EnterAddressState(this.onProceed, this.isNameOptional, Address initialAddress) {
     _shouldSave = !isNameOptional;
-    _publicKeyController.value = TextEditingValue(text: initialAddress.publicKey);
+    _publicKeyController.value = TextEditingValue(text: initialAddress?.publicKey ?? "");
   }
 
   @override
