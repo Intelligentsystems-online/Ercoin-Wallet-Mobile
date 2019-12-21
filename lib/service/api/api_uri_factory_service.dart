@@ -1,26 +1,35 @@
-
 import 'dart:convert';
 
 import 'package:convert/convert.dart';
+import 'package:ercoin_wallet/const_values/api_const_values.dart';
+import 'package:ercoin_wallet/const_values/shared_preferences_const_values.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
 
 class ApiUriFactoryService {
-  static final String _hostname = "testnet-node.ercoin.tech";
-  static final String _fetchTransactionsEndpoint = "/tx_search";
-  static final String _accountDataEndpoint = "/abci_query";
-  static final String _makeTransactionEndpoint = "/broadcast_tx_sync";
+  final SharedPreferencesService _sharedPreferencesService;
 
-  Uri createOutboundTransactionsUri(Address address) =>
-      Uri.https(_hostname, _fetchTransactionsEndpoint, { "query" : _prepareOutboundTransactionsQueryValue(address) });
+  ApiUriFactoryService(this._sharedPreferencesService);
 
-  Uri createIncomingTransactionsUri(Address address) =>
-      Uri.https(_hostname, _fetchTransactionsEndpoint, { "query" : _prepareIncomingTransactionsQueryValue(address) });
+  Future<Uri> createOutboundTransactionsUri(Address address) async =>
+      Uri.https(await _obtainHostname(), fetchTransactionsEndpoint, { "query" : _prepareOutboundTransactionsQueryValue(address) });
 
-  Uri createAccountDataUri(Address address) =>
-      Uri.https(_hostname, _accountDataEndpoint, { "path" : "\"account\"", "data" : "0x" + address.publicKey});
+  Future<Uri> createIncomingTransactionsUri(Address address) async =>
+      Uri.https(await _obtainHostname(), fetchTransactionsEndpoint, { "query" : _prepareIncomingTransactionsQueryValue(address) });
 
-  Uri createTransferUri(String transferHex) =>
-      Uri.https(_hostname, _makeTransactionEndpoint, { "tx" : "0x" + transferHex});
+  Future<Uri> createAccountDataUri(Address address) async =>
+      Uri.https(await _obtainHostname(), accountDataEndpoint, { "path" : "\"account\"", "data" : "0x" + address.publicKey});
+
+  Future<Uri> createTransferUri(String transferHex) async =>
+      Uri.https(await _obtainHostname(), makeTransactionEndpoint, { "tx" : "0x" + transferHex});
+
+  Future<String> _obtainHostname() async {
+    final nodeUri = await _sharedPreferencesService.getSharedPreference(nodeUriPreferenceKey);
+
+    return nodeUri.isEmpty ? _extractHostnameFrom(defaultNodeUri) : _extractHostnameFrom(nodeUri);
+  }
+
+  String _extractHostnameFrom(String uri) => Uri.parse(uri).host;
 
   String _prepareOutboundTransactionsQueryValue(Address address) =>
       "\"tx.from=" + "'" + base64.encode(hex.decode(address.publicKey)) + "'\"";

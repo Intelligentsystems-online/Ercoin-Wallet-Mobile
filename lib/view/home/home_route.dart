@@ -1,7 +1,9 @@
+import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/view/home/page/account_info/account_info_page.dart';
 import 'package:ercoin_wallet/view/home/page/account_list/account_list_page.dart';
 import 'package:ercoin_wallet/view/home/page/address_book/address_book_page.dart';
 import 'package:ercoin_wallet/view/home/page/transfer_list/transfer_list_page.dart';
+import 'package:ercoin_wallet/view/settings/settings_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,13 @@ class HomeRouteState extends State<HomeRoute> {
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text("Ercoin wallet"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            disabledColor: Colors.white,
+            onPressed: () => pushRoute(Navigator.of(context), () => SettingsRoute()),
+          )
+        ],
       ),
       body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
