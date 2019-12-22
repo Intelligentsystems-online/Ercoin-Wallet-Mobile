@@ -29,12 +29,12 @@ class ImportAccountInteractor {
 
   Future<String> validatePublicKey(String publicKey) async {
     final localAccounts = await _localAccountService.obtainList();
-    final validationResult = _keysFormatValidatorService.validatePublicKey(publicKey);
+    final validationResult = _keysFormatValidatorService.validatePublicKey(Address(publicKey: publicKey));
 
     return validationResult == null ? _validateKeyInList(localAccounts, publicKey) : validationResult;
   }
 
-  String validatePrivateKey(String privateKey) => _keysFormatValidatorService.validatePrivateKey(privateKey);
+  String validatePrivateKey(String privateKey) => _keysFormatValidatorService.validatePrivateKey(PrivateKey(privateKey: privateKey));
 
   _validateKeyInList(List<LocalAccount> keys, String key) => keys
       .map((account) => account.namedAddress.address.publicKey)
