@@ -20,12 +20,12 @@ class TransferSigningService {
   ) async {
     List<int> transactionBytes = List.from([0]);
     transactionBytes.addAll(_encodingService.encodeTimestamp(DateTime.now()));
-    transactionBytes.addAll(_encodingService.encodeToAddress(destination));
+    transactionBytes.addAll(destination.bytes);
     transactionBytes.addAll(_encodingService.encodeCoinsAmount(amount));
     transactionBytes.addAll(_encodingService.encodeMessageLength(message.length));
     transactionBytes.addAll(_encodingService.encodeMessage(message));
     transactionBytes.addAll([1]);
-    transactionBytes.addAll(_encodingService.encodeFromAddress(sender.namedAddress.address));
+    transactionBytes.addAll(sender.namedAddress.address.bytes);
 
     return _convertToHex(await _signTransactionBytes(transactionBytes, sender.privateKey));
   }

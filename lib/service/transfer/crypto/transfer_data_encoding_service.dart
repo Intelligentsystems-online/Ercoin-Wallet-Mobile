@@ -18,10 +18,6 @@ class TransferDataEncodingService {
   Uint8List encodeCoinsAmount(CoinsAmount value) =>
       _byteConverter.convertIntToBytes(BigInt.from(value.microErcoin), 8);
 
-  Uint8List encodeToAddress(Address address) => address.bytes;
-
-  Uint8List encodeFromAddress(Address address) => address.bytes;
-
   Uint8List encodeMessageLength(int messageLength) => Uint8List.fromList([messageLength]);
 
   Uint8List encodeMessage(String message) => Uint8List.fromList(message.codeUnits);
