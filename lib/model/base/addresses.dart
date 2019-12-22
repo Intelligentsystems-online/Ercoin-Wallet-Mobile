@@ -9,4 +9,6 @@ class Addresses {
 
   static Address fromString(String publicKey) =>
       Address(bytes: Uint8List.fromList(_base58codec.decode(publicKey)));
+
+  static String toString(Uint8List bytes) => _base58codec.encode(bytes);
 }
