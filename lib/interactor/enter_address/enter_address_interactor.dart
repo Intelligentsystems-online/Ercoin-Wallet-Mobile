@@ -11,15 +11,13 @@ class EnterAddressFormInteractor {
   EnterAddressFormInteractor(this._namedAddressService, this._localAccountService, this._keysFormatValidatorService);
 
   Future<String> validateAddress(Address address) async {
-    final validationResult = _keysFormatValidatorService.validatePublicKey(address.publicKey);
+    final validationFormatResult = _keysFormatValidatorService.validatePublicKey(address.publicKey);
 
-    return validationResult == null ? await _validateAddressExistence(address) : validationResult;
+    return validationFormatResult ?? await _validateAddressExistence(address);
   }
 
   _validateAddressExistence(Address address) async {
-    final validationResult = await _validateNamedAddressExistence(address);
-
-    return validationResult == null ? await _validateLocalAccountExistence(address) : validationResult;
+    return _validateNamedAddressExistence(address) ?? await _validateLocalAccountExistence(address);
   }
 
   _validateNamedAddressExistence(Address address) async =>
