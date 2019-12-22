@@ -12,7 +12,7 @@ class KeysFormatValidatorService {
 
       return addressBytes.length == Address.requiredBytesLength ? null : "Invalid address length";
     } on FormatException {
-      return "Invalid format";
+      return "Invalid address format";
     }
   }
 
@@ -24,7 +24,7 @@ class KeysFormatValidatorService {
 
       return privateKeyBytes.length == PrivateKey.requiredBytesLength ? null : "Invalid private key length";
     } on FormatException {
-      return "Invalid format";
+      return "Invalid private key format";
     }
   }
 }
