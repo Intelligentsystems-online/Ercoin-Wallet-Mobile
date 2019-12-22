@@ -11,5 +11,6 @@ class Addresses {
   static Uint8List toBytes(Address address) =>
       Uint8List.fromList(_base58codec.decode(address.publicKey));
 
-  static Address fromBytes(Uint8List bytes) => Address(publicKey: _base58codec.encode(bytes.toList()));
+  static Address fromBytes(Uint8List bytes) =>
+      Address(publicKey: _base58codec.encode(bytes.toList()));
 }
