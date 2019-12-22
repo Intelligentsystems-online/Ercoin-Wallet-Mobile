@@ -1,11 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
-import 'package:ercoin_wallet/model/base/private_keys.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
-import 'package:ercoin_wallet/model/local_account/local_account_data.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_encoding_service.dart';
 import 'package:flutter_sodium/flutter_sodium.dart';
@@ -45,6 +42,6 @@ class TransferSigningService {
   Future<Uint8List> _createSignature(List<int> transactionBytes, PrivateKey privateKey) async =>
       await CryptoSign.signBytes(
           Uint8List.fromList(transactionBytes),
-          PrivateKeys.toBytes(privateKey)
+          privateKey.bytes
       );
 }

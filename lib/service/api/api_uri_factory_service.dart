@@ -5,7 +5,6 @@ import 'package:ercoin_wallet/const_values/api_const_values.dart';
 import 'package:ercoin_wallet/const_values/shared_preferences_const_values.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
-import 'package:ercoin_wallet/model/base/addresses.dart';
 
 class ApiUriFactoryService {
   final SharedPreferencesService _sharedPreferencesService;
@@ -25,10 +24,10 @@ class ApiUriFactoryService {
       Uri.https(await _obtainHostname(), makeTransactionEndpoint, { "tx" : "0x" + transferHex});
 
   String _prepareOutboundTransactionsQueryValue(Address address) =>
-      "\"tx.from=" + "'" + base64.encode(Addresses.toBytes(address)) + "'\"";
+      "\"tx.from=" + "'" + base64.encode(address.bytes) + "'\"";
 
   String _prepareIncomingTransactionsQueryValue(Address address) =>
-      "\"tx.to=" + "'" + base64.encode(Addresses.toBytes(address)) + "'\"";
+      "\"tx.to=" + "'" + base64.encode(address.bytes) + "'\"";
 
   Future<String> _obtainHostname() async {
     final nodeUri = await _sharedPreferencesService.getSharedPreference(nodeUriPreferenceKey);
@@ -38,5 +37,5 @@ class ApiUriFactoryService {
 
   String _extractHostnameFrom(String uri) => Uri.parse(uri).host;
 
-  String _addressToHex(Address address) => hex.encode(Addresses.toBytes(address));
+  String _addressToHex(Address address) => hex.encode(address.bytes);
 }

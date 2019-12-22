@@ -1,6 +1,7 @@
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
@@ -67,7 +68,7 @@ class _AccountListPageState extends State<AccountListPage> {
   );
 
   _onActivate(BuildContext ctx, String publicKey) {
-    _interactor.activateAccount(Address(publicKey: publicKey));
+    _interactor.activateAccount(Addresses.fromString(publicKey));
 
     //resetRoute(Navigator.of(ctx), () => HomeRoute());
   }

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
 import 'package:ercoin_wallet/service/common/byte_converter_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_encoding_service.dart';
@@ -38,7 +39,7 @@ void main() {
   });
 
   test('Should correctly encode sender address', () {
-    var senderAddressBytes = _transactionEncoder.encodeFromAddress(Address(publicKey: "0b5d53e76f56fe2ef0ab133b8c5012b47fbf6e3719794ce6dc4ae683c69823c7"));
+    var senderAddressBytes = _transactionEncoder.encodeFromAddress(Addresses.fromString("0b5d53e76f56fe2ef0ab133b8c5012b47fbf6e3719794ce6dc4ae683c69823c7"));
 
     expect(_senderAddressBytes, senderAddressBytes);
   });

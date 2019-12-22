@@ -1,4 +1,3 @@
-import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
@@ -11,7 +10,7 @@ class EnterAddressFormInteractor {
 
   Future<String> validatePublicKey(String publicKey) async {
     final entries = await _namedAddressService.obtainList();
-    final validationResult = _keysFormatValidatorService.validatePublicKey(Address(publicKey: publicKey));
+    final validationResult = _keysFormatValidatorService.validatePublicKey(publicKey);
 
     return validationResult == null ? _validateKeyInList(entries, publicKey) : validationResult;
   }

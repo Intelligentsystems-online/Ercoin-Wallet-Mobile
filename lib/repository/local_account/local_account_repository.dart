@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
@@ -25,7 +26,7 @@ class LocalAccountRepository {
       _deserializeList(await _db.queryAll());
 
   Future<LocalAccount> findByAddress(Address address) async =>
-      _deserializeExactlyOne(await _db.queryByPublicKey(address.publicKey));
+      _deserializeExactlyOne(await _db.queryByPublicKey(hex.encode(address.bytes)));
 
   Future<List<LocalAccount>> findByNameContains(String value) async =>
       _deserializeList(await _db.queryByNameContains(value));
@@ -37,16 +38,16 @@ class LocalAccountRepository {
       response.length == 1 ? _deserialize(response.first) : throw Exception("Account not found");
 
   Map<String, dynamic> _serialize(LocalAccount data) => {
-    LocalAccountDb.publicKeyRow: data.namedAddress.address.publicKey,
-    LocalAccountDb.privateKeyRow: data.privateKey.privateKey,
+    LocalAccountDb.publicKeyRow: hex.encode(data.namedAddress.address.bytes),
+    LocalAccountDb.privateKeyRow: hex.encode(data.privateKey.bytes),
     LocalAccountDb.nameRow: data.namedAddress.name,
   };
 
   LocalAccount _deserialize(Map<String, dynamic> data) => LocalAccount(
     namedAddress: NamedAddress(
-      address: Address(publicKey: data[LocalAccountDb.publicKeyRow]),
+      address: Address(bytes: hex.decode(data[LocalAccountDb.publicKeyRow])),
       name: data[LocalAccountDb.nameRow],
     ),
-    privateKey: PrivateKey(privateKey: data[LocalAccountDb.privateKeyRow]),
+    privateKey: PrivateKey(bytes: hex.decode(data[LocalAccountDb.privateKeyRow])),
   );
 }
