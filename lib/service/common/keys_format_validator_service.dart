@@ -8,14 +8,12 @@ class KeysFormatValidatorService {
     final address = Address(publicKey: value);
     if(value.isEmpty)
       return "Enter address value";
-    else {
-      try {
-        final addressBytes = Addresses.toBytes(address);
+    else try {
+      final addressBytes = Addresses.toBytes(address);
 
-        return addressBytes.length == Address.requiredBytesLength ? null : "Invalid address length";
-      } on FormatException {
-        return "Invalid format.";
-      }
+      return addressBytes.length == Address.requiredBytesLength ? null : "Invalid address length";
+    } on FormatException {
+      return "Invalid format";
     }
   }
 
@@ -23,14 +21,12 @@ class KeysFormatValidatorService {
     final privateKey = PrivateKey(privateKey: value);
     if(value.isEmpty)
       return "Enter private key value";
-    else {
-      try {
-        final privateKeyBytes = PrivateKeys.toBytes(privateKey);
+    else try {
+      final privateKeyBytes = PrivateKeys.toBytes(privateKey);
 
-        return privateKeyBytes.length == PrivateKey.requiredBytesLength ? null : "Invalid private key length";
-      } on FormatException {
-        return "Invalid format.";
-      }
+      return privateKeyBytes.length == PrivateKey.requiredBytesLength ? null : "Invalid private key length";
+    } on FormatException {
+      return "Invalid format";
     }
   }
 }
