@@ -17,7 +17,7 @@ class EnterAddressFormInteractor {
   }
 
   _validateAddressExistence(Address address) async {
-    return _validateNamedAddressExistence(address) ?? await _validateLocalAccountExistence(address);
+    return _validateNamedAddressExistence(address) ?? _validateLocalAccountExistence(address);
   }
 
   _validateNamedAddressExistence(Address address) async =>
