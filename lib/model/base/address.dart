@@ -12,7 +12,7 @@ class Address extends Equatable {
 
   const Address({@required this.bytes}) : assert(bytes.length == requiredLength);
 
-  String get publicKey => Addresses.toString(bytes);
+  String get publicKey => Addresses.encode(bytes);
 
   @override
   get props => [bytes];

@@ -11,7 +11,7 @@ class PrivateKey extends Equatable {
 
   const PrivateKey({@required this.bytes}) : assert(bytes.length == requiredLength);
 
-  String get privateKey => PrivateKeys.toString(bytes);
+  String get privateKey => PrivateKeys.encode(bytes);
 
   @override
   get props => [bytes];

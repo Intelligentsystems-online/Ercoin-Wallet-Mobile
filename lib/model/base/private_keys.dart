@@ -10,5 +10,5 @@ class PrivateKeys {
   static PrivateKey fromString(String privateKey) =>
       PrivateKey(bytes: Uint8List.fromList(_base58codec.decode(privateKey)));
 
-  static String toString(Uint8List bytes) => _base58codec.encode(bytes);
+  static String encode(Uint8List bytes) => _base58codec.encode(bytes);
 }
