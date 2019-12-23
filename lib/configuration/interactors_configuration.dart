@@ -55,6 +55,7 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<EnterAddressFormInteractor>((injector) => EnterAddressFormInteractor(
       injector.getDependency<NamedAddressService>(),
+      injector.getDependency<LocalAccountService>(),
       injector.getDependency<KeysFormatValidatorService>()
     ));
     injector.registerSingleton<TransferListInteractor>((_) => TransferListInteractor(
