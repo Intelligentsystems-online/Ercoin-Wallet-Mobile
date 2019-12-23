@@ -20,8 +20,8 @@ class ActiveLocalAccountService {
       Address(publicKey: await _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey));
 
   Future persistActiveAccountAddress(Address address) async {
-    await _localAccountCacheService.invalidateCache();
     await _sharedPreferencesUtil.setSharedPreference(_activeAccountPreferenceKey, address.publicKey);
+    await _localAccountCacheService.invalidateCache();
   }
 
   Future<LocalAccount> obtainActiveAccount() async =>
