@@ -106,7 +106,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
   }
 
   _validatePublicKey() async {
-    final validationResult = await _interactor.validateAddress(Address(publicKey: _publicKey));
+    final validationResult = await _interactor.validatePublicKey(_publicKey);
     if (validationResult != null)
       setState(() => _publicKeyValidationResult = validationResult);
     else

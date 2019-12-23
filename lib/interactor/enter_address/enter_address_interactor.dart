@@ -10,10 +10,10 @@ class EnterAddressFormInteractor {
 
   EnterAddressFormInteractor(this._namedAddressService, this._localAccountService, this._keysFormatValidatorService);
 
-  Future<String> validateAddress(Address address) async {
-    final validationFormatResult = _keysFormatValidatorService.validatePublicKey(address.publicKey);
+  Future<String> validatePublicKey(String publicKey) async {
+    final validationFormatResult = _keysFormatValidatorService.validatePublicKey(publicKey);
 
-    return validationFormatResult ?? await _validateAddressExistence(address);
+    return validationFormatResult ?? await _validateAddressExistence(Address(publicKey: publicKey));
   }
 
   _validateAddressExistence(Address address) async {
