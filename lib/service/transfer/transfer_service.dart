@@ -8,19 +8,26 @@ import 'package:ercoin_wallet/model/transfer/transfer_data.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
 import 'package:ercoin_wallet/model/transfer/utils/transfers.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_cache_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/transfer/api/transfer_api_service.dart';
 
 class TransferService {
   final TransferApiService _apiService;
   final ActiveLocalAccountService _activeLocalAccountService;
+  final LocalAccountCacheService _localAccountCacheService;
   final NamedAddressService _namedAddressService;
 
-  const TransferService(this._apiService, this._activeLocalAccountService, this._namedAddressService);
+  const TransferService(this._apiService, this._activeLocalAccountService, this._localAccountCacheService, this._namedAddressService);
 
   Future<ApiResponseStatus> executeTransfer(Address destination, String message, CoinsAmount amount) async {
     final activeAccount = await _activeLocalAccountService.obtainActiveAccount();
-    return _apiService.executeTransfer(destination, activeAccount, message, amount);
+    final response = await _apiService.executeTransfer(destination, activeAccount, message, amount);
+
+    if(response == ApiResponseStatus.SUCCESS)
+      await _localAccountCacheService.invalidateCache();
+
+    return response;
   }
 
   Future<List<Transfer>> obtainTransferList([TransferDirection direction]) async {

@@ -75,7 +75,7 @@ class ServicesConfiguration {
     ));
     injector.registerSingleton<LocalAccountService>((injector) => LocalAccountService(
       injector.getDependency<LocalAccountRepository>(),
-      injector.getDependency<LocalAccountApiService>(),
+      injector.getDependency<LocalAccountCacheService>(),
     ));
     injector.registerSingleton<ActiveLocalAccountService>((injector) => ActiveLocalAccountService(
         injector.getDependency<LocalAccountService>(),
@@ -83,7 +83,8 @@ class ServicesConfiguration {
         injector.getDependency<SharedPreferencesService>(),
     ));
     injector.registerSingleton<LocalAccountCacheService>((injector) => LocalAccountCacheService(
-      injector.getDependency<LocalAccountService>()
+      injector.getDependency<LocalAccountRepository>(),
+      injector.getDependency<LocalAccountApiService>()
     ));
   }
 
@@ -115,6 +116,7 @@ class ServicesConfiguration {
     injector.registerSingleton<TransferService>((injector) => TransferService(
         injector.getDependency<TransferApiService>(),
         injector.getDependency<ActiveLocalAccountService>(),
+        injector.getDependency<LocalAccountCacheService>(),
         injector.getDependency<NamedAddressService>()
     ));
   }
