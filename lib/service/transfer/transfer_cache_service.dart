@@ -19,12 +19,10 @@ class TransferCacheService {
   TransferCacheService(this._apiService, this._namedAddressService);
 
   Future<List<Transfer>> obtainTransferList(Address address) async {
-    if(_shouldInvalidateCache()) {
+    if(_shouldInvalidateCache())
       await invalidateCacheFor(address);
-      return _transferList;
-    }
-    else
-      return _transferList;
+
+    return _transferList;
   }
 
   Future invalidateCacheFor(Address address) async {
