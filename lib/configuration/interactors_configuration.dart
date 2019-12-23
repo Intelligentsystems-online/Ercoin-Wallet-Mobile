@@ -17,6 +17,7 @@ import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/file/json_file_service.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_cache_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/settings/settings_service.dart';
@@ -31,6 +32,7 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
       injector.getDependency<LocalAccountService>(),
+      injector.getDependency<LocalAccountCacheService>(),
       injector.getDependency<ActiveLocalAccountService>()
     ));
     injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(

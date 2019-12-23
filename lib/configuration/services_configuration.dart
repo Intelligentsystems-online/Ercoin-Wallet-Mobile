@@ -12,6 +12,7 @@ import 'package:ercoin_wallet/service/file/json_file_service.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
 import 'package:ercoin_wallet/service/local_account/api/local_account_api_service.dart';
 import 'package:ercoin_wallet/service/local_account/api/local_account_details_decoding_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_cache_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/settings/settings_service.dart';
@@ -78,7 +79,11 @@ class ServicesConfiguration {
     ));
     injector.registerSingleton<ActiveLocalAccountService>((injector) => ActiveLocalAccountService(
         injector.getDependency<LocalAccountService>(),
+        injector.getDependency<LocalAccountCacheService>(),
         injector.getDependency<SharedPreferencesService>(),
+    ));
+    injector.registerSingleton<LocalAccountCacheService>((injector) => LocalAccountCacheService(
+      injector.getDependency<LocalAccountService>()
     ));
   }
 
