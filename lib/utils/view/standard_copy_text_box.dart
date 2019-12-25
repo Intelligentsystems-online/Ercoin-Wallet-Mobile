@@ -1,4 +1,4 @@
-import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/utils/view/standard_text_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,24 +14,14 @@ class StandardCopyTextBox extends StatelessWidget {
   const StandardCopyTextBox({@required this.value, this.labelText, this.clipboardValue, this.onCopiedText});
 
   @override
-  Widget build(BuildContext ctx) => InputDecorator(
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: standardTextFieldBorder,
-          contentPadding: standardTextFieldContentPadding,
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.content_copy),
-            onPressed: () => _setToClipboard(ctx),
-          ),
-        ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Text(value, maxLines: 1),
+  Widget build(BuildContext ctx) => StandardTextBox(
+        value: value,
+        labelText: labelText,
+        suffixIcon: const Icon(Icons.content_copy),
+        onSuffixPressed: () async => copyToClipboardWithSnackbar(
+            ctx,
+            value: clipboardValue ?? value,
+            snackbarText: onCopiedText
         ),
       );
-
-  _setToClipboard(BuildContext ctx) async {
-    await Clipboard.setData(ClipboardData(text: clipboardValue ?? value));
-    showTextSnackBar(Scaffold.of(ctx), onCopiedText ?? "Copied to clipboard");
-  }
 }

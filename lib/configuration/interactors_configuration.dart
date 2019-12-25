@@ -1,3 +1,4 @@
+import 'package:ercoin_wallet/interactor/account_details/account_details_interactor.dart';
 import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/interactor/add_account/add_account_interactor.dart';
@@ -72,6 +73,10 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<EnterTransferDestinationInteractor>((injector) => EnterTransferDestinationInteractor(
       injector.getDependency<NamedAddressService>(),
+    ));
+    injector.registerSingleton<AccountDetailsInteractor>((injector) => AccountDetailsInteractor(
+      injector.getDependency<ActiveLocalAccountService>(),
+      injector.getDependency<LocalAccountService>(),
     ));
   }
 }

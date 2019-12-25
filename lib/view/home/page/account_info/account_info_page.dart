@@ -1,6 +1,7 @@
 import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
+import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
 import 'package:ercoin_wallet/utils/view/image_dialog.dart';
 import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -23,15 +24,15 @@ class AccountInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => FutureBuilderWithProgress(
         future: _interactor.obtainActiveLocalAccountDetails(),
-        builder: (localAccountDetails) => Column(
+        builder: (LocalAccountDetails details) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(children: <Widget>[
-                Expanded(child: _accountInfoSection(ctx, localAccountDetails)),
-                _qrCodeSection(ctx, localAccountDetails),
+                Expanded(child: _accountInfoSection(ctx, details)),
+                AddressQrCode(address: details.localAccount.namedAddress.address),
               ]),
-              if(localAccountDetails.isRegistered) Expanded(child: _transferList(ctx)),
-              if(localAccountDetails.isRegistered) _transferBtn(ctx),
+              if(details.isRegistered) Expanded(child: _transferList(ctx)),
+              if(details.isRegistered) _transferBtn(ctx),
             ],
           ),
       );
@@ -41,9 +42,9 @@ class AccountInfoPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _accountNameRow(localAccountDetails),
-            if(!localAccountDetails.isRegistered) _accountNotRegisteredRow(),
-            _accountAddressRow(ctx, localAccountDetails),
             _accountBalanceRow(localAccountDetails),
+            _accountAddressRow(ctx, localAccountDetails),
+            if(!localAccountDetails.isRegistered) _accountNotRegisteredRow(),
           ],
         ),
       );
@@ -61,7 +62,10 @@ class AccountInfoPage extends StatelessWidget {
   ]);
 
   Widget _accountAddressRow(BuildContext ctx, LocalAccountDetails localAccountDetails) => Row(children: <Widget>[
-        Text(localAccountDetails.localAccount.namedAddress.address.publicKey.substring(0, 15) + "...", maxLines: 1),
+        Text(
+            localAccountDetails.localAccount.namedAddress.address.publicKey.substring(0, 15) + "...",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         SizedBox(
           width: 25.0,
           height: 25.0,
@@ -78,49 +82,15 @@ class AccountInfoPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
         children: <Widget>[
-          Text(localAccountDetails.balance.microErcoin.toString(), style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+          Text(localAccountDetails.balance.ercoinFixed, style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
           const SizedBox(width: 3.0),
-          const Text("mERN"),
+          const Text("ERN", style: const TextStyle(fontWeight: FontWeight.w300)),
         ],
-      );
-
-  Widget _qrCodeSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => GestureDetector(
-    onTap: () => _onQrCodePressed(ctx, localAccountDetails),
-    child: _qrCodeImage(localAccountDetails, 150)
-  );
-
-  _onQrCodePressed(BuildContext ctx, LocalAccountDetails localAccountDetails) =>
-      showDialog(context: ctx, builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.transparent,
-        content: ImageDialog(_qrCodeImage(localAccountDetails, 230)),
-      ));
-
-  Widget _qrCodeImage(LocalAccountDetails localAccountDetails, double imageSize) => QrImage(
-        data: localAccountDetails.localAccount.namedAddress.address.publicKey,
-        size: imageSize,
-        padding: standardPadding,
-        backgroundColor: Colors.white,
       );
 
   Widget _transferList(BuildContext ctx) => FutureBuilderWithProgress(
         future: _interactor.obtainRecentTransfers(),
-        builder: (transfers) => Stack(children: <Widget>[
-          Positioned.fill(child: TransferList(list: transfers)),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: _showHistoryBtn(ctx),
-          ),
-        ]),
-      );
-
-  Widget _showHistoryBtn(BuildContext ctx) => RaisedButton(
-        color: Theme.of(ctx).cardColor,
-        textColor: Theme.of(ctx).primaryColor,
-        child: Row(
-          children: <Widget>[const Text("Show full history"), const Icon(Icons.arrow_forward)],
-          mainAxisSize: MainAxisSize.min,
-        ),
-        onPressed: () => _pageIndexSetter(1),
+        builder: (transfers) => TransferList(list: transfers),
       );
 
   Widget _transferBtn(BuildContext ctx) => RaisedButton(
