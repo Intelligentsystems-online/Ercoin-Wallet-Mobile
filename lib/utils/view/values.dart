@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 const standardPadding = const EdgeInsets.all(8.0);
 const standardDialogPadding = const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0);
 const standardColumnSpacing = const EdgeInsets.symmetric(vertical: 5.0);
-const standardBorderRadius = const BorderRadius.all(const Radius.circular(7));
+const standardBorderRadius = const BorderRadius.all(const Radius.circular(9.0));
 
 const standardTextFieldContentPadding = const EdgeInsets.symmetric(vertical: 17, horizontal: 10);
 const standardTextFieldLabelFontSize = 16.0;
@@ -17,6 +17,7 @@ final standardThemeData = ThemeData(
   accentColor: Colors.indigoAccent,
   primarySwatch: Colors.indigo,
   buttonTheme: const ButtonThemeData(
+    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0),
     shape: const RoundedRectangleBorder(borderRadius: standardBorderRadius),
     textTheme: ButtonTextTheme.primary,
   ),

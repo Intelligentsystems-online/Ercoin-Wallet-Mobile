@@ -9,6 +9,7 @@ import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/view/account_details/account_details_route.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 
@@ -50,10 +51,7 @@ class _AccountListPageState extends State<AccountListPage> {
 
   List<LocalAccountDetails> _obtainFilteredList() => _localAccountDetailsList == null ? [] : _localAccountDetailsList;
 
-  _onAccountPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) => showDialog(
-      context: ctx,
-      builder: (ctx) => _prepareAlertDialog(ctx, localAccountDetails)
-  );
+  _onAccountPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) => pushRoute(Navigator.of(ctx), () => AccountDetailsRoute(account: localAccountDetails.localAccount));
 
   _onSearchChanged(String value) {
     if(_localAccountDetailsList != null) {
@@ -61,22 +59,8 @@ class _AccountListPageState extends State<AccountListPage> {
     }
   }
 
-  AlertDialog _prepareAlertDialog(BuildContext ctx, LocalAccountDetails localAccountDetails) => AlertDialog(
-      title: Center(child: Text("Account detail")),
-      content: AccountDetailsWidget(localAccountDetails, (ctx, publicKey) => _onActivate(ctx, publicKey))
-  );
-
-  _onActivate(BuildContext ctx, String publicKey) {
-    _interactor.activateAccount(Address(publicKey: publicKey));
-
-    //resetRoute(Navigator.of(ctx), () => HomeRoute());
-  }
-
-  Widget _addAccountBtn(BuildContext ctx) => RawMaterialButton(
-    shape: CircleBorder(),
-    padding: standardPadding,
-    fillColor: Colors.white,
-    child: Icon(Icons.add, color: Colors.blue, size: 35.0),
+  Widget _addAccountBtn(BuildContext ctx) => FloatingActionButton(
+    child: const Icon(Icons.add),
     onPressed: () => _navigateToAddAccount(ctx),
   );
 

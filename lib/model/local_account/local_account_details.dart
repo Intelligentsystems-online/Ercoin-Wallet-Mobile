@@ -11,6 +11,6 @@ class LocalAccountDetails {
   const LocalAccountDetails({
     @required this.localAccount,
     @required this.balance,
-    @required this.isRegistered
+    @required this.isRegistered,
   }) : assert(isRegistered || balance == const CoinsAmount(ercoin: 0));
 }
