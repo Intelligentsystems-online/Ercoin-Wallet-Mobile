@@ -16,8 +16,6 @@ class AccountListInteractor {
 
   Future<Address> obtainActiveAccountAddress() => _activeLocalAccountService.obtainActiveAccountAddress();
 
-  Future<void> activateAccount(Address address) => _activeLocalAccountService.persistActiveAccountAddress(address);
-
   Future<List<LocalAccountDetails>> obtainAccountDetailsListByNameContains(String value) =>
       _localAccountService.obtainDetailsListByNameContains(value);
 }
