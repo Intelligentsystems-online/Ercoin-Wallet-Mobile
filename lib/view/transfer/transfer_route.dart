@@ -51,7 +51,7 @@ class _TransferRouteState extends State<TransferRoute> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Text("Destination address: ${destinationAddress.publicKey}"),
+                Text("Destination address: ${destinationAddress.base58}"),
                 destinationName != null ? Text("Name: $destinationName") : Container(),
                 _amountInput(),
                 _messageInput(),

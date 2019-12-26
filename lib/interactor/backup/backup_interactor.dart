@@ -12,7 +12,7 @@ class BackupInteractor {
     final file = File(_prepareFilePath(directory.path, localAccount.namedAddress.name));
 
     final jsonContent = jsonEncode({
-      "publicKey": localAccount.namedAddress.address.publicKey,
+      "publicKey": localAccount.namedAddress.address.base58,
       "privateKey": localAccount.privateKey.privateKey,
     });
 

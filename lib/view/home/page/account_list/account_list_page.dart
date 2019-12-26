@@ -1,15 +1,11 @@
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
-import 'package:ercoin_wallet/utils/view/account_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
-import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/account_details/account_details_route.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
@@ -81,6 +77,6 @@ class _AccountListPageState extends State<AccountListPage> {
 
   _loadActivePublicKey() async {
     final activePk = await _interactor.obtainActiveAccountAddress();
-    setState(() => _activeAccountPk = activePk.publicKey);
+    setState(() => _activeAccountPk = activePk.base58);
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
@@ -17,12 +16,12 @@ class ActiveLocalAccountService {
   const ActiveLocalAccountService(this._accountService, this._sharedPreferencesUtil);
 
   Future<Address> obtainActiveAccountAddress() async =>
-      Addresses.fromString(await _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey));
+      Address.ofBase58(await _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey));
 
   Future persistActiveAccount(LocalAccount account) async =>
       await _sharedPreferencesUtil.setSharedPreference(
           _activeAccountPreferenceKey,
-          account?.namedAddress?.address?.publicKey
+          account?.namedAddress?.address?.base58
       );
 
   Future<LocalAccount> obtainActiveAccount() async =>

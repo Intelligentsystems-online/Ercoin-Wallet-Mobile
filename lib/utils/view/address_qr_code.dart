@@ -21,7 +21,7 @@ class AddressQrCode extends StatelessWidget {
       showDialog(context: ctx, builder: (ctx) => ImageDialog(_qrCode(300.0)));
 
   Widget _qrCode(double size) => QrImage(
-      data: address.publicKey,
+      data: address.base58,
       size: size,
       padding: standardPadding,
       backgroundColor: Colors.white,

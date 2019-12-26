@@ -135,7 +135,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
   );
 
   Widget _addressBox() => StandardCopyTextBox(
-    value: account.namedAddress.address.publicKey,
+    value: account.namedAddress.address.base58,
     labelText: "Address",
   );
 

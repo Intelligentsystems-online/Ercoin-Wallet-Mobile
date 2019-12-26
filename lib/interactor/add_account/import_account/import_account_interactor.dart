@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/model/base/private_keys.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
@@ -24,7 +23,7 @@ class ImportAccountInteractor {
     if(!_isJsonCorrect(jsonContent)) throw FormatException();
 
     return LocalAccountKeys(
-      address: Addresses.fromString(jsonContent['publicKey']),
+      address: Address.ofBase58(jsonContent['publicKey']),
       privateKey: PrivateKeys.fromString(jsonContent['privateKey'])
     );
   }
@@ -39,7 +38,7 @@ class ImportAccountInteractor {
   String validatePrivateKey(String privateKey) => _keysFormatValidatorService.validatePrivateKey(privateKey);
 
   _validateKeyInList(List<LocalAccount> keys, String key) => keys
-      .map((account) => account.namedAddress.address.publicKey)
+      .map((account) => account.namedAddress.address.base58)
       .contains(key) ? "Public key is already used" : null;
 
   bool _isJsonCorrect(Map<String, dynamic> json) =>

@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
 
 // TODO(Refactor)

@@ -1,7 +1,6 @@
 import 'package:ercoin_wallet/interactor/add_account/import_account/import_account_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/base/addresses.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/model/base/private_keys.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_data.dart';
@@ -105,7 +104,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         Navigator.of(context),
         () => ConfigureAccountNameRoute(
           keys: LocalAccountKeys(
-            address: Addresses.fromString(_pubKey),
+            address: Address.ofBase58(_pubKey),
             privateKey: PrivateKeys.fromString(_privKey)
           ),
           onAdded: onAdded,
@@ -120,7 +119,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       try {
         final keys = await _interactor.importFromFile(filePath);
 
-        _pubKeyController.text = keys.address.publicKey;
+        _pubKeyController.text = keys.address.base58;
         _privKeyController.text = keys.privateKey.privateKey;
         _formKey.currentState.save();
         await _validatePublicKey();
