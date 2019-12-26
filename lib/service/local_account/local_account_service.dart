@@ -38,5 +38,5 @@ class LocalAccountService {
       await _repository.create(address, name, privateKey);
 
   Future<bool> exists(Address address) async =>
-      _repository.findByAddressOrNull(address) == null ? false : true;
+      await _repository.findByAddressOrNull(address) == null ? false : true;
 }
