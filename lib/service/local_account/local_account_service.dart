@@ -21,9 +21,15 @@ class LocalAccountService {
     final details = await _localAccountCacheService.obtainDetailsList();
 
     return details
-        .where((account) => account.localAccount.namedAddress.name.toLowerCase().contains(name.toLowerCase()))
+        .where((account) => _isAccountContainsName(account.localAccount, name))
         .toList();
   }
+
+  bool _isAccountContainsName(LocalAccount account, String name) => account
+      .namedAddress
+      .name
+      .toLowerCase()
+      .contains(name.toLowerCase());
 
   Future<LocalAccount> obtainByAddress(Address address) async =>
       await _repository.findByAddress(address);
