@@ -21,5 +21,5 @@ class NamedAddressService {
       await _repository.findByAddressOrNull(address);
 
   Future<bool> exists(Address address) async =>
-      _repository.findByAddressOrNull(address) == null ? false : true;
+      await _repository.findByAddressOrNull(address) == null ? false : true;
 }
