@@ -32,7 +32,7 @@ class BackupRoute extends StatelessWidget {
               Padding(padding: standardColumnSpacing),
               _box(name: "Public key", value: localAccount.namedAddress.address.base58),
               Padding(padding: standardColumnSpacing),
-              _box(name: "Private key", value: localAccount.privateKey.privateKey),
+              _box(name: "Private key", value: localAccount.privateKey.base58),
               Builder(builder: _backupBtn),
             ],
           ),

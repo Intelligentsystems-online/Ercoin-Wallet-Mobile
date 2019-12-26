@@ -1,5 +1,5 @@
 import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/base/private_keys.dart';
+import 'package:ercoin_wallet/model/base/private_key.dart';
 
 class KeysFormatValidatorService {
   validatePublicKey(String publicKey) {
@@ -17,7 +17,7 @@ class KeysFormatValidatorService {
     if(privateKey.isEmpty)
       return "Enter private key value";
     else try {
-      PrivateKeys.fromString(privateKey);
+      PrivateKey.ofBase58(privateKey);
     } on FormatException {
       return "Invalid private key format";
     }

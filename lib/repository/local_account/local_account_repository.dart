@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
@@ -39,7 +38,7 @@ class LocalAccountRepository {
 
   Map<String, dynamic> _serialize(LocalAccount data) => {
     LocalAccountDb.publicKeyRow: data.namedAddress.address.hex,
-    LocalAccountDb.privateKeyRow: hex.encode(data.privateKey.bytes),
+    LocalAccountDb.privateKeyRow: data.privateKey.hex,
     LocalAccountDb.nameRow: data.namedAddress.name,
   };
 
@@ -48,6 +47,6 @@ class LocalAccountRepository {
       address: Address.ofHex(data[LocalAccountDb.publicKeyRow]),
       name: data[LocalAccountDb.nameRow],
     ),
-    privateKey: PrivateKey(bytes: hex.decode(data[LocalAccountDb.privateKeyRow])),
+    privateKey: PrivateKey.ofHex((data[LocalAccountDb.privateKeyRow])),
   );
 }

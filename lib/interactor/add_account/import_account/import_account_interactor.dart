@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
-import 'package:ercoin_wallet/model/base/private_keys.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_data.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
@@ -24,7 +23,7 @@ class ImportAccountInteractor {
 
     return LocalAccountKeys(
       address: Address.ofBase58(jsonContent['publicKey']),
-      privateKey: PrivateKeys.fromString(jsonContent['privateKey'])
+      privateKey: PrivateKey.ofBase58(jsonContent['privateKey'])
     );
   }
 

@@ -140,12 +140,12 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
   );
 
   Widget _privateKeyBox(BuildContext ctx) => StandardTextBox(
-    value: _shouldShowPrivateKey ? account.privateKey.privateKey : "Private key hidden",
+    value: _shouldShowPrivateKey ? account.privateKey.base58 : "Private key hidden",
     labelText: "Private key",
     suffixIcon: Icon(_shouldShowPrivateKey ? Icons.content_copy : Icons.remove_red_eye),
     onSuffixPressed: () async {
       if(_shouldShowPrivateKey) {
-        copyToClipboardWithSnackbar(ctx, value: account.privateKey.privateKey);
+        copyToClipboardWithSnackbar(ctx, value: account.privateKey.base58);
       } else {
         await showOkDialog(ctx, content: const Text("Private key gives full access over this account and all its funds. Do not share it with anyone"));
         setState(() => _shouldShowPrivateKey = true);
