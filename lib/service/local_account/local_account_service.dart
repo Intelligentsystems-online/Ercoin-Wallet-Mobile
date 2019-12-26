@@ -29,11 +29,14 @@ class LocalAccountService {
   }
 
   Future<LocalAccount> obtainByAddress(Address address) async =>
-      await _repository.findByAddress(address);
+      await _repository.findByAddressOrNull(address);
 
   Future<LocalAccountDetails> obtainDetailsByAddress(Address address) async =>
       await _apiService.obtainAccountDetails(await obtainByAddress(address));
 
   Future<LocalAccount> create(Address address, String name, PrivateKey privateKey) async =>
       await _repository.create(address, name, privateKey);
+
+  Future<bool> exists(Address address) async =>
+      await _repository.findByAddressOrNull(address) == null ? false : true;
 }

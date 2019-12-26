@@ -24,8 +24,8 @@ class LocalAccountRepository {
   Future<List<LocalAccount>> findAll() async =>
       _deserializeList(await _db.queryAll());
 
-  Future<LocalAccount> findByAddress(Address address) async =>
-      _deserializeExactlyOne(await _db.queryByPublicKey(address.publicKey));
+  Future<LocalAccount> findByAddressOrNull(Address address) async =>
+      _deserializeOneOrNull(await _db.queryByPublicKey(address.publicKey));
 
   Future<List<LocalAccount>> findByNameContains(String value) async =>
       _deserializeList(await _db.queryByNameContains(value));
@@ -33,8 +33,8 @@ class LocalAccountRepository {
   List<LocalAccount> _deserializeList(List<Map<String, dynamic>> response) =>
       response.map(_deserialize).toList();
 
-  LocalAccount _deserializeExactlyOne(List<Map<String, dynamic>> response) =>
-      response.length == 1 ? _deserialize(response.first) : throw Exception("Account not found");
+  LocalAccount _deserializeOneOrNull(List<Map<String, dynamic>> response) =>
+      response.isNotEmpty ? _deserialize(response.first) : null;
 
   Map<String, dynamic> _serialize(LocalAccount data) => {
     LocalAccountDb.publicKeyRow: data.namedAddress.address.publicKey,
