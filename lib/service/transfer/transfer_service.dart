@@ -26,8 +26,10 @@ class TransferService {
     return response;
   }
 
-  Future<List<Transfer>> obtainTransferList() async {
+  Future<List<Transfer>> obtainTransferList({bool refresh = false}) async {
     final activeAccount = await _activeLocalAccountService.obtainActiveAccount();
+    if(refresh)
+      await _transferCacheService.invalidateCacheFor(activeAccount.namedAddress.address);
 
     return _transferCacheService.obtainTransferList(activeAccount.namedAddress.address);
   }
