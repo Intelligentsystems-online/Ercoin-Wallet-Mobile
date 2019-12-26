@@ -17,14 +17,24 @@ class LocalAccountService {
 
   Future<List<LocalAccountDetails>> obtainDetailsList() async => _localAccountCacheService.obtainDetailsList();
 
-  Future<List<LocalAccountDetails>> obtainDetailsListByNameContains(String name) async =>
-      _localAccountCacheService.obtainDetailsListByNameContains(name);
+  Future<List<LocalAccountDetails>> obtainDetailsListByNameContains(String name) async {
+    final details = await _localAccountCacheService.obtainDetailsList();
+
+    return details
+        .where((account) => account.localAccount.namedAddress.name.toLowerCase().contains(name.toLowerCase()))
+        .toList();
+  }
 
   Future<LocalAccount> obtainByAddress(Address address) async =>
       await _repository.findByAddress(address);
 
-  Future<LocalAccountDetails> obtainDetailsByAddress(Address address) async =>
-      await _localAccountCacheService.obtainDetailsByAddress(address);
+  Future<LocalAccountDetails> obtainDetailsByAddress(Address address) async {
+    final details = await _localAccountCacheService
+        .obtainDetailsList();
+
+    return details
+        .firstWhere((account) => account.localAccount.namedAddress.address == address);
+  }
 
   Future<LocalAccount> create(Address address, String name, PrivateKey privateKey) async =>
       await _repository.create(address, name, privateKey);

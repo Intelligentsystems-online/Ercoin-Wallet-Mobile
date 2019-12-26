@@ -1,4 +1,3 @@
-import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
 
@@ -15,30 +14,12 @@ class LocalAccountCacheService {
 
   LocalAccountCacheService(this._repository, this._apiService);
 
-  Future<LocalAccountDetails> obtainDetailsByAddress(Address address) async {
-    if(_shouldInvalidateCache()) {
-      await invalidateCache();
-    }
-
-    return _localAccountDetailsList
-        .firstWhere((account) => account.localAccount.namedAddress.address == address);
-  }
-
   Future<List<LocalAccountDetails>> obtainDetailsList() async {
     if(_shouldInvalidateCache()) {
       await invalidateCache();
     }
 
     return _localAccountDetailsList;
-  }
-
-  Future<List<LocalAccountDetails>> obtainDetailsListByNameContains(String name) async {
-    if(_shouldInvalidateCache())
-      await invalidateCache();
-
-    return _localAccountDetailsList
-        .where((account) => account.localAccount.namedAddress.name.toLowerCase().contains(name.toLowerCase()))
-        .toList();
   }
 
   Future invalidateCache() async {
