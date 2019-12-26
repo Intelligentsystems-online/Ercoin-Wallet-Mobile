@@ -23,52 +23,64 @@ class TransferDetailsRoute extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const SizedBox(height: 32.0),
-              const Text(
-                "Amount",
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.w300),
-              ),
-              Text(
-                Transfers.deltaAmountMicroErcoinSigned(transfer),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  color: Transfers.byDirection(transfer, onIn: Colors.green, onOut: Colors.black),
-                ),
-              ),
+              _amountCaption(),
+              _amountText(),
               const SizedBox(height: 40.0),
-              StandardCopyTextBox(
-                value: Transfers.foreignAddressNameOrPublicKey(transfer),
-                clipboardValue: Transfers.foreignAddress(transfer).publicKey,
-                labelText: Transfers.byDirection(transfer, onIn: "From", onOut: "To"),
-                onCopiedText: "Address copied to clipboard",
-              ),
+              _foreignAddressBox(),
               const SizedBox(height: 16.0),
-              StandardCopyTextBox(
-                value: transfer.data.message,
-                labelText: "Message",
-              ),
+              _messageBox(),
               const SizedBox(height: 16.0),
-              StandardCopyTextBox(
-                value: transfer.data.timestamp.toIso8601String(),
-                labelText: "Timestamp",
-              ),
+              _timestampBox(),
             ],
           ),
-          bottom: ExpandedRaisedTextButton(
-            text: transfer.foreignAddressNamed == null ? "Add to address book" : "View address details",
-            onPressed: () {
-              if (transfer.foreignAddressNamed == null) {
-                pushRoute(
-                  Navigator.of(ctx),
-                  () => AddAddressRoute(initialAddress: Transfers.foreignAddress(transfer)),
-                );
-              } else {
-                // TODO(Address details)
-              }
-            },
-          ),
+          bottom: _foreignAddressBtn(ctx),
         ),
       );
+
+  Widget _amountCaption() => const Text(
+    "Amount",
+    textAlign: TextAlign.center,
+    style: const TextStyle(fontWeight: FontWeight.w300),
+  );
+
+  Widget _amountText() => Text(
+    Transfers.deltaAmountMicroErcoinSigned(transfer),
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      fontSize: 30.0,
+      fontWeight: FontWeight.bold,
+      color: Transfers.byDirection(transfer, onIn: Colors.green, onOut: Colors.black),
+    ),
+  );
+
+  Widget _foreignAddressBox() => StandardCopyTextBox(
+    value: Transfers.foreignAddressNameOrPublicKey(transfer),
+    clipboardValue: Transfers.foreignAddress(transfer).publicKey,
+    labelText: Transfers.byDirection(transfer, onIn: "From", onOut: "To"),
+    onCopiedText: "Address copied to clipboard",
+  );
+
+  Widget _messageBox() => StandardCopyTextBox(
+    value: transfer.data.message,
+    labelText: "Message",
+  );
+
+  Widget _timestampBox() => StandardCopyTextBox(
+        value: transfer.data.timestamp.toIso8601String(),
+        labelText: "Timestamp",
+      );
+
+  Widget _foreignAddressBtn(BuildContext ctx) => ExpandedRaisedTextButton(
+    text: transfer.foreignAddressNamed == null ? "Add to address book" : "View address details",
+    onPressed: () {
+      if (transfer.foreignAddressNamed == null) {
+        pushRoute(
+          Navigator.of(ctx),
+          () => AddAddressRoute(initialAddress: Transfers.foreignAddress(transfer)),
+        );
+      } else {
+        // TODO(Address details)
+      }
+    },
+  );
 }

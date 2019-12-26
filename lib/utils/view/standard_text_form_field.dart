@@ -56,7 +56,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
         decoration: InputDecoration(
           hintText: hintText,
           suffixIcon: icon,
-          labelText: _error,
+          labelText: _error ?? hintText,
           labelStyle: TextStyle(
             color: _error == null ? null : Theme.of(ctx).errorColor,
             fontSize: standardTextFieldLabelFontSize,

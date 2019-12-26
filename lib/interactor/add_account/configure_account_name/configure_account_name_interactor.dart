@@ -13,7 +13,7 @@ class ConfigureAccountNameInteractor {
 
   Future<LocalAccount> createLocalAccount(LocalAccountKeys keys, String name) async {
     final localAccount = await _localAccountService.create(keys.address, name, keys.privateKey);
-    await _activeLocalAccountService.persistActiveAccountAddress(keys.address);
+    await _activeLocalAccountService.persistActiveAccount(localAccount);
 
     return localAccount;
   }
