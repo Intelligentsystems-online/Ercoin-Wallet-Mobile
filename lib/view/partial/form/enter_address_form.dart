@@ -2,8 +2,6 @@ import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
-import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
-import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 
@@ -42,7 +40,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
 
   _EnterAddressState(this.onProceed, this.isNameOptional, Address initialAddress) {
     _shouldSave = !isNameOptional;
-    _publicKeyController.value = TextEditingValue(text: initialAddress?.publicKey ?? "");
+    _publicKeyController.value = TextEditingValue(text: initialAddress?.base58 ?? "");
   }
 
   @override
@@ -101,7 +99,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
     _formKey.currentState.save();
     await _validatePublicKey();
     if (_formKey.currentState.validate()) {
-      onProceed(context, Address(publicKey: _publicKey), _name);
+      onProceed(context, Address.ofBase58(_publicKey), _name);
     }
   }
 

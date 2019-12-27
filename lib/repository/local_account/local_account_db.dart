@@ -1,7 +1,3 @@
-import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:ercoin_wallet/model/local_account/local_account.dart';
-import 'package:ercoin_wallet/model/base/named_address.dart';
-import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalAccountDb {
@@ -11,8 +7,8 @@ class LocalAccountDb {
   static const nameRow = "name";
 
   static const createTableQuery = "CREATE TABLE $tableName(" +
-      "$publicKeyRow varchar(${Address.requiredPublicKeyLength}) PRIMARY KEY, " +
-      "$privateKeyRow varchar(${PrivateKey.requiredLength}), " +
+      "$publicKeyRow varchar(255) PRIMARY KEY, " +
+      "$privateKeyRow varchar(255), " +
       "$nameRow varchar(255));";
 
   static const _whereNameLikeClause = "$nameRow LIKE ?";

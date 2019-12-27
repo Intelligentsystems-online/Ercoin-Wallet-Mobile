@@ -35,5 +35,5 @@ class AccountList extends StatelessWidget {
       Text(balance.ercoin.toString() + " ERN");
 
   Widget _activeAccountSign(Address address) =>
-      (address.publicKey == activeAccountPk) ? Icon(Icons.check, color: Colors.green) : IgnorePointer();
+      (address.base58 == activeAccountPk) ? Icon(Icons.check, color: Colors.green) : IgnorePointer();
 }
