@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ercoin_wallet/interactor/account_details/account_details_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
+import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
@@ -14,6 +15,8 @@ import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/stream_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/backup/backup_route.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
+import 'package:ercoin_wallet/view/home/page/account_list/account_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -32,8 +35,10 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
 
   final _interactor = mainInjector.getDependency<AccountDetailsInteractor>();
   final _detailsStream = StreamController<LocalAccountActivationDetails>();
+  final _formKey = GlobalKey<FormState>();
 
   bool _shouldShowPrivateKey = false;
+  String _name;
 
   _AccountDetailsRouteState(this.account);
 
@@ -87,13 +92,13 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Expanded(child: _deleteBtn(ctx)),
+                    Expanded(child: _deleteBtn(ctx, details.details.localAccount)),
                     const SizedBox(width: 8.0),
                     Expanded(child: _backupBtn(ctx)),
                   ],
                 ),
                 _activationBtn(ctx, details),
-                _saveBtn(),
+                _saveBtn(ctx, details.details.localAccount),
               ],
             )),
       ));
@@ -127,11 +132,16 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         ],
       );
 
-  Widget _nameBox() => StandardTextFormField(
-        initialValue: account.namedAddress.name,
-        hintText: "Name",
-        icon: const Icon(Icons.edit),
-      );
+  Widget _nameBox() => Form(
+      key: _formKey,
+      child: StandardTextFormField(
+          initialValue: account.namedAddress.name,
+          validator: (value) => value.isEmpty ? "Enter name" : null,
+          onSaved: (value) => setState(() => _name = value),
+          hintText: "Name",
+          icon: const Icon(Icons.edit),
+      )
+  );
 
   Widget _addressBox() => StandardCopyTextBox(
         value: account.namedAddress.address.base58,
@@ -157,13 +167,18 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         },
       );
 
-  Widget _deleteBtn(BuildContext ctx) => OutlineButton.icon(
+  Widget _deleteBtn(BuildContext ctx, LocalAccount account) => OutlineButton.icon(
         textColor: Colors.red,
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         icon: const Text("Delete"),
         label: const Icon(Icons.delete),
-        onPressed: () {}, // TODO(Account editing),
+        onPressed: () async => _onDelete(account),
       );
+
+  _onDelete(LocalAccount account) async {
+    await _interactor.deleteAccountByPublicKey(account.namedAddress.address.base58);
+    resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
+  }
 
   Widget _backupBtn(BuildContext ctx) => OutlineButton(
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
@@ -179,9 +194,17 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         _updateDetails();
       });
 
-  Widget _saveBtn() => RaisedButton(
-        child: const Text("Save"), onPressed: () {}, // TODO(Account editing)
-      );
+  Widget _saveBtn(BuildContext ctx, LocalAccount account) => RaisedButton(
+      child: const Text("Save"),
+      onPressed: () async {
+        if(_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+
+          await _interactor.updateNameByPublicKey(account.namedAddress.address.base58, _name);
+          resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
+        }
+      }
+  );
 
   _updateDetails() async => _detailsStream.add(await _interactor.obtainAccountActivationDetails(account));
 }

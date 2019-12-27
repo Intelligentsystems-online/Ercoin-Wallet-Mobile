@@ -10,34 +10,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeRoute extends StatefulWidget {
-
   final int initialPageIndex;
+  final String snackBarText;
 
-  const HomeRoute({this.initialPageIndex = 0});
+  const HomeRoute({this.initialPageIndex = 0, this.snackBarText});
 
   @override
-  _HomeRouteState createState() => _HomeRouteState(initialPageIndex);
+  _HomeRouteState createState() => _HomeRouteState(initialPageIndex, snackBarText);
 }
 
 class _HomeRouteState extends State<HomeRoute> {
-  int _currentPageIndex = 0;
+  final String _snackBarText;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  int _currentPageIndex = 0;
   List<Widget> _pages;
 
-  _HomeRouteState(int initialPageIndex) {
+  _HomeRouteState(int initialPageIndex, this._snackBarText) {
     _currentPageIndex = initialPageIndex;
   }
 
   @override
   initState() {
-    _pages = [AccountInfoPage(_setCurrentPageIndex), TransferListPage(), AddressBookPage(), AccountListPage()];
     super.initState();
+    _pages = [AccountInfoPage(_setCurrentPageIndex), TransferListPage(), AddressBookPage(), AccountListPage()];
+    if (_snackBarText != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => showTextSnackBar(_scaffoldKey.currentState, _snackBarText));
+    }
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
-            title: const Text("Ercoin wallet"),
+          title: const Text("Ercoin wallet"),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.settings),

@@ -5,6 +5,7 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/add_address/add_address_route.dart';
+import 'package:ercoin_wallet/view/address_details/address_details_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -44,7 +45,7 @@ class TransferDetailsRoute extends StatelessWidget {
   );
 
   Widget _amountText() => Text(
-    Transfers.deltaAmountMicroErcoinSigned(transfer),
+    Transfers.deltaAmountErcoinSigned(transfer),
     textAlign: TextAlign.center,
     style: TextStyle(
       fontSize: 30.0,
@@ -79,8 +80,10 @@ class TransferDetailsRoute extends StatelessWidget {
           () => AddAddressRoute(initialAddress: Transfers.foreignAddress(transfer)),
         );
       } else {
-        // TODO(Address details)
+        pushRoute(
+            Navigator.of(ctx),
+            () => AddressDetailsRoute(address: transfer.foreignAddressNamed));
       }
-    },
+    }
   );
 }

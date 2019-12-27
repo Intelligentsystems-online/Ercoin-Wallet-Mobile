@@ -49,7 +49,7 @@ class TransferList extends StatelessWidget {
       Icon(Transfers.byDirection(transfer, onIn: Icons.call_received, onOut: Icons.call_made));
 
   Widget _amountText(Transfer transfer) => Text(
-        Transfers.deltaAmountMicroErcoinSigned(transfer),
+        Transfers.deltaAmountErcoinSigned(transfer),
         style: TextStyle(color: Transfers.byDirection(transfer, onIn: Colors.green, onOut: Colors.black)),
       );
 

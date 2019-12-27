@@ -15,11 +15,13 @@ import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_de
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
 import 'package:ercoin_wallet/repository/named_address/named_address_repository.dart';
+import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/file/json_file_service.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_details_cache_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/settings/settings_service.dart';
@@ -73,6 +75,7 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<AddAddressIntractor>((injector) => AddAddressIntractor(
       injector.getDependency<NamedAddressService>(),
+      injector.getDependency<ActiveAccountTransferListCacheService>()
     ));
     injector.registerSingleton<EnterTransferDestinationInteractor>((injector) => EnterTransferDestinationInteractor(
       injector.getDependency<NamedAddressService>(),
@@ -80,6 +83,7 @@ class InteractorsConfiguration {
     injector.registerSingleton<AccountDetailsInteractor>((injector) => AccountDetailsInteractor(
       injector.getDependency<ActiveLocalAccountService>(),
       injector.getDependency<LocalAccountService>(),
+      injector.getDependency<LocalAccountDetailsCacheService>()
     ));
     injector.registerSingleton<AddressDetailsInteractor>((injector) => AddressDetailsInteractor(
         injector.getDependency<NamedAddressService>(),

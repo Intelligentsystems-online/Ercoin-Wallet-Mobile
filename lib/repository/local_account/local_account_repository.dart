@@ -21,6 +21,12 @@ class LocalAccountRepository {
     return localAccount;
   }
 
+  Future updateNameByPublicKey(String publicKey, String name) async =>
+      await _db.updateByPublicKey(publicKey, {LocalAccountDb.nameRow: name});
+
+  Future deleteByPublicKey(String publicKey) async =>
+      await _db.deleteByPublicKey(publicKey);
+
   Future<List<LocalAccount>> findAll() async =>
       _deserializeList(await _db.queryAll());
 
