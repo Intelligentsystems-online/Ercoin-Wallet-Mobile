@@ -136,7 +136,6 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
       key: _formKey,
       child: StandardTextFormField(
           initialValue: account.namedAddress.name,
-//          controller: _nameController,
           validator: (value) => value.isEmpty ? "Enter name" : null,
           onSaved: (value) => setState(() => _name = value),
           hintText: "Name",
@@ -184,7 +183,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
   Widget _backupBtn(BuildContext ctx) => OutlineButton(
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         child: const Text("Create backup"),
-        onPressed: () async => pushRoute(Navigator.of(ctx), () => BackupRoute(localAccount: account)),
+        onPressed: () => pushRoute(Navigator.of(ctx), () => BackupRoute(localAccount: account)),
       );
 
   Widget _activationBtn(BuildContext ctx, LocalAccountActivationDetails details) => OutlineButton(
@@ -202,7 +201,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
           _formKey.currentState.save();
 
           await _interactor.updateAccountByPublicKey(account.namedAddress.address.base58, _prepareUpdatedAccount(account));
-          showTextSnackBar(Scaffold.of(ctx), "Successfully updated");
+          showTextSnackBar(Scaffold.of(ctx), "Successfully updated account");
         }
       },
   );
