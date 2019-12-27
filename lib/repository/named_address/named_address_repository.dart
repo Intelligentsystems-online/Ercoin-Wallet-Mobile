@@ -24,7 +24,7 @@ class NamedAddressRepository
     _deserializeList(await _db.queryByNameContains(value));
 
   Future<NamedAddress> findByAddressOrNull(Address address) async =>
-    _deserializeOneOrNull(await _db.queryByPublicKey(address.publicKey));
+    _deserializeOneOrNull(await _db.queryByPublicKey(address.base58));
 
   List<NamedAddress> _deserializeList(List<Map<String, dynamic>> response) => response.map(_deserialize).toList();
   
@@ -32,12 +32,12 @@ class NamedAddressRepository
       response.isNotEmpty ? _deserialize(response.first) : null;
 
   static Map<String, dynamic> _serialize(NamedAddress data) => {
-    NamedAddressDb.publicKeyRow: data.address.publicKey,
+    NamedAddressDb.publicKeyRow: data.address.base58,
     NamedAddressDb.nameRow: data.name,
   };
 
   static NamedAddress _deserialize(Map<String, dynamic> data) => NamedAddress(
-    address: Address(publicKey: data[NamedAddressDb.publicKeyRow]),
+    address: Address.ofBase58(data[NamedAddressDb.publicKeyRow]),
     name: data[NamedAddressDb.nameRow],
   );
 }

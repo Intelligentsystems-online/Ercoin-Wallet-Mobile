@@ -63,7 +63,7 @@ class AccountInfoPage extends StatelessWidget {
 
   Widget _accountAddressRow(BuildContext ctx, LocalAccountDetails localAccountDetails) => Row(children: <Widget>[
         Text(
-            localAccountDetails.localAccount.namedAddress.address.publicKey.substring(0, 15) + "...",
+            localAccountDetails.localAccount.namedAddress.address.base58.substring(0, 15) + "...",
             style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         SizedBox(
@@ -93,16 +93,14 @@ class AccountInfoPage extends StatelessWidget {
         builder: (transfers) => TransferList(list: transfers),
       );
 
-  Widget _transferBtn(BuildContext ctx) => RaisedButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[const Text("Transfer"), const SizedBox(width: 8.0), const Icon(Icons.send)],
-        ),
+  Widget _transferBtn(BuildContext ctx) => RaisedButton.icon(
+        icon: const Text("Transfer"),
+        label: const Icon(Icons.send),
         onPressed: () => pushRoute(Navigator.of(ctx), () => SelectTransferDestinationRoute()),
       );
 
   _onCopyPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) {
-    Clipboard.setData(new ClipboardData(text: localAccountDetails.localAccount.namedAddress.address.publicKey));
+    Clipboard.setData(new ClipboardData(text: localAccountDetails.localAccount.namedAddress.address.base58));
 
     showTextSnackBar(Scaffold.of(ctx), "Address copied to clipboard");
   }

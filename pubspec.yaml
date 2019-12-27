@@ -23,10 +23,11 @@ dependencies:
   folder_picker: 0.3.0
   file_picker: 1.4.2
   qr_flutter: ^3.1.0
-  qrcode_reader: 0.4.4
+  barcode_scan: 1.0.0
   intl: ^0.16.0
   injector: 1.0.8
   equatable: ^1.0.0
+  base58check: 1.0.1
   test:
 
 dev_dependencies:

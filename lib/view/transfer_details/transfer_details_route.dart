@@ -55,7 +55,7 @@ class TransferDetailsRoute extends StatelessWidget {
 
   Widget _foreignAddressBox() => StandardCopyTextBox(
     value: Transfers.foreignAddressNameOrPublicKey(transfer),
-    clipboardValue: Transfers.foreignAddress(transfer).publicKey,
+    clipboardValue: Transfers.foreignAddress(transfer).base58,
     labelText: Transfers.byDirection(transfer, onIn: "From", onOut: "To"),
     onCopiedText: "Address copied to clipboard",
   );

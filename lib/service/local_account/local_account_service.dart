@@ -5,34 +5,37 @@ import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
-import 'package:ercoin_wallet/service/local_account/api/local_account_api_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_details_cache_service.dart';
+import 'package:ercoin_wallet/utils/strings.dart';
 
 class LocalAccountService {
   final LocalAccountRepository _repository;
-  final LocalAccountApiService _apiService;
+  final LocalAccountDetailsCacheService _localAccountCacheService;
 
-  const LocalAccountService(this._repository, this._apiService);
+  const LocalAccountService(this._repository, this._localAccountCacheService);
 
   Future<List<LocalAccount>> obtainList() async => await _repository.findAll();
 
-  Future<List<LocalAccountDetails>> obtainDetailsList() async {
-    final accounts = await _repository.findAll();
-    final detailsFutures = accounts.map((account) => _apiService.obtainAccountDetails(account));
-
-    return await Future.wait(detailsFutures);
-  }
+  Future<List<LocalAccountDetails>> obtainDetailsList() async => await _localAccountCacheService.obtainDetailsList();
 
   Future<List<LocalAccountDetails>> obtainDetailsListByNameContains(String name) async {
-    final accounts = await _repository.findByNameContains(name);
-    final detailsFutures = accounts.map((account) => _apiService.obtainAccountDetails(account));
-    return await Future.wait(detailsFutures);
+    final details = await _localAccountCacheService.obtainDetailsList();
+
+    return details
+        .where((account) => Strings.containsLowerCase(account.localAccount.namedAddress.name, name))
+        .toList();
   }
 
   Future<LocalAccount> obtainByAddress(Address address) async =>
       await _repository.findByAddressOrNull(address);
 
-  Future<LocalAccountDetails> obtainDetailsByAddress(Address address) async =>
-      await _apiService.obtainAccountDetails(await obtainByAddress(address));
+  Future<LocalAccountDetails> obtainDetailsByAddress(Address address) async {
+    final details = await _localAccountCacheService
+        .obtainDetailsList();
+
+    return details
+        .firstWhere((account) => account.localAccount.namedAddress.address == address);
+  }
 
   Future<LocalAccount> create(Address address, String name, PrivateKey privateKey) async =>
       await _repository.create(address, name, privateKey);

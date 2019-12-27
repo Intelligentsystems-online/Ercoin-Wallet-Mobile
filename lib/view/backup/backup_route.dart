@@ -7,6 +7,7 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
+import 'package:ercoin_wallet/view/backup/backup_success_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,40 +21,41 @@ class BackupRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
-        appBar: AppBar(
-          title: const Text("Account backup"),
-        ),
+        appBar: AppBar(title: const Text("Account backup")),
         body: TopAndBottomContainer(
           top: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const Text("Write down following keys:"),
-              Padding(padding: standardColumnSpacing),
-              _box(name: "Account name", value: localAccount.namedAddress.name),
-              Padding(padding: standardColumnSpacing),
-              _box(name: "Public key", value: localAccount.namedAddress.address.publicKey),
-              Padding(padding: standardColumnSpacing),
-              _box(name: "Private key", value: localAccount.privateKey.privateKey),
-              Builder(builder: _backupBtn),
+              const Text(
+                  "Create account backup by writing down and/or exporting to file following data. This will allow you to use this account from different device or restore it after data loss."),
+              const SizedBox(height: 16.0),
+              StandardCopyTextBox(labelText: "Name", value: localAccount.namedAddress.name),
+              const SizedBox(height: 16.0),
+              StandardCopyTextBox(labelText: "Address", value: localAccount.namedAddress.address.base58),
+              const SizedBox(height: 16.0),
+              StandardCopyTextBox(labelText: "Private key", value: localAccount.privateKey.base58),
             ],
           ),
-          bottom: (onProceed == null) ? Container() : Builder(builder: _proceedBtn),
+          bottom: Builder(
+            builder: (ctx) => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _backupBtn(ctx),
+                if (onProceed != null) _proceedBtn(ctx),
+              ],
+            ),
+          ),
         ),
       );
 
-  Widget _box({String name, String value}) => ExpandedRow(
-        child: StandardCopyTextBox(
-          labelText: name,
-          value: value,
-        ),
+  Widget _backupBtn(BuildContext ctx) => RaisedButton(
+        child: const Text("Export to file"),
+        onPressed: () async {
+          final filePath = await _interactor.createBackup(localAccount);
+          showDialog(context: ctx, child: BackupSuccessDialog(backupPath: filePath));
+        },
       );
-
-  Widget _backupBtn(BuildContext ctx) =>
-      ExpandedRaisedTextButton(text: "Backup to file", onPressed: () => _backupToFile(ctx));
 
   Widget _proceedBtn(BuildContext ctx) => ExpandedRaisedTextButton(text: "Proceed", onPressed: () => onProceed(ctx));
-
-  _backupToFile(BuildContext ctx) async {
-    final filePath = await _interactor.createBackup(localAccount);
-    showTextSnackBar(Scaffold.of(ctx), "Account saved to $filePath");
-  }
 }
