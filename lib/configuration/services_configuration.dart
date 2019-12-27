@@ -12,6 +12,7 @@ import 'package:ercoin_wallet/service/file/json_file_service.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
 import 'package:ercoin_wallet/service/local_account/api/local_account_api_service.dart';
 import 'package:ercoin_wallet/service/local_account/api/local_account_details_decoding_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_details_cache_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/settings/settings_service.dart';
@@ -76,12 +77,17 @@ class ServicesConfiguration {
     ));
     injector.registerSingleton<LocalAccountService>((injector) => LocalAccountService(
       injector.getDependency<LocalAccountRepository>(),
-      injector.getDependency<LocalAccountApiService>(),
+      injector.getDependency<LocalAccountDetailsCacheService>(),
     ));
     injector.registerSingleton<ActiveLocalAccountService>((injector) => ActiveLocalAccountService(
         injector.getDependency<LocalAccountService>(),
+        injector.getDependency<LocalAccountDetailsCacheService>(),
         injector.getDependency<ActiveAccountTransferListCacheService>(),
         injector.getDependency<SharedPreferencesService>(),
+    ));
+    injector.registerSingleton<LocalAccountDetailsCacheService>((injector) => LocalAccountDetailsCacheService(
+      injector.getDependency<LocalAccountRepository>(),
+      injector.getDependency<LocalAccountApiService>()
     ));
   }
 
@@ -113,6 +119,7 @@ class ServicesConfiguration {
     injector.registerSingleton<TransferService>((injector) => TransferService(
         injector.getDependency<TransferApiService>(),
         injector.getDependency<ActiveLocalAccountService>(),
+        injector.getDependency<LocalAccountDetailsCacheService>(),
         injector.getDependency<ActiveAccountTransferListCacheService>()
     ));
     injector.registerSingleton<TransferListService>((injector) => TransferListService(
