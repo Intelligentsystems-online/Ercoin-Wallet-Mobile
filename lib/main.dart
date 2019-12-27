@@ -11,6 +11,7 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:ercoin_wallet/view/terms/terms_route.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:injector/injector.dart';
 
 final Injector mainInjector = Injector();
@@ -23,6 +24,8 @@ void main() async {
   InteractorsConfiguration.configure(mainInjector);
 
   await ServicesConfiguration.initialize(mainInjector);
+  
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(App());
 }
