@@ -100,6 +100,7 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
             _formKey.currentState.save();
 
             await _interactor.updateNameByPublicKey(_address.address.base58, _name);
+            resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 2));
           }
         }
       );
