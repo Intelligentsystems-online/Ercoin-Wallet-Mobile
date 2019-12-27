@@ -4,10 +4,10 @@ import 'package:ercoin_wallet/repository/local_account/local_account_repository.
 import 'api/local_account_api_service.dart';
 
 class LocalAccountDetailsCacheService {
-  static final Duration _invalidateDuration = Duration(minutes: 5);
+  static final Duration _maxCacheAge = Duration(minutes: 5);
 
-  DateTime _lastInvalidateDate;
   List<LocalAccountDetails> _localAccountDetailsList;
+  DateTime _lastUpdate;
 
   final LocalAccountRepository _repository;
   final LocalAccountApiService _apiService;
@@ -15,28 +15,21 @@ class LocalAccountDetailsCacheService {
   LocalAccountDetailsCacheService(this._repository, this._apiService);
 
   Future<List<LocalAccountDetails>> obtainDetailsList() async {
-    if(_shouldInvalidateCache())
-      invalidateCache();
-
-    if(_localAccountDetailsList == null)
-      _localAccountDetailsList = await _fetchDetailsList();
+    if(_shouldUpdate())
+      await _update();
 
     return _localAccountDetailsList;
   }
 
-  invalidateCache() {
-    _lastInvalidateDate = DateTime.now();
-    _localAccountDetailsList = null;
-  }
+  invalidateCache() => _lastUpdate = null;
 
-  Future<List<LocalAccountDetails>> _fetchDetailsList() async {
+  Future _update() async {
     final accounts = await _repository.findAll();
     final detailsFutures = accounts.map((account) => _apiService.obtainAccountDetails(account)).toList();
 
-    return await Future.wait(detailsFutures);
+    _lastUpdate = DateTime.now();
+    _localAccountDetailsList = await Future.wait(detailsFutures);
   }
 
-  bool _shouldInvalidateCache() => _localAccountDetailsList == null || _isCacheExpired();
-
-  bool _isCacheExpired() => DateTime.now().difference(_lastInvalidateDate) > _invalidateDuration;
+  bool _shouldUpdate() => _lastUpdate == null || DateTime.now().difference(_lastUpdate) > _maxCacheAge;
 }
