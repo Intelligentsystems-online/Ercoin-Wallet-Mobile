@@ -25,7 +25,7 @@ class TransferService {
     final response = await _apiService.executeTransfer(destination, activeAccount, message, amount);
 
     if(response == ApiResponseStatus.SUCCESS)
-      await _localAccountCacheService.invalidateCache();
+      _localAccountCacheService.invalidateCache();
 
     return response;
   }

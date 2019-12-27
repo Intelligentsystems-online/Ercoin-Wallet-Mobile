@@ -25,7 +25,7 @@ class ActiveLocalAccountService {
         _activeAccountPreferenceKey,
         account?.namedAddress?.address?.publicKey
     );
-    await _localAccountCacheService.invalidateCache();
+    _localAccountCacheService.invalidateCache();
   }
 
   Future<LocalAccount> obtainActiveAccount() async =>
