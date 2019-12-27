@@ -22,7 +22,7 @@ class LocalAccountDb {
   Future insert(Map<String, dynamic> data) async => await _db.insert(tableName, data);
 
   Future updateByPublicKey(String publicKey, Map<String, dynamic> data) async =>
-      _db.update(tableName, data, where: _wherePublicKeyIsClause, whereArgs: [publicKey]);
+      await _db.update(tableName, data, where: _wherePublicKeyIsClause, whereArgs: [publicKey]);
 
   Future deleteByPublicKey(String publicKey) async => 
       await _db.delete(tableName, where: _wherePublicKeyIsClause, whereArgs: [publicKey]);
