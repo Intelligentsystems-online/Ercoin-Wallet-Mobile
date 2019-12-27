@@ -103,8 +103,8 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
         Navigator.of(context),
         () => ConfigureAccountNameRoute(
           keys: LocalAccountKeys(
-            address: Address(publicKey: _pubKey),
-            privateKey: PrivateKey(privateKey: _privKey),
+            address: Address.ofBase58(_pubKey),
+            privateKey: PrivateKey.ofBase58(_privKey)
           ),
           onAdded: onAdded,
         ),
@@ -118,8 +118,8 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       try {
         final keys = await _interactor.importFromFile(filePath);
 
-        _pubKeyController.text = keys.address.publicKey;
-        _privKeyController.text = keys.privateKey.privateKey;
+        _pubKeyController.text = keys.address.base58;
+        _privKeyController.text = keys.privateKey.base58;
         _formKey.currentState.save();
         await _validatePublicKey();
         _formKey.currentState.validate();

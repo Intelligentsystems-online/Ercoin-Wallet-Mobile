@@ -36,6 +36,6 @@ void main() {
   test('Should corretly obtain sender address', () {
     var senderAddressValue = _transactionDecoder.obtainFromAddress(_transactionBytes, _messageLength);
 
-    expect(senderAddressValue.publicKey, "0b5d53e76f56fe2ef0ab133b8c5012b47fbf6e3719794ce6dc4ae683c69823c7");
+    expect(senderAddressValue.base58, "0b5d53e76f56fe2ef0ab133b8c5012b47fbf6e3719794ce6dc4ae683c69823c7");
   });
 }

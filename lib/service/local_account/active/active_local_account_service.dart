@@ -18,12 +18,12 @@ class ActiveLocalAccountService {
   const ActiveLocalAccountService(this._accountService, this._transferCacheService, this._sharedPreferencesUtil);
 
   Future<Address> obtainActiveAccountAddress() async =>
-      Address(publicKey: await _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey));
+      Address.ofBase58(await _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey));
 
   Future persistActiveAccount(LocalAccount account) async {
     await _sharedPreferencesUtil.setSharedPreference(
         _activeAccountPreferenceKey,
-        account?.namedAddress?.address?.publicKey
+        account?.namedAddress?.address?.base58
     );
     _transferCacheService.invalidateCache();
   }

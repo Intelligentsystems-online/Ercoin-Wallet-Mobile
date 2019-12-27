@@ -12,7 +12,7 @@ class NamedAddressDetailsWidget extends StatelessWidget {
   Widget build(BuildContext ctx) => Column(
     children: <Widget>[
       Text("Name: ${namedAddress.name}"),
-      Text("Address: ${namedAddress.address.publicKey}"),
+      Text("Address: ${namedAddress.address.base58}"),
       _closeBtn(ctx)
     ]
   );

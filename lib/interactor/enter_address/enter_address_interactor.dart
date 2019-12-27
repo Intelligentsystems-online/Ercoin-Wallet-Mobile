@@ -13,7 +13,7 @@ class EnterAddressFormInteractor {
   Future<String> validatePublicKey(String publicKey) async {
     final validationFormatResult = _keysFormatValidatorService.validatePublicKey(publicKey);
 
-    return validationFormatResult ?? await _validateAddressExistence(Address(publicKey: publicKey));
+    return validationFormatResult ?? await _validateAddressExistence(Address.ofBase58(publicKey));
   }
 
   _validateAddressExistence(Address address) async {
