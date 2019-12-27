@@ -20,6 +20,7 @@ import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_decoding_ser
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_encoding_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_signing_service.dart';
 import 'package:ercoin_wallet/service/transfer/active_account_transfer_list_cache_service.dart';
+import 'package:ercoin_wallet/service/transfer/transfer_list_service.dart';
 import 'package:ercoin_wallet/service/transfer/transfer_service.dart';
 import 'package:injector/injector.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -114,10 +115,12 @@ class ServicesConfiguration {
         injector.getDependency<ActiveLocalAccountService>(),
         injector.getDependency<ActiveAccountTransferListCacheService>()
     ));
-    injector.registerSingleton<ActiveAccountTransferListCacheService>((injector) => ActiveAccountTransferListCacheService(
+    injector.registerSingleton<TransferListService>((injector) => TransferListService(
       injector.getDependency<TransferApiService>(),
-      injector.getDependency<NamedAddressService>(),
-      injector.getDependency<SharedPreferencesService>()
+      injector.getDependency<NamedAddressService>()
+    ));
+    injector.registerSingleton<ActiveAccountTransferListCacheService>((injector) => ActiveAccountTransferListCacheService(
+      injector.getDependency<TransferListService>()
     ));
   }
 }

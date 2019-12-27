@@ -27,9 +27,10 @@ class TransferService {
   }
 
   Future<List<Transfer>> obtainTransferList({bool refresh = false}) async {
+    final activeAccount = await _activeLocalAccountService.obtainActiveAccount();
     if(refresh)
       _transferCacheService.invalidateCache();
 
-    return _transferCacheService.obtainTransferList();
+    return _transferCacheService.obtainTransferList(activeAccount);
   }
 }
