@@ -6,13 +6,13 @@ import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
 import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
-import 'package:ercoin_wallet/service/transfer/transfer_cache_service.dart';
+import 'package:ercoin_wallet/service/transfer/active_account_transfer_list_cache_service.dart';
 
 class ActiveLocalAccountService {
   static final _activeAccountPreferenceKey = 'active_account';
 
   final LocalAccountService _accountService;
-  final TransferCacheService _transferCacheService;
+  final ActiveAccountTransferListCacheService _transferCacheService;
   final SharedPreferencesService _sharedPreferencesUtil;
 
   const ActiveLocalAccountService(this._accountService, this._transferCacheService, this._sharedPreferencesUtil);
@@ -25,7 +25,7 @@ class ActiveLocalAccountService {
         _activeAccountPreferenceKey,
         account?.namedAddress?.address?.publicKey
     );
-    await _transferCacheService.invalidateCacheFor(account.namedAddress.address);
+    _transferCacheService.invalidateCache();
   }
 
   Future<LocalAccount> obtainActiveAccount() async =>
