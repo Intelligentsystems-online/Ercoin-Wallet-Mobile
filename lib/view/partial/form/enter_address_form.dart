@@ -1,3 +1,4 @@
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
@@ -7,7 +8,6 @@ import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:qrcode_reader/qrcode_reader.dart';
 
 class EnterAddressForm extends StatefulWidget {
   final Function(BuildContext, Address, String) onProceed;
@@ -44,7 +44,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
   }
 
   @override
-  Widget build(BuildContext context) => TopAndBottomContainer(
+  Widget build(BuildContext ctx) => TopAndBottomContainer(
         top: Form(
           key: _formKey,
           child: Column(
@@ -61,7 +61,7 @@ class _EnterAddressState extends State<EnterAddressForm> {
         bottom: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[_scanBtn(), _proceedBtn()],
+          children: <Widget>[_scanBtn(ctx), _proceedBtn()],
         ),
       );
 
@@ -85,9 +85,10 @@ class _EnterAddressState extends State<EnterAddressForm> {
         onSaved: (value) => setState(() => _name = value),
       );
 
-  Widget _scanBtn() => OutlineButton(
+  Widget _scanBtn(BuildContext ctx) => OutlineButton(
+        borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         child: const Text("Scan QR code"),
-        onPressed: () async => _publicKeyController.text = await QRCodeReader().scan(),
+        onPressed: () async => _publicKeyController.text = await BarcodeScanner.scan(),
       );
 
   Widget _proceedBtn() => RaisedButton(
