@@ -5,14 +5,14 @@ import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
 import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
-import 'package:ercoin_wallet/service/local_account/local_account_cache_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_details_cache_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 
 class ActiveLocalAccountService {
   static final _activeAccountPreferenceKey = 'active_account';
 
   final LocalAccountService _accountService;
-  final LocalAccountCacheService _localAccountCacheService;
+  final LocalAccountDetailsCacheService _localAccountCacheService;
   final SharedPreferencesService _sharedPreferencesUtil;
 
   const ActiveLocalAccountService(this._accountService, this._localAccountCacheService, this._sharedPreferencesUtil);

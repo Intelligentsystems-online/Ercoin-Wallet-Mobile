@@ -3,7 +3,7 @@ import 'package:ercoin_wallet/repository/local_account/local_account_repository.
 
 import 'api/local_account_api_service.dart';
 
-class LocalAccountCacheService {
+class LocalAccountDetailsCacheService {
   static final Duration _invalidateDuration = Duration(minutes: 5);
 
   DateTime _lastInvalidateDate;
@@ -12,24 +12,26 @@ class LocalAccountCacheService {
   final LocalAccountRepository _repository;
   final LocalAccountApiService _apiService;
 
-  LocalAccountCacheService(this._repository, this._apiService);
+  LocalAccountDetailsCacheService(this._repository, this._apiService);
 
   Future<List<LocalAccountDetails>> obtainDetailsList() async {
-    if(_shouldInvalidateCache()) {
-      await invalidateCache();
-    }
+    if(_shouldInvalidateCache())
+      invalidateCache();
+
+    if(_localAccountDetailsList == null)
+      _localAccountDetailsList = await _fetchDetailsList();
 
     return _localAccountDetailsList;
   }
 
-  Future invalidateCache() async {
+  invalidateCache() {
     _lastInvalidateDate = DateTime.now();
-    _localAccountDetailsList = await _fetchDetailsList();
+    _localAccountDetailsList = null;
   }
 
   Future<List<LocalAccountDetails>> _fetchDetailsList() async {
     final accounts = await _repository.findAll();
-    final detailsFutures = accounts.map((account) => _apiService.obtainAccountDetails(account));
+    final detailsFutures = accounts.map((account) => _apiService.obtainAccountDetails(account)).toList();
 
     return await Future.wait(detailsFutures);
   }

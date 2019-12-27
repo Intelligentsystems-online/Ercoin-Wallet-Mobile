@@ -5,31 +5,26 @@ import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
-import 'package:ercoin_wallet/service/local_account/local_account_cache_service.dart';
+import 'package:ercoin_wallet/service/local_account/local_account_details_cache_service.dart';
+import 'package:ercoin_wallet/utils/strings.dart';
 
 class LocalAccountService {
   final LocalAccountRepository _repository;
-  final LocalAccountCacheService _localAccountCacheService;
+  final LocalAccountDetailsCacheService _localAccountCacheService;
 
   const LocalAccountService(this._repository, this._localAccountCacheService);
 
   Future<List<LocalAccount>> obtainList() async => await _repository.findAll();
 
-  Future<List<LocalAccountDetails>> obtainDetailsList() async => _localAccountCacheService.obtainDetailsList();
+  Future<List<LocalAccountDetails>> obtainDetailsList() async => await _localAccountCacheService.obtainDetailsList();
 
   Future<List<LocalAccountDetails>> obtainDetailsListByNameContains(String name) async {
     final details = await _localAccountCacheService.obtainDetailsList();
 
     return details
-        .where((account) => _isAccountContainsName(account.localAccount, name))
+        .where((account) => Strings.containsLowerCase(account.localAccount.namedAddress.name, name))
         .toList();
   }
-
-  bool _isAccountContainsName(LocalAccount account, String name) => account
-      .namedAddress
-      .name
-      .toLowerCase()
-      .contains(name.toLowerCase());
 
   Future<LocalAccount> obtainByAddress(Address address) async =>
       await _repository.findByAddressOrNull(address);
