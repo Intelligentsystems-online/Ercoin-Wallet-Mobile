@@ -1,9 +1,12 @@
+import 'package:ercoin_wallet/interactor/address_details/address_details_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
+import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +20,11 @@ class AddressDetailsRoute extends StatefulWidget {
   _AddressDetailsRouteState createState() => _AddressDetailsRouteState(address);
 }
 
-class _AddressDetailsRouteState extends State {
+class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
   final NamedAddress _address;
+
+  final _interactor = mainInjector.getDependency<AddressDetailsInteractor>();
+  final _formKey = GlobalKey<FormState>();
 
   String _name;
 
@@ -43,18 +49,21 @@ class _AddressDetailsRouteState extends State {
           bottom: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[_deleteBtn(ctx), _transferBtn(ctx), _saveBtn()],
+            children: <Widget>[_deleteBtn(ctx), _transferBtn(ctx), _saveBtn(ctx)],
           ),
         ),
       );
 
-  Widget _nameBox() => StandardTextFormField(
+  Widget _nameBox() => Form(
+    key: _formKey,
+    child: StandardTextFormField(
         initialValue: _address.name,
         hintText: "Name",
         icon: const Icon(Icons.edit),
         validator: (value) => value.isEmpty ? "Enter name" : null,
-        onSaved: (value) => _name = value,
-      );
+        onSaved: (value) => setState(() => _name = value),
+    )
+  );
 
   Widget _addressBox() => StandardCopyTextBox(
         value: _address.address.base58,
@@ -66,8 +75,13 @@ class _AddressDetailsRouteState extends State {
         textColor: Colors.red,
         icon: const Text("Delete"),
         label: const Icon(Icons.delete),
-        onPressed: () {}, // TODO(Address edit)
+        onPressed: () async => _onDelete(),
       );
+
+  _onDelete() async {
+    await _interactor.deleteAccountByPublicKey(_address.address.base58);
+    resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 2));
+  }
 
   Widget _transferBtn(BuildContext ctx) => OutlineButton.icon(
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
@@ -79,7 +93,14 @@ class _AddressDetailsRouteState extends State {
         ),
       );
 
-  Widget _saveBtn() => RaisedButton(
-        child: const Text("Save"), onPressed: () {}, // TODO(Address edit)
+  Widget _saveBtn(BuildContext ctx) => RaisedButton(
+        child: const Text("Save"),
+        onPressed: () async {
+          if(_formKey.currentState.validate()) {
+            _formKey.currentState.save();
+
+            await _interactor.updateNameByPublicKey(_address.address.base58, _name);
+          }
+        },
       );
 }
