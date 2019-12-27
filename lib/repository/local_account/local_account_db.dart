@@ -1,3 +1,4 @@
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:sqflite/sqflite.dart';
 
 class LocalAccountDb {
@@ -19,6 +20,12 @@ class LocalAccountDb {
   const LocalAccountDb(this._db);
 
   Future insert(Map<String, dynamic> data) async => await _db.insert(tableName, data);
+
+  Future updateByPublicKey(String publicKey, Map<String, dynamic> data) async =>
+      await _db.update(tableName, data, where: _wherePublicKeyIsClause, whereArgs: [publicKey]);
+
+  Future deleteByPublicKey(String publicKey) async => 
+      await _db.delete(tableName, where: _wherePublicKeyIsClause, whereArgs: [publicKey]);
 
   Future queryAll() async => await _db.query(tableName);
 
