@@ -22,8 +22,8 @@ class ImportAccountInteractor {
     if(!_isJsonCorrect(jsonContent)) throw FormatException();
 
     return LocalAccountKeys(
-      address: Address(publicKey: jsonContent['publicKey']),
-      privateKey: PrivateKey(privateKey: jsonContent['privateKey'])
+      address: Address.ofBase58(jsonContent['publicKey']),
+      privateKey: PrivateKey.ofBase58(jsonContent['privateKey'])
     );
   }
 
@@ -37,7 +37,7 @@ class ImportAccountInteractor {
   String validatePrivateKey(String privateKey) => _keysFormatValidatorService.validatePrivateKey(privateKey);
 
   _validateKeyInList(List<LocalAccount> keys, String key) => keys
-      .map((account) => account.namedAddress.address.publicKey)
+      .map((account) => account.namedAddress.address.base58)
       .contains(key) ? "Public key is already used" : null;
 
   bool _isJsonCorrect(Map<String, dynamic> json) =>

@@ -134,17 +134,17 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
       );
 
   Widget _addressBox() => StandardCopyTextBox(
-        value: account.namedAddress.address.publicKey,
+        value: account.namedAddress.address.base58,
         labelText: "Address",
       );
 
   Widget _privateKeyBox(BuildContext ctx) => StandardTextBox(
-        value: _shouldShowPrivateKey ? account.privateKey.privateKey : "Private key hidden",
+        value: _shouldShowPrivateKey ? account.privateKey.base58 : "Private key hidden",
         labelText: "Private key",
         suffixIcon: Icon(_shouldShowPrivateKey ? Icons.content_copy : Icons.remove_red_eye),
         onSuffixPressed: () async {
           if (_shouldShowPrivateKey) {
-            copyToClipboardWithSnackbar(ctx, value: account.privateKey.privateKey);
+            copyToClipboardWithSnackbar(ctx, value: account.privateKey.base58);
           } else {
             await showOkDialog(
               ctx,

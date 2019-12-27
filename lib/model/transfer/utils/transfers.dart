@@ -18,7 +18,7 @@ class Transfers {
   static Address foreignAddress(Transfer transfer) => foreignAddressWithDirection(transfer.data, transfer.direction);
 
   static String foreignAddressNameOrPublicKey(Transfer transfer) =>
-      transfer.foreignAddressNamed?.name ?? Transfers.foreignAddress(transfer).publicKey;
+      transfer.foreignAddressNamed?.name ?? Transfers.foreignAddress(transfer).base58;
 
   static int deltaAmountMicroErcoin(Transfer transfer) =>
       transfer.data.amount.microErcoin * byDirection(transfer, onIn: 1, onOut: -1);

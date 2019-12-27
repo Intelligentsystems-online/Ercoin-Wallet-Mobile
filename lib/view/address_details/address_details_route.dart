@@ -57,7 +57,7 @@ class _AddressDetailsRouteState extends State {
       );
 
   Widget _addressBox() => StandardCopyTextBox(
-        value: _address.address.publicKey,
+        value: _address.address.base58,
         labelText: "Address",
       );
 

@@ -9,8 +9,7 @@ class TransferDataDecodingService
 {
   Uint8List convertTransferHexToBytes(String transactionHex) => hex.decode(transactionHex);
 
-  Address obtainToAddress(Uint8List transferBytes) =>
-      Address(publicKey: hex.encode(_obtainToAddressBytes(transferBytes)));
+  Address obtainToAddress(Uint8List transferBytes) => Address(bytes: _obtainToAddressBytes(transferBytes));
 
   DateTime obtainTimestamp(Uint8List transferBytes) {
     ByteBuffer buffer = _obtainTimestampBytes(transferBytes).buffer;
@@ -28,7 +27,7 @@ class TransferDataDecodingService
       messageLength == 0 ? "" : String.fromCharCodes(_obtainMessageBytes(transferBytes, messageLength));
 
   Address obtainFromAddress(Uint8List transferBytes, int messageLength) =>
-      Address(publicKey: hex.encode(_obtainFromAddressBytes(transferBytes, messageLength)));
+      Address(bytes: _obtainFromAddressBytes(transferBytes, messageLength));
 
   Uint8List _obtainTimestampBytes(Uint8List transferBytes) => transferBytes.sublist(1, 5);
 
