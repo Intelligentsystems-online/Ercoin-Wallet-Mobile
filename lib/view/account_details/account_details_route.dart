@@ -200,15 +200,9 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         if(_formKey.currentState.validate()) {
           _formKey.currentState.save();
 
-          await _interactor.updateAccountByPublicKey(account.namedAddress.address.base58, _prepareUpdatedAccount(account));
-          showTextSnackBar(Scaffold.of(ctx), "Successfully updated account");
+          await _interactor.updateNameByPublicKey(account.namedAddress.address.base58, _name);
         }
       },
-  );
-
-  LocalAccount _prepareUpdatedAccount(LocalAccount account) => LocalAccount(
-      namedAddress: NamedAddress(address: account.namedAddress.address, name: _name),
-      privateKey: account.privateKey
   );
 
   _updateDetails() async => _detailsStream.add(await _interactor.obtainAccountActivationDetails(account));

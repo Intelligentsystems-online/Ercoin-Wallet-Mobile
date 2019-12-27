@@ -14,6 +14,12 @@ class LocalAccountService {
 
   const LocalAccountService(this._repository, this._localAccountCacheService);
 
+  Future updateNameByPublicKey(String publicKey, String name) async =>
+      await _repository.updateNameByPublicKey(publicKey, name);
+
+  Future deleteByPublicKey(String publicKey) async =>
+      await _repository.deleteByPublicKey(publicKey);
+
   Future<List<LocalAccount>> obtainList() async => await _repository.findAll();
 
   Future<List<LocalAccountDetails>> obtainDetailsList() async => await _localAccountCacheService.obtainDetailsList();

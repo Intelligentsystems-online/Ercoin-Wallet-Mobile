@@ -79,7 +79,6 @@ class InteractorsConfiguration {
     injector.registerSingleton<AccountDetailsInteractor>((injector) => AccountDetailsInteractor(
       injector.getDependency<ActiveLocalAccountService>(),
       injector.getDependency<LocalAccountService>(),
-      injector.getDependency<LocalAccountRepository>(),
       injector.getDependency<LocalAccountDetailsCacheService>()
     ));
   }

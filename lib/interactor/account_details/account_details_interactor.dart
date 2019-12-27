@@ -8,13 +8,11 @@ import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 class AccountDetailsInteractor {
   final ActiveLocalAccountService _activeAccountService;
   final LocalAccountService _accountService;
-  final LocalAccountRepository _localAccountRepository;
   final LocalAccountDetailsCacheService _localAccountDetailsCacheService;
 
   const AccountDetailsInteractor(
       this._activeAccountService,
       this._accountService,
-      this._localAccountRepository,
       this._localAccountDetailsCacheService);
 
   Future<LocalAccountActivationDetails> obtainAccountActivationDetails(LocalAccount account) async =>
@@ -25,12 +23,13 @@ class AccountDetailsInteractor {
           details.isActive ? await _obtainAnyAccountExcept(details.details.localAccount) : details.details.localAccount
       );
 
-  Future updateAccountByPublicKey(String publicKey, LocalAccount account) async {
-    await _localAccountRepository.updateByPublicKey(publicKey, account);
+  Future updateNameByPublicKey(String publicKey, String name) async {
+    await _accountService.updateNameByPublicKey(publicKey, name);
     _localAccountDetailsCacheService.invalidateCache();
   }
+
   Future deleteAccountByPublicKey(String publicKey) async {
-    await _localAccountRepository.deleteByPublicKey(publicKey);
+    await _accountService.deleteByPublicKey(publicKey);
     _localAccountDetailsCacheService.invalidateCache();
   }
 
