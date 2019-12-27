@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/coins_amount.dart';
 
 import '../transfer.dart';
 import '../transfer_data.dart';
@@ -25,6 +26,8 @@ class Transfers {
 
   static String deltaAmountErcoinSigned(Transfer transfer) {
     final delta = deltaAmountErcoin(transfer);
-    return delta < 0 ? "$delta" : "+$delta";
+    final amount = transfer.data.amount.ercoinFixed;
+
+    return delta < 0 ? "$amount" : "+$amount";
   }
 }
