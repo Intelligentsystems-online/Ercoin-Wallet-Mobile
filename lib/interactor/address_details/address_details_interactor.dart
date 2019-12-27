@@ -12,7 +12,7 @@ class AddressDetailsInteractor {
     _activeAccountTransferListCacheService.invalidateCache();
   }
 
-  Future deleteAccountByPublicKey(String publicKey) async {
+  Future deleteAddressByPublicKey(String publicKey) async {
     await _namedAddressService.deleteByPublicKey(publicKey);
     _activeAccountTransferListCacheService.invalidateCache();
   }

@@ -79,7 +79,7 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
       );
 
   _onDelete() async {
-    await _interactor.deleteAccountByPublicKey(_address.address.base58);
+    await _interactor.deleteAddressByPublicKey(_address.address.base58);
     resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 2));
   }
 
