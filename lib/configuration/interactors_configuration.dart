@@ -23,6 +23,7 @@ import 'package:ercoin_wallet/service/local_account/active/active_local_account_
 import 'package:ercoin_wallet/service/local_account/local_account_service.dart';
 import 'package:ercoin_wallet/service/named_address/named_address_service.dart';
 import 'package:ercoin_wallet/service/settings/settings_service.dart';
+import 'package:ercoin_wallet/service/transfer/active_account_transfer_list_cache_service.dart';
 import 'package:ercoin_wallet/service/transfer/transfer_service.dart';
 import 'package:injector/injector.dart';
 
@@ -81,7 +82,8 @@ class InteractorsConfiguration {
       injector.getDependency<LocalAccountService>(),
     ));
     injector.registerSingleton<AddressDetailsInteractor>((injector) => AddressDetailsInteractor(
-        injector.getDependency<NamedAddressRepository>()
+        injector.getDependency<NamedAddressService>(),
+        injector.getDependency<ActiveAccountTransferListCacheService>()
     ));
   }
 }

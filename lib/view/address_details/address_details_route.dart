@@ -101,6 +101,6 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
 
             await _interactor.updateNameByPublicKey(_address.address.base58, _name);
           }
-        },
+        }
       );
 }

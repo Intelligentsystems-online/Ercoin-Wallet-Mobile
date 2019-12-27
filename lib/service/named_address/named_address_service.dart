@@ -14,6 +14,12 @@ class NamedAddressService {
   Future<NamedAddress> create(Address address, String name) async =>
       await _repository.create(address, name);
 
+  Future updateNameByPublicKey(String publicKey, String name) async =>
+      await _repository.updateNameByPublicKey(publicKey, name);
+
+  Future deleteByPublicKey(String publicKey) async =>
+      await _repository.deleteByPublicKey(publicKey);
+
   Future<List<NamedAddress>> obtainListByNameContains(String name) async =>
       await _repository.findByNameContains(name);
 
