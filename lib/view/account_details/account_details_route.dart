@@ -201,8 +201,9 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
           _formKey.currentState.save();
 
           await _interactor.updateNameByPublicKey(account.namedAddress.address.base58, _name);
+          resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
         }
-      },
+      }
   );
 
   _updateDetails() async => _detailsStream.add(await _interactor.obtainAccountActivationDetails(account));

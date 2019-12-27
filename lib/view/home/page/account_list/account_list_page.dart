@@ -48,7 +48,10 @@ class _AccountListPageState extends State<AccountListPage> {
 
   List<LocalAccountDetails> _obtainFilteredList() => _localAccountDetailsList == null ? [] : _localAccountDetailsList;
 
-  _onAccountPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) => pushRoute(Navigator.of(ctx), () => AccountDetailsRoute(account: localAccountDetails.localAccount));
+  _onAccountPressed(BuildContext ctx, LocalAccountDetails localAccountDetails) async {
+    await pushRoute(Navigator.of(ctx), () => AccountDetailsRoute(account: localAccountDetails.localAccount));
+    _loadActivePublicKey();
+  }
 
   _onSearchChanged(String value) {
     if(_localAccountDetailsList != null) {
