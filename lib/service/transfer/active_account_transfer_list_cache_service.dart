@@ -23,10 +23,8 @@ class ActiveAccountTransferListCacheService {
   ActiveAccountTransferListCacheService(this._apiService, this._namedAddressService, this._sharedPreferencesService);
 
   Future<List<Transfer>> obtainTransferList() async {
-    if(_shouldInvalidateCache())
+    if(_shouldInvalidateCache()) {
       invalidateCache();
-
-    if(_transferList == null || _activeAccount == null) {
       _activeAccount = await _sharedPreferencesService.getSharedPreference(_activeAccountPreferenceKey);
       _transferList = await _fetchTransferList(Address(publicKey: _activeAccount));
     }
@@ -63,7 +61,7 @@ class ActiveAccountTransferListCacheService {
         ),
       )));
 
-  bool _shouldInvalidateCache() => _transferList == null || _isCacheExpired();
+  bool _shouldInvalidateCache() => _transferList == null || _activeAccount == null || _isCacheExpired();
 
   bool _isCacheExpired() => DateTime.now().difference(_lastInvalidateDate) > _invalidateDuration;
 }
