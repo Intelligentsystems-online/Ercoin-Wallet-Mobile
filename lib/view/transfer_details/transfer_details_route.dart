@@ -44,7 +44,7 @@ class TransferDetailsRoute extends StatelessWidget {
   );
 
   Widget _amountText() => Text(
-    Transfers.deltaAmountMicroErcoinSigned(transfer),
+    Transfers.deltaAmountErcoinSigned(transfer),
     textAlign: TextAlign.center,
     style: TextStyle(
       fontSize: 30.0,

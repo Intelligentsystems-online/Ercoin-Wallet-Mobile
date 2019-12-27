@@ -20,11 +20,11 @@ class Transfers {
   static String foreignAddressNameOrPublicKey(Transfer transfer) =>
       transfer.foreignAddressNamed?.name ?? Transfers.foreignAddress(transfer).publicKey;
 
-  static int deltaAmountMicroErcoin(Transfer transfer) =>
-      transfer.data.amount.microErcoin * byDirection(transfer, onIn: 1, onOut: -1);
+  static double deltaAmountErcoin(Transfer transfer) =>
+      transfer.data.amount.ercoin * byDirection(transfer, onIn: 1, onOut: -1);
 
-  static String deltaAmountMicroErcoinSigned(Transfer transfer) {
-    final delta = deltaAmountMicroErcoin(transfer);
+  static String deltaAmountErcoinSigned(Transfer transfer) {
+    final delta = deltaAmountErcoin(transfer);
     return delta < 0 ? "$delta" : "+$delta";
   }
 }
