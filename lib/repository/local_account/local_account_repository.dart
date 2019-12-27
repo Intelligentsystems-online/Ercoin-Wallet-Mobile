@@ -25,7 +25,7 @@ class LocalAccountRepository {
       _deserializeList(await _db.queryAll());
 
   Future<LocalAccount> findByAddressOrNull(Address address) async =>
-      _deserializeOneOrNull(await _db.queryByPublicKey(address.hex));
+      _deserializeOneOrNull(await _db.queryByPublicKey(address.base58));
 
   Future<List<LocalAccount>> findByNameContains(String value) async =>
       _deserializeList(await _db.queryByNameContains(value));
@@ -37,16 +37,16 @@ class LocalAccountRepository {
       response.isNotEmpty ? _deserialize(response.first) : null;
 
   Map<String, dynamic> _serialize(LocalAccount data) => {
-    LocalAccountDb.publicKeyRow: data.namedAddress.address.hex,
-    LocalAccountDb.privateKeyRow: data.privateKey.hex,
+    LocalAccountDb.publicKeyRow: data.namedAddress.address.base58,
+    LocalAccountDb.privateKeyRow: data.privateKey.base58,
     LocalAccountDb.nameRow: data.namedAddress.name,
   };
 
   LocalAccount _deserialize(Map<String, dynamic> data) => LocalAccount(
     namedAddress: NamedAddress(
-      address: Address.ofHex(data[LocalAccountDb.publicKeyRow]),
+      address: Address.ofBase58(data[LocalAccountDb.publicKeyRow]),
       name: data[LocalAccountDb.nameRow],
     ),
-    privateKey: PrivateKey.ofHex((data[LocalAccountDb.privateKeyRow])),
+    privateKey: PrivateKey.ofBase58((data[LocalAccountDb.privateKeyRow])),
   );
 }

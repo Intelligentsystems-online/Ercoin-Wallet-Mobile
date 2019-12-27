@@ -1,4 +1,3 @@
-import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NamedAddressDb {
@@ -7,7 +6,7 @@ class NamedAddressDb {
   static const nameRow = "name";
 
   static const createTableQuery = "CREATE TABLE $tableName (" +
-      "$publicKeyRow varchar(${Address.requiredLength * 2}) PRIMARY KEY, " +
+      "$publicKeyRow varchar(255) PRIMARY KEY, " +
       "$nameRow varchar(255));";
 
   static const _whereNameLikeClause = "$nameRow LIKE ?";

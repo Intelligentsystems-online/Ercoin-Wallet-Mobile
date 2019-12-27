@@ -21,12 +21,6 @@ class Address extends Equatable {
   static Address ofBase58(String base58) =>
       Address(bytes: _base58codec.decode(base58));
 
-  static Address ofBase64(String base64) =>
-      Address(bytes: base64Converter.base64.decode(base64));
-
-  static Address ofHex(String hex) =>
-      Address(bytes: hexConverter.hex.decode(hex));
-
   String get base58 => _base58codec.encode(bytes);
   String get base64 => base64Converter.base64.encode(bytes);
   String get hex => hexConverter.hex.encode(bytes);
