@@ -18,7 +18,7 @@ final standardThemeData = ThemeData(
   primarySwatch: Colors.indigo,
   buttonTheme: const ButtonThemeData(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0),
-    shape: const RoundedRectangleBorder(borderRadius: standardBorderRadius),
+    shape: const StadiumBorder(),
     textTheme: ButtonTextTheme.primary,
   ),
   fontFamily: 'Montserrat',

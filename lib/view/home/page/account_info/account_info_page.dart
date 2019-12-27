@@ -93,11 +93,9 @@ class AccountInfoPage extends StatelessWidget {
         builder: (transfers) => TransferList(list: transfers),
       );
 
-  Widget _transferBtn(BuildContext ctx) => RaisedButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[const Text("Transfer"), const SizedBox(width: 8.0), const Icon(Icons.send)],
-        ),
+  Widget _transferBtn(BuildContext ctx) => RaisedButton.icon(
+        icon: const Text("Transfer"),
+        label: const Icon(Icons.send),
         onPressed: () => pushRoute(Navigator.of(ctx), () => SelectTransferDestinationRoute()),
       );
 
