@@ -6,11 +6,12 @@ import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
+import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/account_details/account_details_route.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class AccountListPage extends StatefulWidget {
@@ -32,18 +33,29 @@ class _AccountListPageState extends State<AccountListPage> {
   }
 
   @override
-  Widget build(BuildContext ctx) => TopAndBottomContainer(
-    top: _accountListBuilder(ctx),
-    bottom: _addAccountBtn(ctx),
-    bottomAlignment: FractionalOffset.bottomRight,
+  Widget build(BuildContext ctx) => Scaffold(
+    body: Container(
+      padding: standardPadding.copyWith(bottom: 0),
+      child: ProgressOverlayContainer(
+          overlayEnabled: _localAccountDetailsList == null || _activeAccountPk == null,
+          child: _accountList()
+      ),
+    ),
+    floatingActionButton: _addAccountBtn(ctx),
   );
 
-  Widget _accountListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _localAccountDetailsList == null || _activeAccountPk == null,
-    child: SearchableList(
-      onSearchChanged: (value) => _onSearchChanged(value),
-      listWidget: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account))
-    )
+  SearchableList _accountList() => SearchableList(
+          onSearchChanged: (value) => _onSearchChanged(value),
+          listWidget: AccountList(_obtainFilteredList(), _activeAccountPk, (ctx, account) => _onAccountPressed(ctx, account))
+      );
+
+  FloatingActionButton _addAccountBtn(BuildContext ctx) => FloatingActionButton(
+    heroTag: "AccountListPage",
+    child: const Icon(Icons.add),
+    onPressed: () => pushRoute(
+      Navigator.of(ctx),
+          () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute())),
+    ),
   );
 
   List<LocalAccountDetails> _obtainFilteredList() => _localAccountDetailsList == null ? [] : _localAccountDetailsList;
@@ -58,15 +70,6 @@ class _AccountListPageState extends State<AccountListPage> {
       value.isEmpty ? _loadLocalAccountDetailsList() : _loadFilteredLocalAccountDetailsList(value);
     }
   }
-
-  Widget _addAccountBtn(BuildContext ctx) => FloatingActionButton(
-    child: const Icon(Icons.add),
-    onPressed: () => _navigateToAddAccount(ctx),
-  );
-
-  _navigateToAddAccount(BuildContext ctx) => pushRoute(
-      Navigator.of(ctx), () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()))
-  );
 
   _loadFilteredLocalAccountDetailsList(String value) async {
     final accounts = await _interactor.obtainAccountDetailsListByNameContains(value);

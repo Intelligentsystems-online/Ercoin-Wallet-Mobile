@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+
 
 @immutable
 class LocalAccountActivationDetails {

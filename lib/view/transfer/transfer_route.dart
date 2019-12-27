@@ -12,7 +12,7 @@ import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 
@@ -42,6 +42,7 @@ class _TransferRouteState extends State<TransferRoute> {
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Transfer"),
       ),

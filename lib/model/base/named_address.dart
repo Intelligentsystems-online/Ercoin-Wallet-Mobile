@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 class NamedAddress extends Equatable {

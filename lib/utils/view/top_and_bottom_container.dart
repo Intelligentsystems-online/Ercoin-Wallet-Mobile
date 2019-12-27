@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 
 class TopAndBottomContainer extends StatelessWidget {
   final Widget top;
@@ -9,8 +10,8 @@ class TopAndBottomContainer extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   const TopAndBottomContainer({
-    @required this.top,
-    @required this.bottom,
+    this.top,
+    this.bottom,
     this.topAlignment = FractionalOffset.topCenter,
     this.bottomAlignment = FractionalOffset.bottomCenter,
     this.padding = standardPadding
@@ -21,11 +22,11 @@ class TopAndBottomContainer extends StatelessWidget {
         padding: padding,
         child: Stack(
           children: <Widget>[
-            Align(
+            if(top != null) Align(
               alignment: topAlignment,
               child: top,
             ),
-            Align(
+            if(bottom != null) Align(
               alignment: bottomAlignment,
               child: bottom,
             )

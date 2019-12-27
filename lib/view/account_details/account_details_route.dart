@@ -17,7 +17,6 @@ import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/backup/backup_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:ercoin_wallet/view/home/page/account_list/account_list_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -56,7 +55,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text("Account details")),
       body: StreamBuilderWithProgress(
         stream: _detailsStream.stream,

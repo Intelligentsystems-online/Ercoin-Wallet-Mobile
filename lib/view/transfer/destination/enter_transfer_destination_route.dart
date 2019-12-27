@@ -3,7 +3,7 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/view/partial/form/enter_address_form.dart';
 import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class EnterTransferDestinationRoute extends StatelessWidget {
@@ -12,6 +12,7 @@ class EnterTransferDestinationRoute extends StatelessWidget {
   
   @override
   Widget build(BuildContext ctx) => Scaffold(
+    resizeToAvoidBottomInset: false,
     appBar: AppBar(title: const Text("Enter new address")),
     body: EnterAddressForm(
       isNameOptional: true,

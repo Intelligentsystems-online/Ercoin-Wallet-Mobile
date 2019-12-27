@@ -4,7 +4,7 @@ import 'package:ercoin_wallet/model/transfer/transfer.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class TransferListPage extends StatefulWidget {
@@ -25,32 +25,37 @@ class _TransferListPageState extends State<TransferListPage> {
   }
 
   @override
-  Widget build(BuildContext ctx) => ProgressOverlayContainer(
+  Widget build(BuildContext ctx) => Column(
+        children: <Widget>[
+          _filterChips(),
+          Expanded(child: _transferList()),
+        ],
+      );
+
+  Widget _transferList() => ProgressOverlayContainer(
         overlayEnabled: _allTransfers == null,
-        child: Column(
-          children: <Widget>[
-            _filterChips(),
-            Expanded(child: TransferList(list: _obtainFilteredTransferList())),
-          ],
-        ),
+        child: TransferList(list: _obtainFilteredTransferList()),
       );
 
   Widget _filterChips() => Row(
-    children: <Widget>[
-      const SizedBox(width: 8.0), const Text("Show only:"),
-      const SizedBox(width: 8.0), _filterChip(text: "Inbound", direction: TransferDirection.IN),
-      const SizedBox(width: 8.0), _filterChip(text: "Outgoing", direction: TransferDirection.OUT),
-    ],
-  );
+        children: <Widget>[
+          const SizedBox(width: 8.0),
+          const Text("Show only:"),
+          const SizedBox(width: 8.0),
+          _filterChip(text: "Inbound", direction: TransferDirection.IN),
+          const SizedBox(width: 8.0),
+          _filterChip(text: "Outgoing", direction: TransferDirection.OUT),
+        ],
+      );
 
   Widget _filterChip({TransferDirection direction, String text}) => FilterChip(
-    backgroundColor: Colors.transparent,
-    shape: StadiumBorder(side: BorderSide(color: Colors.black.withOpacity(0.1))),
-    selectedColor: Colors.black.withOpacity(0.1),
-    label: Text(text),
-    selected: _transferDirection == direction,
-    onSelected: (isSelected) => setState(() => _transferDirection = isSelected ? direction : null),
-  );
+        backgroundColor: Colors.transparent,
+        shape: StadiumBorder(side: BorderSide(color: Colors.black.withOpacity(0.1))),
+        selectedColor: Colors.black.withOpacity(0.1),
+        label: Text(text),
+        selected: _transferDirection == direction,
+        onSelected: (isSelected) => setState(() => _transferDirection = isSelected ? direction : null),
+      );
 
   _loadTransactions() async {
     final transferLists = await _interactor.obtainTransferLists();

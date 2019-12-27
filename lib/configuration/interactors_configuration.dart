@@ -65,10 +65,12 @@ class InteractorsConfiguration {
       injector.getDependency<KeysFormatValidatorService>()
     ));
     injector.registerSingleton<TransferListInteractor>((_) => TransferListInteractor(
-        injector.getDependency<TransferService>()
+        injector.getDependency<TransferService>(),
     ));
     injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
-      injector.getDependency<NamedAddressService>()
+      injector.getDependency<NamedAddressService>(),
+      injector.getDependency<LocalAccountService>(),
+      injector.getDependency<ActiveLocalAccountService>(),
     ));
     injector.registerSingleton<TransferInteractor>((injector) => TransferInteractor(
       injector.getDependency<TransferService>()
