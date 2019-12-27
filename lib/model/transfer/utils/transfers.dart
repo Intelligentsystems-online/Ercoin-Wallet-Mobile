@@ -1,4 +1,5 @@
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/base/coins_amount.dart';
 
 import '../transfer.dart';
 import '../transfer_data.dart';
@@ -20,11 +21,13 @@ class Transfers {
   static String foreignAddressNameOrPublicKey(Transfer transfer) =>
       transfer.foreignAddressNamed?.name ?? Transfers.foreignAddress(transfer).base58;
 
-  static int deltaAmountMicroErcoin(Transfer transfer) =>
-      transfer.data.amount.microErcoin * byDirection(transfer, onIn: 1, onOut: -1);
+  static double deltaAmountErcoin(Transfer transfer) =>
+      transfer.data.amount.ercoin * byDirection(transfer, onIn: 1, onOut: -1);
 
-  static String deltaAmountMicroErcoinSigned(Transfer transfer) {
-    final delta = deltaAmountMicroErcoin(transfer);
-    return delta < 0 ? "$delta" : "+$delta";
+  static String deltaAmountErcoinSigned(Transfer transfer) {
+    final delta = deltaAmountErcoin(transfer);
+    final amount = transfer.data.amount.ercoinFixed;
+
+    return delta < 0 ? "-$amount" : "+$amount";
   }
 }
