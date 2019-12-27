@@ -28,6 +28,6 @@ class Transfers {
     final delta = deltaAmountErcoin(transfer);
     final amount = transfer.data.amount.ercoinFixed;
 
-    return delta < 0 ? "$amount" : "+$amount";
+    return delta < 0 ? "-$amount" : "+$amount";
   }
 }
