@@ -27,6 +27,7 @@ dependencies:
   intl: ^0.16.0
   injector: 1.0.8
   equatable: ^1.0.0
+  base58check: 1.0.1
   test:
 
 dev_dependencies:

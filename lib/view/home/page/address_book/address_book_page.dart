@@ -1,7 +1,6 @@
 import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
-import 'package:ercoin_wallet/utils/view/named_address_details_widget.dart';
 import 'package:ercoin_wallet/utils/view/named_address_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
@@ -9,6 +8,7 @@ import 'package:ercoin_wallet/utils/view/searchable_list.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_address/add_address_route.dart';
+import 'package:ercoin_wallet/view/address_details/address_details_route.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,10 +64,7 @@ class _AddressBookPageState extends State<AddressBookPage> {
   }
 
   _onAddressPressed(BuildContext ctx, NamedAddress namedAddress) =>
-      showDialog(context: ctx, builder: (ctx) => _prepareAlertDialog(ctx, namedAddress));
-
-  Widget _prepareAlertDialog(BuildContext ctx, NamedAddress namedAddress) =>
-      AlertDialog(title: Center(child: Text("Address detail")), content: NamedAddressDetailsWidget(namedAddress));
+      pushRoute(Navigator.of(context), () => AddressDetailsRoute(address: namedAddress));
 
   Widget _addAddressBtn(BuildContext ctx) => RawMaterialButton(
     shape: CircleBorder(),

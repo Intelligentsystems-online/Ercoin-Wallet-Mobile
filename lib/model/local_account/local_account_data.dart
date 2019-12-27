@@ -1,4 +1,3 @@
-import 'package:convert/convert.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,7 @@ class LocalAccountKeys {
 
   const LocalAccountKeys({@required this.address, @required this.privateKey});
   static ofKeyPair(KeyPair keyPair) => LocalAccountKeys(
-    address: Address(publicKey: hex.encode(keyPair.publicKey)),
-    privateKey: PrivateKey(privateKey: hex.encode(keyPair.secretKey)),
+    address: Address(bytes: keyPair.publicKey),
+    privateKey: PrivateKey(bytes: keyPair.secretKey)
   );
 }

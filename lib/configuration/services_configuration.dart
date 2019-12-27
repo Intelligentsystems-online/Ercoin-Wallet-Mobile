@@ -20,6 +20,8 @@ import 'package:ercoin_wallet/service/transfer/api/transfer_api_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_decoding_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_encoding_service.dart';
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_signing_service.dart';
+import 'package:ercoin_wallet/service/transfer/active_account_transfer_list_cache_service.dart';
+import 'package:ercoin_wallet/service/transfer/transfer_list_service.dart';
 import 'package:ercoin_wallet/service/transfer/transfer_service.dart';
 import 'package:injector/injector.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -80,6 +82,7 @@ class ServicesConfiguration {
     injector.registerSingleton<ActiveLocalAccountService>((injector) => ActiveLocalAccountService(
         injector.getDependency<LocalAccountService>(),
         injector.getDependency<LocalAccountDetailsCacheService>(),
+        injector.getDependency<ActiveAccountTransferListCacheService>(),
         injector.getDependency<SharedPreferencesService>(),
     ));
     injector.registerSingleton<LocalAccountDetailsCacheService>((injector) => LocalAccountDetailsCacheService(
@@ -117,7 +120,14 @@ class ServicesConfiguration {
         injector.getDependency<TransferApiService>(),
         injector.getDependency<ActiveLocalAccountService>(),
         injector.getDependency<LocalAccountDetailsCacheService>(),
-        injector.getDependency<NamedAddressService>()
+        injector.getDependency<ActiveAccountTransferListCacheService>()
+    ));
+    injector.registerSingleton<TransferListService>((injector) => TransferListService(
+      injector.getDependency<TransferApiService>(),
+      injector.getDependency<NamedAddressService>()
+    ));
+    injector.registerSingleton<ActiveAccountTransferListCacheService>((injector) => ActiveAccountTransferListCacheService(
+      injector.getDependency<TransferListService>()
     ));
   }
 }
