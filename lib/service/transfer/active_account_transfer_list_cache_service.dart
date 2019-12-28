@@ -7,7 +7,6 @@ import 'transfer_list_service.dart';
 
 class ActiveAccountTransferListCacheService {
   static final Duration _invalidateDuration = Duration(minutes: 5);
-  static final int _minTransfersSize = 10;
 
   List<Transfer> _transferList;
   LocalAccount _loadedAccount;
@@ -40,25 +39,15 @@ class ActiveAccountTransferListCacheService {
   }
 
   Future<List<Transfer>> _updateTransferList(LocalAccount account) async {
-    final inTransferList = await _fetchInTransfers(account.namedAddress.address, _lastInPage);
-    final outTransferList = await _fetchOutTransfers(account.namedAddress.address, _lastOutPage);
+    var transfers = List<Transfer>();
 
-    if(_shouldFetchMoreInTransfers(inTransferList.length))
-      inTransferList.addAll(await _fetchInTransfers(account.namedAddress.address, _lastInPage - 1));
+    for(int pageNumber = 1; pageNumber <= _lastInPage; pageNumber++) {
+      transfers.addAll(await _transferListService.obtainAddressInTransferList(account.namedAddress.address, pageNumber));
+    }
 
-    if(_shouldFetchMoreOutTransfers(outTransferList.length))
-      outTransferList.addAll(await _fetchOutTransfers(account.namedAddress.address, _lastOutPage - 1));
-
-    return inTransferList + outTransferList;
+    for(int pageNumber = 1; pageNumber <= _lastOutPage; pageNumber++) {
+      transfers.addAll(await _transferListService.obtainAddressOutTransferList(account.namedAddress.address, pageNumber));
+    }
+    return transfers;
   }
-
-  Future<List<Transfer>> _fetchInTransfers(Address address, int pageNumber) async =>
-      await _transferListService.obtainAddressInTransferList(address, pageNumber);
-
-  Future<List<Transfer>> _fetchOutTransfers(Address address, int pageNumber) async =>
-      await _transferListService.obtainAddressOutTransferList(address, pageNumber);
-
-  _shouldFetchMoreInTransfers(int transfersAmount) => _lastInPage > 1 && transfersAmount < _minTransfersSize;
-
-  _shouldFetchMoreOutTransfers(int transfersAmount) => _lastOutPage > 1 && transfersAmount < _minTransfersSize;
 }
