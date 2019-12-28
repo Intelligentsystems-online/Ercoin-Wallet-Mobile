@@ -6,7 +6,7 @@ import 'package:ercoin_wallet/utils/view/checkbox_with_text.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class EnterAddressForm extends StatefulWidget {

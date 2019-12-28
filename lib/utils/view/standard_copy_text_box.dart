@@ -1,5 +1,4 @@
 import 'package:ercoin_wallet/utils/view/standard_text_box.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

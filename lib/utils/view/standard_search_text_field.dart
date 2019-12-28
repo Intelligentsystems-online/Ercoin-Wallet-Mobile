@@ -1,5 +1,4 @@
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class StandardSearchTextField extends StatelessWidget {
@@ -11,10 +10,12 @@ class StandardSearchTextField extends StatelessWidget {
   Widget build(BuildContext context) => TextField(
     onChanged: (value) => onChanged(value),
     style: TextStyle(fontSize: 16.0),
+    textInputAction: TextInputAction.search,
     decoration: InputDecoration(
         hintText: "Search",
-        prefixIcon: Icon(Icons.search),
-        contentPadding: const EdgeInsets.symmetric(vertical: 5),
-        border: standardTextFieldBorder),
+        contentPadding: standardTextFieldContentPadding,
+        suffixIcon: Icon(Icons.search),
+        border: standardTextFieldBorder
+    ),
   );
 }

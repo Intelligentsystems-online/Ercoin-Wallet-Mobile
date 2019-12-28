@@ -15,7 +15,7 @@ dependencies:
   shared_preferences: any
   random_string: any
   rflutter_alert: ^1.0.3
-  flutter_sodium: any
+  flutter_sodium: 0.0.10
   convert: any
   utf: 0.9.0+5
   http: ^0.12.0+2
@@ -33,6 +33,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+dependency_overrides:
+  flutter_sodium:
+    git:
+      url: https://github.com/kubawal/flutter_sodium
+      ref: master
+
 
 flutter:
   uses-material-design: true

@@ -18,7 +18,9 @@ class TransferListService {
       _obtainAddressInTransferList(address),
       _obtainAddressOutTransferList(address),
     ]);
-    return transferLists[0] + transferLists[1];
+    final transferList = transferLists[0] + transferLists[1];
+    transferList.sort((a, b) => b.data.timestamp.compareTo(a.data.timestamp));
+    return transferList;
   }
 
   Future<List<Transfer>> _obtainAddressInTransferList(Address address) async =>

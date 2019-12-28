@@ -8,7 +8,6 @@ import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/backup/backup_success_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BackupRoute extends StatelessWidget {

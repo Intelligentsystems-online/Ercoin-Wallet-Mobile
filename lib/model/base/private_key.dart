@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:base58check/base58.dart';
+import 'package:flutter/foundation.dart';
 
 
 class PrivateKey extends Equatable {

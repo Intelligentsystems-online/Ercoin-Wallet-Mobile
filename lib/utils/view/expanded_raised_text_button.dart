@@ -1,5 +1,4 @@
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExpandedRaisedTextButton extends StatelessWidget {

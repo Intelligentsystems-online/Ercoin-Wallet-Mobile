@@ -3,9 +3,11 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/import_account/import_account_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'configure_account_name/configure_account_name_route.dart';
 
@@ -27,33 +29,35 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
   _AddAccountRouteState(this.onAdded);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext ctx) => Scaffold(
       appBar: AppBar(
         title: const Text("Add account"),
       ),
       body: ProgressOverlayContainer(
         overlayEnabled: _isLoading,
-        child: Container(
-          padding: standardPadding,
-          child: Column(
-            children: <Widget>[_createAccountBtn(), _importAccountBtn()],
+        child: TopAndBottomContainer(
+          top: Text("You can either create a new account or import existing account from file or keys you have written down"),
+          bottom: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _importAccountBtn(ctx),
+              _createAccountBtn(),
+            ],
           ),
         ),
       ));
 
-  Widget _createAccountBtn() => ExpandedRow(
-        child: RaisedButton(
+  Widget _importAccountBtn(BuildContext ctx) => OutlineButton(
+      child: const Text("Import existing account"),
+      borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
+      onPressed: () => pushRoute(Navigator.of(context), () => ImportAccountRoute(onAdded: onAdded)),
+    );
+
+  Widget _createAccountBtn() => RaisedButton(
           child: const Text("Create new account"),
           onPressed: () => _createAccount(),
-        ),
-      );
-
-  Widget _importAccountBtn() => ExpandedRow(
-        child: RaisedButton(
-          child: const Text("Import account from backup"),
-          onPressed: () => pushRoute(Navigator.of(context), () => ImportAccountRoute(onAdded: onAdded)),
-        ),
-      );
+        );
 
   _createAccount() async {
     setState(() => _isLoading = true);
