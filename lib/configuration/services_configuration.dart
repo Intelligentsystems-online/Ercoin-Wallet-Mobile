@@ -127,7 +127,8 @@ class ServicesConfiguration {
       injector.getDependency<NamedAddressService>()
     ));
     injector.registerSingleton<ActiveAccountTransferListCacheService>((injector) => ActiveAccountTransferListCacheService(
-      injector.getDependency<TransferListService>()
+      injector.getDependency<TransferListService>(),
+      injector.getDependency<TransferApiService>()
     ));
   }
 }
