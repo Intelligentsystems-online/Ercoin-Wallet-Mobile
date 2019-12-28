@@ -9,6 +9,8 @@ class ActiveAccountTransferListCacheService {
   List<Transfer> _transferList;
   LocalAccount _loadedAccount;
   DateTime _lastUpdate;
+  int _lastInPage = 1;
+  int _lastOutPage = 1;
 
   final TransferListService _transferListService;
 
@@ -26,7 +28,7 @@ class ActiveAccountTransferListCacheService {
   bool _shouldUpdate() => _lastUpdate == null || DateTime.now().difference(_lastUpdate) > _invalidateDuration;
 
   Future _update(LocalAccount account) async {
-    _transferList = await _transferListService.fetchTransferList(account.namedAddress.address);
+    _transferList = await _transferListService.fetchTransferList(account.namedAddress.address, _lastInPage, _lastOutPage);
     _loadedAccount = account;
     _lastUpdate = DateTime.now();
   }

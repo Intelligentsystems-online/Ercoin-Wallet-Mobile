@@ -46,13 +46,13 @@ class ApiConsumerService {
       return ApiResponse(ApiResponseStatus.GENERIC_ERROR, null);
   }
 
-  Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(Address address, {int pageNumber = 1}) async {
+  Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(Address address, int pageNumber) async {
     final response = await http.get(await _uriFactoryService.createOutboundTransactionsUri(address, pageNumber));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
-  Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(Address address, {int pageNumber = 1}) async {
+  Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(Address address, int pageNumber) async {
     final response = await http.get(await _uriFactoryService.createIncomingTransactionsUri(address, pageNumber));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));

@@ -21,11 +21,11 @@ class TransferApiService {
       this._signingService,
   );
 
-  Future<List<TransferData>> obtainInTransferDataList(Address address) async =>
-    _decodeTransferDataList(await _apiConsumerService.fetchIncomingTransactionBase64ListFor(address));
+  Future<List<TransferData>> obtainInTransferDataList(Address address, int pageNumber) async =>
+    _decodeTransferDataList(await _apiConsumerService.fetchIncomingTransactionBase64ListFor(address, pageNumber));
 
-  Future<List<TransferData>> obtainOutTransferDataList(Address address) async =>
-    _decodeTransferDataList(await _apiConsumerService.fetchOutboundTransactionBase64ListFor(address));
+  Future<List<TransferData>> obtainOutTransferDataList(Address address, int pageNumber) async =>
+    _decodeTransferDataList(await _apiConsumerService.fetchOutboundTransactionBase64ListFor(address, pageNumber));
 
   Future<ApiResponseStatus> executeTransfer(
       Address destination,
