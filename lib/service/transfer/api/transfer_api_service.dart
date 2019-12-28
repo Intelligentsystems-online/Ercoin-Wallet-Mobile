@@ -26,16 +26,16 @@ class TransferApiService {
   Future<int> fetchInTransfersLastPageNumber(Address address) async {
     final response = await _apiConsumerService.fetchInTransfersLastPageNumber(address, _enormousPageNumber);
 
-    return extractLastPageNumber(response.body);
+    return _extractLastPageNumber(response.body);
   }
 
   Future<int> fetchOutTransfersLastPageNumber(Address address) async {
     final response = await _apiConsumerService.fetchOutTransfersLastPageNumber(address, _enormousPageNumber);
 
-    return extractLastPageNumber(response.body);
+    return _extractLastPageNumber(response.body);
   }
 
-  int extractLastPageNumber(String body) {
+  int _extractLastPageNumber(String body) {
     final data = jsonDecode(body)['error']['data'];
     final startIndex = data.indexOf('[');
     final endIndex = data.indexOf(']');
