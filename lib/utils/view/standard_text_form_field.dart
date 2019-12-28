@@ -1,5 +1,6 @@
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class StandardTextFormField extends StatefulWidget {
   final Function(String) validator;
@@ -9,6 +10,7 @@ class StandardTextFormField extends StatefulWidget {
   final String hintText;
   final Icon icon;
   final TextInputType keyboardType;
+  final List<TextInputFormatter> inputFormatters;
   final int maxLength;
 
   const StandardTextFormField({
@@ -19,12 +21,13 @@ class StandardTextFormField extends StatefulWidget {
     this.hintText,
     this.icon,
     this.keyboardType,
+    this.inputFormatters,
     this.maxLength,
   });
 
   @override
   _StandardTextFormFieldState createState() => _StandardTextFormFieldState(
-      validator, onSaved, controller, initialValue, hintText, icon, keyboardType, maxLength
+      validator, onSaved, controller, initialValue, hintText, icon, keyboardType, inputFormatters, maxLength
   );
 }
 
@@ -36,6 +39,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
   final String hintText;
   final Icon icon;
   final TextInputType keyboardType;
+  final List<TextInputFormatter> inputFormatters;
   final int maxLength;
 
   String _error;
@@ -48,6 +52,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
     this.hintText,
     this.icon,
     this.keyboardType,
+    this.inputFormatters,
     this.maxLength,
   );
 
@@ -69,6 +74,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
         onSaved: onSaved,
         controller: controller,
         keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         maxLength: maxLength,
       );
 

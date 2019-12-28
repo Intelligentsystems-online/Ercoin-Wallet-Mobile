@@ -3,6 +3,7 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/api/api_response_status.dart';
 import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
+import 'package:ercoin_wallet/utils/view/decimal_input_formatter.dart';
 import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
@@ -76,6 +77,7 @@ class _TransferRouteState extends State<TransferRoute> {
   Widget _amountInput() => StandardTextFormField(
         hintText: "Amount",
         icon: const Icon(Icons.edit),
+        inputFormatters: [DecimalInputFormatter(decimalRange: 6)],
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         validator: _validateAmount,
         onSaved: (value) => setState(() => _amount = double.parse(value)),
