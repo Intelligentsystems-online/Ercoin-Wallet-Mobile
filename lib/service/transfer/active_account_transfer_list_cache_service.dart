@@ -6,6 +6,7 @@ import 'transfer_list_service.dart';
 
 class ActiveAccountTransferListCacheService {
   static final Duration _invalidateDuration = Duration(minutes: 5);
+  static final int _minTransfersSize = 10;
 
   List<Transfer> _transferList;
   LocalAccount _loadedAccount;
@@ -32,8 +33,20 @@ class ActiveAccountTransferListCacheService {
   Future _update(LocalAccount account) async {
     _lastInPage = await _transferApiService.fetchInTransfersLastPageNumber(account.namedAddress.address);
     _lastOutPage = await _transferApiService.fetchOutTransfersLastPageNumber(account.namedAddress.address);
-    _transferList = await _transferListService.fetchTransferList(account.namedAddress.address, _lastInPage, _lastOutPage);
+    _transferList = await _updateTransferList(account);
     _loadedAccount = account;
     _lastUpdate = DateTime.now();
+  }
+
+  Future<List<Transfer>> _updateTransferList(LocalAccount account) async {
+    final inTransferList = await _transferListService.obtainAddressInTransferList(account.namedAddress.address, _lastInPage);
+    final outTransferList = await _transferListService.obtainAddressOutTransferList(account.namedAddress.address, _lastOutPage);
+
+    if(_lastInPage > 1 && inTransferList.length < _minTransfersSize)
+      inTransferList.addAll(await _transferListService.obtainAddressInTransferList(account.namedAddress.address, _lastInPage - 1));
+    if(_lastOutPage > 1 && outTransferList.length < _minTransfersSize)
+      outTransferList.addAll(await _transferListService.obtainAddressOutTransferList(account.namedAddress.address, _lastOutPage - 1));
+
+    return inTransferList + outTransferList;
   }
 }
