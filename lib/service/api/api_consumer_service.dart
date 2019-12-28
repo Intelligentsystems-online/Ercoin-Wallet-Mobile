@@ -9,6 +9,7 @@ import 'package:ercoin_wallet/model/api/api_response_status.dart';
 import 'package:ercoin_wallet/service/api/api_response_status_decoder_service.dart';
 import 'package:ercoin_wallet/service/api/api_uri_factory_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class ApiConsumerService {
   final ApiResponseStatusDecoderService _statusDecoderService;
@@ -46,17 +47,23 @@ class ApiConsumerService {
       return ApiResponse(ApiResponseStatus.GENERIC_ERROR, null);
   }
 
-  Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(Address address) async {
-    final response = await http.get(await _uriFactoryService.createOutboundTransactionsUri(address));
+  Future<ApiResponse<List<String>>> fetchOutboundTransactionBase64ListFor(Address address, int pageNumber) async {
+    final response = await http.get(await _uriFactoryService.createOutboundTransactionsUri(address, pageNumber));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
-  Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(Address address) async {
-    final response = await http.get(await _uriFactoryService.createIncomingTransactionsUri(address));
+  Future<ApiResponse<List<String>>> fetchIncomingTransactionBase64ListFor(Address address, int pageNumber) async {
+    final response = await http.get(await _uriFactoryService.createIncomingTransactionsUri(address, pageNumber));
 
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
+
+  Future<Response> fetchInTransfersLastPageNumber(Address address, int pageNumber) async =>
+      await http.get(await _uriFactoryService.createIncomingTransactionsUri(address, pageNumber));
+
+  Future<Response> fetchOutTransfersLastPageNumber(Address address, int pageNumber) async =>
+      await http.get(await _uriFactoryService.createOutboundTransactionsUri(address, pageNumber));
   
   int _obtainTransferResponseCode(String response) =>
       jsonDecode(response)['result']['code'] as int;

@@ -13,21 +13,11 @@ class TransferListService {
 
   TransferListService(this._apiService, this._namedAddressService);
 
-  Future<List<Transfer>> fetchTransferList(Address address) async {
-    final transferLists = await Future.wait([
-      _obtainAddressInTransferList(address),
-      _obtainAddressOutTransferList(address),
-    ]);
-    final transferList = transferLists[0] + transferLists[1];
-    transferList.sort((a, b) => b.data.timestamp.compareTo(a.data.timestamp));
-    return transferList;
-  }
+  Future<List<Transfer>> obtainAddressInTransferList(Address address, int pageNumber) async =>
+      await _transformTransferDataList(await _apiService.obtainInTransferDataList(address, pageNumber), TransferDirection.IN);
 
-  Future<List<Transfer>> _obtainAddressInTransferList(Address address) async =>
-      await _transformTransferDataList(await _apiService.obtainInTransferDataList(address), TransferDirection.IN);
-
-  Future<List<Transfer>> _obtainAddressOutTransferList(Address address) async =>
-      await _transformTransferDataList(await _apiService.obtainOutTransferDataList(address), TransferDirection.OUT);
+  Future<List<Transfer>> obtainAddressOutTransferList(Address address, int pageNumber) async =>
+      await _transformTransferDataList(await _apiService.obtainOutTransferDataList(address, pageNumber), TransferDirection.OUT);
 
   Future<List<Transfer>> _transformTransferDataList(List<TransferData> dataList, TransferDirection direction) async =>
       await Future.wait(dataList.map((data) async => Transfer(

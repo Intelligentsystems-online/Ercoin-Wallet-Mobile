@@ -8,11 +8,13 @@ class ApiUriFactoryService {
 
   ApiUriFactoryService(this._sharedPreferencesService);
 
-  Future<Uri> createOutboundTransactionsUri(Address address) async =>
-      Uri.https(await _obtainHostname(), fetchTransactionsEndpoint, { "query" : _prepareOutboundTransactionsQueryValue(address) });
+  Future<Uri> createOutboundTransactionsUri(Address address, int pageNumber) async =>
+      Uri.https(await _obtainHostname(), fetchTransactionsEndpoint,
+          { "query" : _prepareOutboundTransactionsQueryValue(address), "page" : pageNumber.toString() });
 
-  Future<Uri> createIncomingTransactionsUri(Address address) async =>
-      Uri.https(await _obtainHostname(), fetchTransactionsEndpoint, { "query" : _prepareIncomingTransactionsQueryValue(address) });
+  Future<Uri> createIncomingTransactionsUri(Address address, int pageNumber) async =>
+      Uri.https(await _obtainHostname(), fetchTransactionsEndpoint,
+          { "query" : _prepareIncomingTransactionsQueryValue(address), "page" : pageNumber.toString() });
 
   Future<Uri> createAccountDataUri(Address address) async =>
       Uri.https(await _obtainHostname(), accountDataEndpoint, { "path" : "\"account\"", "data" : "0x" + address.hex});

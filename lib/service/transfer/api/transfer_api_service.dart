@@ -11,6 +11,8 @@ import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_decoding_ser
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_signing_service.dart';
 
 class TransferApiService {
+  static final _invalidPageNumber = -1;
+
   final ApiConsumerService _apiConsumerService;
   final TransferDataDecodingService _decodingService;
   final TransferSigningService _signingService;
@@ -21,11 +23,32 @@ class TransferApiService {
       this._signingService,
   );
 
-  Future<List<TransferData>> obtainInTransferDataList(Address address) async =>
-    _decodeTransferDataList(await _apiConsumerService.fetchIncomingTransactionBase64ListFor(address));
+  Future<int> fetchInTransfersLastPageNumber(Address address) async {
+    final response = await _apiConsumerService.fetchInTransfersLastPageNumber(address, _invalidPageNumber);
 
-  Future<List<TransferData>> obtainOutTransferDataList(Address address) async =>
-    _decodeTransferDataList(await _apiConsumerService.fetchOutboundTransactionBase64ListFor(address));
+    return _extractLastPageNumber(response.body);
+  }
+
+  Future<int> fetchOutTransfersLastPageNumber(Address address) async {
+    final response = await _apiConsumerService.fetchOutTransfersLastPageNumber(address, _invalidPageNumber);
+
+    return _extractLastPageNumber(response.body);
+  }
+
+  int _extractLastPageNumber(String body) {
+    final data = jsonDecode(body)['error']['data'];
+    final startIndex = data.indexOf('[');
+    final endIndex = data.indexOf(']');
+    final lastPageNumber = data.substring(startIndex + 4, endIndex);
+
+    return int.parse(lastPageNumber);
+  }
+
+  Future<List<TransferData>> obtainInTransferDataList(Address address, int pageNumber) async =>
+    _decodeTransferDataList(await _apiConsumerService.fetchIncomingTransactionBase64ListFor(address, pageNumber));
+
+  Future<List<TransferData>> obtainOutTransferDataList(Address address, int pageNumber) async =>
+    _decodeTransferDataList(await _apiConsumerService.fetchOutboundTransactionBase64ListFor(address, pageNumber));
 
   Future<ApiResponseStatus> executeTransfer(
       Address destination,
