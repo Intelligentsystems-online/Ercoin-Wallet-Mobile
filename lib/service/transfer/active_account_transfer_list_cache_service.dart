@@ -48,6 +48,8 @@ class ActiveAccountTransferListCacheService {
     for(int pageNumber = 1; pageNumber <= _lastOutPage; pageNumber++) {
       transfers.addAll(await _transferListService.obtainAddressOutTransferList(account.namedAddress.address, pageNumber));
     }
+    transfers.sort((a, b) => b.data.timestamp.compareTo(a.data.timestamp));
+
     return transfers;
   }
 }

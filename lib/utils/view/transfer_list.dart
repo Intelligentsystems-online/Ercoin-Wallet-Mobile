@@ -3,7 +3,7 @@ import 'package:ercoin_wallet/model/transfer/utils/transfers.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/transfer_details/transfer_details_route.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -13,10 +13,17 @@ class TransferList extends StatelessWidget {
   TransferList({this.list});
 
   @override
-  Widget build(BuildContext ctx) => ListView.builder(
-      shrinkWrap: true,
-      itemCount: list.length,
-      itemBuilder: (ctx, index) => _transactionRow(ctx, list[index]));
+  Widget build(BuildContext ctx) {
+    if (list.isNotEmpty) {
+      return ListView.builder(
+        padding: EdgeInsets.zero,
+        itemCount: list.length,
+        itemBuilder: (ctx, index) => _transactionRow(ctx, list[index]),
+      );
+    } else {
+      return Center(child: const Text("Nothing to show"));
+    }
+  }
 
   Widget _transactionRow(BuildContext ctx, Transfer transfer) => GestureDetector(
         onTap: () => pushRoute(Navigator.of(ctx), () => TransferDetailsRoute(transfer: transfer)),

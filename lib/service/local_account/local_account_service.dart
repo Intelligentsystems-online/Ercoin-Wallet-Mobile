@@ -22,6 +22,9 @@ class LocalAccountService {
 
   Future<List<LocalAccount>> obtainList() async => await _repository.findAll();
 
+  Future<List<LocalAccount>> obtainListByNameContains(String value) async =>
+      await _repository.findByNameContains(value);
+
   Future<List<LocalAccountDetails>> obtainDetailsList() async => await _localAccountCacheService.obtainDetailsList();
 
   Future<List<LocalAccountDetails>> obtainDetailsListByNameContains(String name) async {

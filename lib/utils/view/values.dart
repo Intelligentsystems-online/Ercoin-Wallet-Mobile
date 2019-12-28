@@ -22,4 +22,5 @@ final standardThemeData = ThemeData(
     textTheme: ButtonTextTheme.primary,
   ),
   fontFamily: 'Montserrat',
+  textTheme: TextTheme(body1: TextStyle(fontSize: 16.0)),
 );

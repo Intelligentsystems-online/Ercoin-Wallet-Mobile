@@ -10,7 +10,6 @@ import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_address/add_address_route.dart';
 import 'package:ercoin_wallet/view/address_details/address_details_route.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddressBookPage extends StatefulWidget {
@@ -30,22 +29,28 @@ class _AddressBookPageState extends State<AddressBookPage> {
   }
 
   @override
-  Widget build(BuildContext ctx) => TopAndBottomContainer(
-    top: _addressListBuilder(ctx),
-    bottom: _addAddressBtn(ctx),
-    bottomAlignment: FractionalOffset.bottomRight,
+  Widget build(BuildContext ctx) => Scaffold(
+    body: Container(
+      padding: standardPadding.copyWith(bottom: 0),
+      child: ProgressOverlayContainer(
+          overlayEnabled: _namedAddressList == null,
+          child: _addressList(),
+      ),
+    ),
+    floatingActionButton: FloatingActionButton(
+      heroTag: "AddressBookPage",
+      child: const Icon(Icons.add),
+      onPressed: () => pushRoute(Navigator.of(ctx), () => AddAddressRoute()),
+    ),
   );
 
-  Widget _addressListBuilder(BuildContext ctx) => ProgressOverlayContainer(
-    overlayEnabled: _namedAddressList == null,
-    child: SearchableList(
-      onSearchChanged: (value) => _onSearchChanged(value),
-      listWidget: NamedAddressList(
-          namedAddressList: _namedAddressList == null ? [] : _namedAddressList,
-          onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
-      ),
-    )
-  );
+  Widget _addressList() => SearchableList(
+        onSearchChanged: (value) => _onSearchChanged(value),
+        listWidget: NamedAddressList(
+            namedAddressList: _namedAddressList == null ? [] : _namedAddressList,
+            onAddressPressed: (ctx, address) => _onAddressPressed(ctx, address)
+        ),
+      );
 
   _onSearchChanged(String value) {
     if(_namedAddressList != null) {
@@ -65,12 +70,4 @@ class _AddressBookPageState extends State<AddressBookPage> {
 
   _onAddressPressed(BuildContext ctx, NamedAddress namedAddress) =>
       pushRoute(Navigator.of(context), () => AddressDetailsRoute(address: namedAddress));
-
-  Widget _addAddressBtn(BuildContext ctx) => RawMaterialButton(
-    shape: CircleBorder(),
-    padding: standardPadding,
-    fillColor: Colors.white,
-    child: Icon(Icons.add, color: Colors.blue, size: 35.0),
-    onPressed: () => pushRoute(Navigator.of(ctx), () => AddAddressRoute()),
-  );
 }

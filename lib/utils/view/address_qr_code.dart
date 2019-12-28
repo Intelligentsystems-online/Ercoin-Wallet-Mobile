@@ -2,7 +2,7 @@ import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/utils/view/image_dialog.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

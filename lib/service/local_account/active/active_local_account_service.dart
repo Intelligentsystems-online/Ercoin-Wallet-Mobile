@@ -17,7 +17,12 @@ class ActiveLocalAccountService {
   final ActiveAccountTransferListCacheService _transferCacheService;
   final SharedPreferencesService _sharedPreferencesUtil;
 
-  const ActiveLocalAccountService(this._accountService, this._localAccountCacheService,  this._transferCacheService, this._sharedPreferencesUtil);
+  const ActiveLocalAccountService(
+      this._accountService,
+      this._localAccountCacheService,
+      this._transferCacheService,
+      this._sharedPreferencesUtil
+  );
 
   Future<Address> obtainActiveAccountAddress() async =>
       Address.ofBase58(await _sharedPreferencesUtil.getSharedPreference(_activeAccountPreferenceKey));
@@ -37,9 +42,24 @@ class ActiveLocalAccountService {
   Future<LocalAccountDetails> obtainActiveAccountDetails() async =>
       await _accountService.obtainDetailsByAddress(await obtainActiveAccountAddress());
 
-  Future<LocalAccountActivationDetails> obtainAccountActivationDetails(LocalAccount account) async =>
-      LocalAccountActivationDetails(
-        details: await _accountService.obtainDetailsByAddress(account.namedAddress.address),
-        isActive: await obtainActiveAccountAddress() == account.namedAddress.address,
-      );
+  Future<LocalAccountActivationDetails> obtainAccountActivationDetails(LocalAccount account) async {
+    final details = await _accountService.obtainDetailsByAddress(account.namedAddress.address);
+    return (await _transformToActivationDetails([details])).first;
+  }
+
+  Future<List<LocalAccountActivationDetails>> obtainAccountActivationDetailsList() async =>
+    await _transformToActivationDetails(await _accountService.obtainDetailsList());
+
+  Future<List<LocalAccountActivationDetails>> obtainAccountActivationDetailsListByNameContains(String value) async =>
+    await _transformToActivationDetails(await _accountService.obtainDetailsListByNameContains(value));
+
+  Future<List<LocalAccountActivationDetails>> _transformToActivationDetails(
+      List<LocalAccountDetails> detailsList
+  ) async {
+    final activeAddress = await obtainActiveAccountAddress();
+    return detailsList.map((details) => LocalAccountActivationDetails(
+      details: details,
+      isActive: details.localAccount.namedAddress.address == activeAddress,
+    )).toList();
+  }
 }

@@ -7,10 +7,11 @@ import 'package:ercoin_wallet/utils/view/expanded_raised_text_button.dart';
 import 'package:ercoin_wallet/utils/view/expanded_row.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
+import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/configure_account_name/configure_account_name_route.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class ImportAccountRoute extends StatefulWidget {
@@ -25,15 +26,15 @@ class ImportAccountRoute extends StatefulWidget {
 class _ImportAccountRouteState extends State<ImportAccountRoute> {
   final Function(BuildContext) onAdded;
 
-  String _pubKey;
+  String _address;
   String _privKey;
 
   final _interactor = mainInjector.getDependency<ImportAccountInteractor>();
 
-  String _publicKeyValidationResult;
+  String _addressValidationResult;
 
   final _formKey = GlobalKey<FormState>();
-  final _pubKeyController = TextEditingController();
+  final _addressController = TextEditingController();
   final _privKeyController = TextEditingController();
 
   _ImportAccountRouteState(this.onAdded);
@@ -45,53 +46,58 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
 
   @override
   Widget build(BuildContext ctx) => Scaffold(
-        appBar: AppBar(
-          title: const Text("Import account"),
-        ),
-        body: Container(
-          padding: standardPadding,
-          child: Stack(
-            children: <Widget>[
-              Align(
-                  alignment: FractionalOffset.topLeft,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[_pubKeyInput(), _privKeyInput(), _importFromFileBtn(ctx)],
-                    ),
-                  )),
-              Align(alignment: FractionalOffset.bottomCenter, child: _proceedBtn())
-            ],
-          ),
-        ),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(title: const Text("Import account")),
+        body: TopAndBottomContainer(
+            top: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const Text(
+                      "In order to import account you will need address and private key. You can load them from previously exported file or enter them by hand."),
+                  const SizedBox(height: 16.0),
+                  _addressInput(),
+                  const SizedBox(height: 16.0),
+                  _privKeyInput(),
+                ],
+              ),
+            ),
+            bottom: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Builder(builder: (ctx) => _importFromFileBtn(ctx)),
+                _proceedBtn(),
+              ],
+            )),
       );
 
-  Widget _pubKeyInput() => ExpandedRow(
-        child: StandardTextFormField(
-          hintText: 'Public key',
-          controller: _pubKeyController,
-          validator: (value) => _publicKeyValidationResult,
-          onSaved: (value) => setState(() => _pubKey = value),
-        ),
+  Widget _addressInput() => StandardTextFormField(
+        hintText: "Address",
+        icon: const Icon(Icons.edit),
+        controller: _addressController,
+        validator: (value) => _addressValidationResult,
+        onSaved: (value) => setState(() => _address = value),
       );
 
-  Widget _privKeyInput() => ExpandedRow(
-        child: StandardTextFormField(
-          hintText: 'Private key',
-          icon: const Icon(Icons.vpn_key),
-          controller: _privKeyController,
-          validator: (value) => _interactor.validatePrivateKey(value),
-          onSaved: (value) => setState(() => _privKey = value),
-        ),
+  Widget _privKeyInput() => StandardTextFormField(
+        hintText: "Private key",
+        icon: const Icon(Icons.edit),
+        controller: _privKeyController,
+        validator: (value) => _interactor.validatePrivateKey(value),
+        onSaved: (value) => setState(() => _privKey = value),
       );
 
-  Widget _importFromFileBtn(BuildContext ctx) => ExpandedRaisedTextButton(
-        text: "Import from file",
+  Widget _importFromFileBtn(BuildContext ctx) => OutlineButton(
+        borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
+        child: const Text("Import from file"),
         onPressed: () => _importFromFile(ctx),
       );
 
-  Widget _proceedBtn() => ExpandedRaisedTextButton(
-        text: "Proceed",
+  Widget _proceedBtn() => RaisedButton(
+        child: const Text("Proceed"),
         onPressed: () => _onProceedPressed(),
       );
 
@@ -102,10 +108,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       pushRoute(
         Navigator.of(context),
         () => ConfigureAccountNameRoute(
-          keys: LocalAccountKeys(
-            address: Address.ofBase58(_pubKey),
-            privateKey: PrivateKey.ofBase58(_privKey)
-          ),
+          keys: LocalAccountKeys(address: Address.ofBase58(_address), privateKey: PrivateKey.ofBase58(_privKey)),
           onAdded: onAdded,
         ),
       );
@@ -118,22 +121,22 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
       try {
         final keys = await _interactor.importFromFile(filePath);
 
-        _pubKeyController.text = keys.address.base58;
+        _addressController.text = keys.address.base58;
         _privKeyController.text = keys.privateKey.base58;
         _formKey.currentState.save();
         await _validatePublicKey();
         _formKey.currentState.validate();
       } on FormatException {
-        showDialog(context: ctx, builder: (ctx) => AlertDialog(content: const Text("Incorrect file.")));
+        showTextSnackBar(Scaffold.of(ctx), "Invalid file format. Make sure to use valid backup file.");
       }
     }
   }
 
   _validatePublicKey() async {
-    final validationResult = await _interactor.validatePublicKey(_pubKey);
+    final validationResult = await _interactor.validatePublicKey(_address);
     if (validationResult != null)
-      setState(() => _publicKeyValidationResult = validationResult);
+      setState(() => _addressValidationResult = validationResult);
     else
-      setState(() => _publicKeyValidationResult = null);
+      setState(() => _addressValidationResult = null);
   }
 }

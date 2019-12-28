@@ -1,5 +1,5 @@
 import 'package:ercoin_wallet/utils/view/values.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class StandardTextBox extends StatelessWidget {
