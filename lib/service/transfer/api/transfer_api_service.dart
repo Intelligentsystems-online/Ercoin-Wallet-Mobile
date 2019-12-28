@@ -11,7 +11,7 @@ import 'package:ercoin_wallet/service/transfer/crypto/transfer_data_decoding_ser
 import 'package:ercoin_wallet/service/transfer/crypto/transfer_signing_service.dart';
 
 class TransferApiService {
-  static final _enormousPageNumber = 1000000;
+  static final _invalidPageNumber = -1;
 
   final ApiConsumerService _apiConsumerService;
   final TransferDataDecodingService _decodingService;
@@ -24,13 +24,13 @@ class TransferApiService {
   );
 
   Future<int> fetchInTransfersLastPageNumber(Address address) async {
-    final response = await _apiConsumerService.fetchInTransfersLastPageNumber(address, _enormousPageNumber);
+    final response = await _apiConsumerService.fetchInTransfersLastPageNumber(address, _invalidPageNumber);
 
     return _extractLastPageNumber(response.body);
   }
 
   Future<int> fetchOutTransfersLastPageNumber(Address address) async {
-    final response = await _apiConsumerService.fetchOutTransfersLastPageNumber(address, _enormousPageNumber);
+    final response = await _apiConsumerService.fetchOutTransfersLastPageNumber(address, _invalidPageNumber);
 
     return _extractLastPageNumber(response.body);
   }
