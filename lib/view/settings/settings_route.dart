@@ -8,6 +8,7 @@ import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class SettingsRoute extends StatefulWidget {
   @override
@@ -31,37 +32,41 @@ class _SettingsState extends State<SettingsRoute> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    resizeToAvoidBottomInset: false,
-    appBar: AppBar(
-      title: const Text("Api configure"),
-    ),
-    body: TopAndBottomContainer(
-      top: Form(
-        key: _formKey,
-        child: _nodeUriInput(),
-      ),
-      bottom: _proceedBtn(),
-    )
-  );
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(title: const Text("Settings")),
+        body: TopAndBottomContainer(
+          top: Form(
+            key: _formKey,
+            child: _nodeUriInput(),
+          ),
+          bottom: _proceedBtn(),
+        ),
+      );
 
-  Widget _nodeUriInput() => ExpandedRow(
-    child: StandardTextFormField(
-      hintText: "Node endpoint",
-      controller: _nodeUriController,
-      validator: (_) => _nodeUriValidationResult,
-      onSaved: (value) => setState(() => _nodeUri = value)
-    ),
-  );
+  Widget _nodeUriInput() => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const Text("Here you can configure node used by app. If you want to use a non-default node, make sure you trust it."),
+          const SizedBox(height: 16.0),
+          StandardTextFormField(
+            hintText: "Node address",
+            controller: _nodeUriController,
+            validator: (_) => _nodeUriValidationResult,
+            onSaved: (value) => setState(() => _nodeUri = value),
+          ),
+        ],
+      );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-    text: "Proceed",
-    onPressed: () => _onProceed(),
-  );
+        text: "Proceed",
+        onPressed: () => _onProceed(),
+      );
 
   _onProceed() async {
     _formKey.currentState.save();
     await _validateNodeUri();
-    if(_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate()) {
       await _interactor.persistNodeUri(_nodeUri);
       pushRoute(Navigator.of(context), () => HomeRoute());
     }
@@ -69,7 +74,7 @@ class _SettingsState extends State<SettingsRoute> {
 
   _validateNodeUri() async {
     final validationResult = await _interactor.validateNodeUri(_nodeUri);
-    if(validationResult != null)
+    if (validationResult != null)
       setState(() => _nodeUriValidationResult = validationResult);
     else
       setState(() => _nodeUriValidationResult = null);

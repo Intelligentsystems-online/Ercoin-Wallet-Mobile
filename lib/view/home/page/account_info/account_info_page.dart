@@ -30,10 +30,13 @@ class AccountInfoPage extends StatelessWidget {
                 Expanded(child: _accountInfoSection(ctx, details)),
                 AddressQrCode(address: details.localAccount.namedAddress.address),
               ]),
-              Expanded(
-                child: details.isRegistered ? _transfersSection(ctx, details)
-                    : Center(child: const Text("Nothing to show")),
-              ),
+              if(details.isRegistered) ...[
+                Expanded(child: _transferList(ctx)),
+                _transferBtn(ctx)
+              ] else
+                Expanded(
+                    child: Center(child: const Text("Nothing to show"))
+                ),
             ],
           ),
         ),
@@ -41,7 +44,7 @@ class AccountInfoPage extends StatelessWidget {
 
   Widget _accountInfoSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _accountNameRow(localAccountDetails),
             _accountBalanceRow(localAccountDetails),
@@ -51,17 +54,16 @@ class AccountInfoPage extends StatelessWidget {
         ),
       );
 
-  Widget _transfersSection(BuildContext ctx, LocalAccountDetails details) => Stack(
-    children: <Widget>[
-      Positioned.fill(child: _transferList(ctx)),
-      Positioned(left: 0, bottom: 0, right: 0, child: _transferBtn(ctx)),
-    ],
-  );
-
   Widget _accountNameRow(LocalAccountDetails localAccountDetails) => Row(children: <Widget>[
         const Icon(Icons.account_circle),
         const SizedBox(width: 8.0),
-        Text(localAccountDetails.localAccount.namedAddress.name, style: const TextStyle())
+        Expanded(
+            child: Text(
+                localAccountDetails.localAccount.namedAddress.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis
+            ),
+        ),
       ]);
 
   Widget _accountNotRegisteredRow() => Row(children: <Widget>[
