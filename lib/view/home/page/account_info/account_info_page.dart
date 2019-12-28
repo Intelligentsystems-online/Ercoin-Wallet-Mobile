@@ -1,10 +1,10 @@
-import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
+import 'package:ercoin_wallet/interactor/account_info/account_info_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
+import 'package:ercoin_wallet/model/ui/local_account_details_with_recent_transfers.dart';
 import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
-import 'package:ercoin_wallet/utils/view/image_dialog.dart';
-import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
+import 'package:ercoin_wallet/utils/view/refreshable_future_builder.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/transfer/destination/select_transfer_destination_route.dart';
@@ -21,22 +21,23 @@ class AccountInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) => Container(
         padding: standardPadding.copyWith(bottom: 0),
-        child: FutureBuilderWithProgress(
-          future: _interactor.obtainActiveLocalAccountDetails(),
-          builder: (LocalAccountDetails details) => Column(
+        child: RefreshableFutureBuilder(
+          forceScrollable: true,
+          futureBuilder: (isRefresh) async {
+            return await _interactor.obtainActiveLocalAccountDetailsWithRecentTransfers(refresh: isRefresh);
+          },
+          builder: (_,LocalAccountDetailsWithRecentTransfers details) => Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(children: <Widget>[
-                Expanded(child: _accountInfoSection(ctx, details)),
-                AddressQrCode(address: details.localAccount.namedAddress.address),
+                Expanded(child: _accountInfoSection(ctx, details.details)),
+                AddressQrCode(address: details.details.localAccount.namedAddress.address),
               ]),
-              if(details.isRegistered) ...[
-                Expanded(child: _transferList(ctx)),
+              if(details.details.isRegistered) ...[
+                Expanded(child: TransferList(list: details.recentTransfers)),
                 _transferBtn(ctx)
               ] else
-                Expanded(
-                    child: Center(child: const Text("Nothing to show"))
-                ),
+                Expanded(child: Center(child: const Text("Nothing to show"))),
             ],
           ),
         ),
@@ -97,11 +98,6 @@ class AccountInfoPage extends StatelessWidget {
           const SizedBox(width: 3.0),
           const Text("ERN", style: const TextStyle(fontWeight: FontWeight.w300)),
         ],
-      );
-
-  Widget _transferList(BuildContext ctx) => FutureBuilderWithProgress(
-        future: _interactor.obtainRecentTransfers(),
-        builder: (transfers) => TransferList(list: transfers),
       );
 
   Widget _transferBtn(BuildContext ctx) => RaisedButton.icon(

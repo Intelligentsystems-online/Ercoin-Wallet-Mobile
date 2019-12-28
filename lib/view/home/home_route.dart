@@ -28,7 +28,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
   _HomeRouteState(int initialPageIndex, this._snackBarText) {
     _currentPageIndex = initialPageIndex;
-    _pageController = PageController(initialPage: initialPageIndex, keepPage: false);
+    _pageController = PageController(initialPage: initialPageIndex, keepPage: true);
   }
 
   @override

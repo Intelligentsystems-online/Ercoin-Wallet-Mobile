@@ -3,6 +3,7 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/transfer/transfer.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
+import 'package:ercoin_wallet/utils/view/refreshable_future_builder.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 
 import 'package:flutter/material.dart';
@@ -14,28 +15,22 @@ class TransferListPage extends StatefulWidget {
 
 class _TransferListPageState extends State<TransferListPage> {
   TransferDirection _transferDirection;
-  List<Transfer> _allTransfers, _inboundTransfers, _outTransfers;
 
   final _interactor = mainInjector.getDependency<TransferListInteractor>();
+  final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
 
   @override
-  void initState() {
-    _loadTransactions();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext ctx) => Column(
-        children: <Widget>[
-          _filterChips(),
-          Expanded(child: _transferList()),
-        ],
-      );
-
-  Widget _transferList() => ProgressOverlayContainer(
-        overlayEnabled: _allTransfers == null,
-        child: TransferList(list: _obtainFilteredTransferList()),
-      );
+  Widget build(BuildContext ctx) => RefreshableFutureBuilder<List<Transfer>>(
+    key: _builderKey,
+    forceScrollable: false,
+    futureBuilder: (isRefresh) async => await _interactor.obtainTransferList(_transferDirection, refresh: isRefresh),
+    builder: (_, List<Transfer> transferList) => Column(
+      children: <Widget>[
+        _filterChips(),
+        Expanded(child: TransferList(list: transferList)),
+      ],
+    ),
+  );
 
   Widget _filterChips() => Row(
         children: <Widget>[
@@ -54,31 +49,9 @@ class _TransferListPageState extends State<TransferListPage> {
         selectedColor: Colors.black.withOpacity(0.1),
         label: Text(text),
         selected: _transferDirection == direction,
-        onSelected: (isSelected) => setState(() => _transferDirection = isSelected ? direction : null),
+        onSelected: (isSelected) {
+          setState(() => _transferDirection = isSelected ? direction : null);
+          _builderKey.currentState.update(isRefresh: false);
+        },
       );
-
-  _loadTransactions() async {
-    final transferLists = await _interactor.obtainTransferLists();
-
-    setState(() {
-      _allTransfers = transferLists[0];
-      _inboundTransfers = transferLists[1];
-      _outTransfers = transferLists[2];
-    });
-  }
-
-  List<Transfer> _obtainFilteredTransferList() {
-    if (_allTransfers == null) {
-      return [];
-    } else {
-      switch (_transferDirection) {
-        case TransferDirection.IN:
-          return _inboundTransfers;
-        case TransferDirection.OUT:
-          return _outTransfers;
-        default:
-          return _allTransfers;
-      }
-    }
-  }
 }

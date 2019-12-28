@@ -1,5 +1,5 @@
 import 'package:ercoin_wallet/interactor/account_details/account_details_interactor.dart';
-import 'package:ercoin_wallet/interactor/account_info/account_info_interctor.dart';
+import 'package:ercoin_wallet/interactor/account_info/account_info_interactor.dart';
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/interactor/add_account/add_account_interactor.dart';
 import 'package:ercoin_wallet/interactor/add_account/configure_account_name/configure_account_name_interactor.dart';
@@ -33,11 +33,14 @@ class InteractorsConfiguration {
   static configure(Injector injector) {
     injector.registerSingleton<AccountInfoInteractor>((injector) => AccountInfoInteractor(
       injector.getDependency<ActiveLocalAccountService>(),
-      injector.getDependency<TransferService>()
+      injector.getDependency<LocalAccountDetailsCacheService>(),
+      injector.getDependency<TransferService>(),
+      injector.getDependency<ActiveAccountTransferListCacheService>(),
     ));
     injector.registerSingleton<AccountListInteractor>((injector) => AccountListInteractor(
       injector.getDependency<LocalAccountService>(),
-      injector.getDependency<ActiveLocalAccountService>()
+      injector.getDependency<ActiveLocalAccountService>(),
+      injector.getDependency<LocalAccountDetailsCacheService>(),
     ));
     injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
       injector.getDependency<KeyGeneratorService>()
@@ -66,6 +69,7 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<TransferListInteractor>((_) => TransferListInteractor(
         injector.getDependency<TransferService>(),
+        injector.getDependency<ActiveAccountTransferListCacheService>(),
     ));
     injector.registerSingleton<SelectTransferDestinationInteractor>((injector) => SelectTransferDestinationInteractor(
       injector.getDependency<NamedAddressService>(),
