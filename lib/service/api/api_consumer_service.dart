@@ -9,6 +9,7 @@ import 'package:ercoin_wallet/model/api/api_response_status.dart';
 import 'package:ercoin_wallet/service/api/api_response_status_decoder_service.dart';
 import 'package:ercoin_wallet/service/api/api_uri_factory_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class ApiConsumerService {
   final ApiResponseStatusDecoderService _statusDecoderService;
@@ -58,10 +59,10 @@ class ApiConsumerService {
     return ApiResponse(ApiResponseStatus.SUCCESS, _obtainTransactionBase64ListFrom(response.body));
   }
 
-  Future<http.Response> fetchInTransfersLastPageNumber(Address address, int pageNumber) async =>
+  Future<Response> fetchInTransfersLastPageNumber(Address address, int pageNumber) async =>
       await http.get(await _uriFactoryService.createIncomingTransactionsUri(address, pageNumber));
 
-  Future<http.Response> fetchOutTransfersLastPageNumber(Address address, int pageNumber) async =>
+  Future<Response> fetchOutTransfersLastPageNumber(Address address, int pageNumber) async =>
       await http.get(await _uriFactoryService.createOutboundTransactionsUri(address, pageNumber));
   
   int _obtainTransferResponseCode(String response) =>
