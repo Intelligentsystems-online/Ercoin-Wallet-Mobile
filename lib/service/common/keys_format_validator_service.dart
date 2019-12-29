@@ -7,10 +7,9 @@ class KeysFormatValidatorService {
       return "Enter address value";
     else try {
       Address.ofBase58(publicKey);
-    } on FormatException {
+    } catch(_) {
       return "Invalid address format";
     }
-
   }
 
   validatePrivateKey(String privateKey)  {
@@ -18,7 +17,7 @@ class KeysFormatValidatorService {
       return "Enter private key value";
     else try {
       PrivateKey.ofBase58(privateKey);
-    } on FormatException {
+    } catch(_) {
       return "Invalid private key format";
     }
   }
