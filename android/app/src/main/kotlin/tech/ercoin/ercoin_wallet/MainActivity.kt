@@ -1,4 +1,4 @@
-package com.example.ercoin_wallet
+package tech.ercoin.ercoin_wallet
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
