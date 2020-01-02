@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/transfer/transfer.dart';
@@ -8,43 +10,52 @@ import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 import 'package:flutter/material.dart';
 
 class TransferListPage extends StatefulWidget {
-  final Stream _stream;
+  final StreamController _streamController;
 
-  TransferListPage(this._stream);
+  TransferListPage(this._streamController);
 
   @override
-  _TransferListPageState createState() => _TransferListPageState(_stream);
+  _TransferListPageState createState() => _TransferListPageState(_streamController);
 }
 
-class _TransferListPageState extends State<TransferListPage> {
+class _TransferListPageState extends State<TransferListPage> with AutomaticKeepAliveClientMixin<TransferListPage> {
   TransferDirection _transferDirection;
-  Stream _stream;
+  StreamController _streamController;
 
   final _interactor = mainInjector.getDependency<TransferListInteractor>();
   final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
 
-  _TransferListPageState(this._stream);
+  _TransferListPageState(this._streamController);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    if(_stream != null && _builderKey.currentState != null) {
-      _stream.listen((_) => _builderKey.currentState.update(isRefresh: true));
+    if(_streamController != null) {
+      _streamController.stream.asBroadcastStream().listen((_) => _builderKey.currentState.update(isRefresh: true));
     }
     super.initState();
   }
 
   @override
-  Widget build(BuildContext ctx) => RefreshableFutureBuilder<List<Transfer>>(
-    key: _builderKey,
-    forceScrollable: false,
-    futureBuilder: (isRefresh) async => await _interactor.obtainTransferList(_transferDirection, refresh: isRefresh),
-    builder: (_, List<Transfer> transferList) => Column(
-      children: <Widget>[
-        _filterChips(),
-        Expanded(child: TransferList(list: transferList)),
-      ],
-    ),
-  );
+  Widget build(BuildContext ctx) {
+    super.build(ctx);
+    return RefreshableFutureBuilder<List<Transfer>>(
+      key: _builderKey,
+      forceScrollable: false,
+      futureBuilder: (isRefresh) async =>
+      await _interactor.obtainTransferList(
+          _transferDirection, refresh: isRefresh),
+      builder: (_, List<Transfer> transferList) =>
+          Column(
+            children: <Widget>[
+              _filterChips(),
+              Expanded(child: TransferList(list: transferList)),
+            ],
+          ),
+    );
+  }
 
   Widget _filterChips() => Row(
         children: <Widget>[
@@ -67,5 +78,5 @@ class _TransferListPageState extends State<TransferListPage> {
           setState(() => _transferDirection = isSelected ? direction : null);
           _builderKey.currentState.update(isRefresh: false);
         },
-      );
+  );
 }

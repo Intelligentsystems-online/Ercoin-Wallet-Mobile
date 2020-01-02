@@ -5,7 +5,6 @@ import 'package:ercoin_wallet/utils/view/named_address_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
-import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_address/add_address_route.dart';
 import 'package:ercoin_wallet/view/address_details/address_details_route.dart';
@@ -17,10 +16,13 @@ class AddressBookPage extends StatefulWidget {
   State<StatefulWidget> createState() => _AddressBookPageState();
 }
 
-class _AddressBookPageState extends State<AddressBookPage> {
+class _AddressBookPageState extends State<AddressBookPage> with AutomaticKeepAliveClientMixin<AddressBookPage> {
   List<NamedAddress> _namedAddressList;
 
   final _interactor = mainInjector.getDependency<AddressBookInteractor>();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -29,19 +31,22 @@ class _AddressBookPageState extends State<AddressBookPage> {
   }
 
   @override
-  Widget build(BuildContext ctx) =>  Container(
-    padding: standardPadding.copyWith(bottom: 0),
-    child: ProgressOverlayContainer(
-      overlayEnabled: _namedAddressList == null,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(child: _addressList()),
-            _addAddressBtn(ctx)
-          ]
+  Widget build(BuildContext ctx) {
+    super.build(ctx);
+    return Container(
+      padding: standardPadding.copyWith(bottom: 0),
+      child: ProgressOverlayContainer(
+        overlayEnabled: _namedAddressList == null,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: _addressList()),
+              _addAddressBtn(ctx)
+            ]
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   Widget _addressList() => SearchableList(
         onSearchChanged: (value) => _onSearchChanged(value),

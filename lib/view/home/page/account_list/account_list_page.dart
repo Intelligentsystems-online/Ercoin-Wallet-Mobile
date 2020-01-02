@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ercoin_wallet/interactor/account_list/account_list_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
@@ -13,47 +15,55 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/material.dart';
 
 class AccountListPage extends StatefulWidget {
-  final Stream _stream;
+  final StreamController _streamController;
 
-  AccountListPage(this._stream);
+  AccountListPage(this._streamController);
 
   @override
-  State<StatefulWidget> createState() => _AccountListPageState(_stream);
+  State<StatefulWidget> createState() => _AccountListPageState(_streamController);
 }
 
-class _AccountListPageState extends State<AccountListPage> {
-  Stream _stream;
+class _AccountListPageState extends State<AccountListPage> with AutomaticKeepAliveClientMixin<AccountListPage> {
+  StreamController _streamController;
   String _search;
 
   final _interactor = mainInjector.getDependency<AccountListInteractor>();
   final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
 
-  _AccountListPageState(this._stream);
+  _AccountListPageState(this._streamController);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    if(_stream != null && _builderKey.currentState != null) {
-      _stream.listen((_) => _builderKey.currentState.update(isRefresh: true));
+    if(_streamController != null) {
+      _streamController.stream.asBroadcastStream().listen((_) => _builderKey.currentState.update(isRefresh: true));
     }
     super.initState();
   }
 
   @override
-  Widget build(BuildContext ctx) => Container(
-      padding: standardPadding.copyWith(bottom: 0),
-      child: RefreshableFutureBuilder<List<LocalAccountActivationDetails>>(
-        key: _builderKey,
-        forceScrollable: false,
-        futureBuilder: (isRefresh) async => await _interactor.obtainDetailsList(_search, refresh: isRefresh),
-        builder: (_, detailsList) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(child: _accountList(detailsList)),
-              _addAccountBtn(ctx)
-            ],
+  Widget build(BuildContext ctx) {
+    super.build(ctx);
+    return Container(
+        padding: standardPadding.copyWith(bottom: 0),
+        child: RefreshableFutureBuilder<List<LocalAccountActivationDetails>>(
+            key: _builderKey,
+            forceScrollable: false,
+            futureBuilder: (isRefresh) async =>
+            await _interactor.obtainDetailsList(_search, refresh: isRefresh),
+            builder: (_, detailsList) =>
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(child: _accountList(detailsList)),
+                    _addAccountBtn(ctx)
+                  ],
+                )
         )
-      )
-  );
+    );
+  }
 
   Widget _accountList(List<LocalAccountActivationDetails> detailsList) => SearchableList(
         onSearchChanged: (value) {
@@ -68,7 +78,7 @@ class _AccountListPageState extends State<AccountListPage> {
       );
 
   _onAccountActivation(LocalAccount account) {
-    _builderKey.currentState.update(isRefresh: true);
+    _streamController.add(true);
     _interactor.persistActiveAccountAddress(account);
   }
 

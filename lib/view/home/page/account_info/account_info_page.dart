@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ercoin_wallet/interactor/account_info/account_info_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
@@ -14,57 +16,66 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class AccountInfoPage extends StatefulWidget {
-  final Stream _stream;
+  final StreamController _streamController;
 
-  AccountInfoPage(this._stream);
+  AccountInfoPage(this._streamController);
 
   @override
-  State<StatefulWidget> createState() => _AccountInfoState(_stream);
+  State<StatefulWidget> createState() => _AccountInfoState(_streamController);
 }
 
-class _AccountInfoState extends State<AccountInfoPage> {
-  Stream _stream;
+class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveClientMixin<AccountInfoPage> {
+  StreamController _streamController;
 
   final _interactor = mainInjector.getDependency<AccountInfoInteractor>();
   final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
 
-  _AccountInfoState(this._stream);
+  _AccountInfoState(this._streamController);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    if(_stream != null && _builderKey.currentState != null) {
-      _stream.listen((_) {
-        print("Mateusz");
-        _builderKey.currentState.update(isRefresh: true);});
+    if(_streamController != null) {
+      _streamController.stream.asBroadcastStream().listen((_) => _builderKey.currentState.update(isRefresh: true));
     }
     super.initState();
   }
 
   @override
-  Widget build(BuildContext ctx) => Container(
-        padding: standardPadding.copyWith(bottom: 0),
-        child: RefreshableFutureBuilder(
-          key: _builderKey,
-          forceScrollable: true,
-          futureBuilder: (isRefresh) async {
-            return await _interactor.obtainActiveLocalAccountDetailsWithRecentTransfers(refresh: isRefresh);
-          },
-          builder: (_,LocalAccountDetailsWithRecentTransfers details) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Row(children: <Widget>[
-                Expanded(child: _accountInfoSection(ctx, details.details)),
-                AddressQrCode(address: details.details.localAccount.namedAddress.address),
-              ]),
-              if(details.details.isRegistered) ...[
-                Expanded(child: TransferList(list: details.recentTransfers)),
-                _transferBtn(ctx)
-              ] else
-                Expanded(child: Center(child: const Text("Nothing to show"))),
-            ],
-          ),
-        ),
-      );
+  Widget build(BuildContext ctx) {
+    super.build(ctx);
+    return Container(
+      padding: standardPadding.copyWith(bottom: 0),
+      child: RefreshableFutureBuilder(
+        key: _builderKey,
+        forceScrollable: true,
+        futureBuilder: (isRefresh) async {
+          return await _interactor
+              .obtainActiveLocalAccountDetailsWithRecentTransfers(
+              refresh: isRefresh);
+        },
+        builder: (_, LocalAccountDetailsWithRecentTransfers details) =>
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Row(children: <Widget>[
+                  Expanded(child: _accountInfoSection(ctx, details.details)),
+                  AddressQrCode(
+                      address: details.details.localAccount.namedAddress
+                          .address),
+                ]),
+                if(details.details.isRegistered) ...[
+                  Expanded(child: TransferList(list: details.recentTransfers)),
+                  _transferBtn(ctx)
+                ] else
+                  Expanded(child: Center(child: const Text("Nothing to show"))),
+              ],
+            ),
+      ),
+    );
+  }
 
   Widget _accountInfoSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Center(
         child: Column(

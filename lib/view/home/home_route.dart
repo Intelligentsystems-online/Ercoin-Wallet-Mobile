@@ -37,7 +37,6 @@ class _HomeRouteState extends State<HomeRoute> {
     _currentPageIndex = initialPageIndex;
     _pageController = PageController(initialPage: initialPageIndex, keepPage: true);
     _streamController = new StreamController.broadcast();
-
   }
 
   @override
@@ -79,10 +78,10 @@ class _HomeRouteState extends State<HomeRoute> {
     controller: _pageController,
     onPageChanged: (index) => setState(() => _currentPageIndex = index),
     children: <Widget>[
-      AccountInfoPage(_streamController.stream),
-      TransferListPage(_streamController.stream),
+      AccountInfoPage(_streamController),
+      TransferListPage(_streamController),
       AddressBookPage(),
-      AccountListPage(_streamController.stream)],
+      AccountListPage(_streamController)],
   );
 
   Widget _bottomNavigationBar(BuildContext context) => BottomNavigationBar(
