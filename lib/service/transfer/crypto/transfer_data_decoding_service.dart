@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
@@ -24,7 +25,7 @@ class TransferDataDecodingService
   int obtainMessageLength(Uint8List transferBytes) => transferBytes.elementAt(45);
 
   String obtainMessage(Uint8List transferBytes, int messageLength) =>
-      messageLength == 0 ? "" : String.fromCharCodes(_obtainMessageBytes(transferBytes, messageLength));
+      messageLength == 0 ? "" : utf8.decode(_obtainMessageBytes(transferBytes, messageLength));
 
   Address obtainFromAddress(Uint8List transferBytes, int messageLength) =>
       Address(bytes: _obtainFromAddressBytes(transferBytes, messageLength));
