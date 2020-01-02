@@ -37,7 +37,7 @@ class _AddressBookPageState extends State<AddressBookPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(child: _addressList()),
-            _addAccountBtn(ctx)
+            _addAddressBtn(ctx)
           ]
       ),
     ),
@@ -70,7 +70,7 @@ class _AddressBookPageState extends State<AddressBookPage> {
   _onAddressPressed(BuildContext ctx, NamedAddress namedAddress) =>
       pushRoute(Navigator.of(context), () => AddressDetailsRoute(address: namedAddress));
 
-  Widget _addAccountBtn(BuildContext ctx) => RaisedButton.icon(
+  Widget _addAddressBtn(BuildContext ctx) => RaisedButton.icon(
       icon: const Text("Create new address"),
       label: const Icon(Icons.add),
       onPressed: () => pushRoute(Navigator.of(ctx), () => AddAddressRoute())
