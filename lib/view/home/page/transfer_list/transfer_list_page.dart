@@ -2,22 +2,36 @@ import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/transfer/transfer.dart';
 import 'package:ercoin_wallet/model/transfer/transfer_direction.dart';
-import 'package:ercoin_wallet/utils/view/progress_overlay_container.dart';
 import 'package:ercoin_wallet/utils/view/refreshable_future_builder.dart';
 import 'package:ercoin_wallet/utils/view/transfer_list.dart';
 
 import 'package:flutter/material.dart';
 
 class TransferListPage extends StatefulWidget {
+  final Stream _stream;
+
+  TransferListPage(this._stream);
+
   @override
-  _TransferListPageState createState() => _TransferListPageState();
+  _TransferListPageState createState() => _TransferListPageState(_stream);
 }
 
 class _TransferListPageState extends State<TransferListPage> {
   TransferDirection _transferDirection;
+  Stream _stream;
 
   final _interactor = mainInjector.getDependency<TransferListInteractor>();
   final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
+
+  _TransferListPageState(this._stream);
+
+  @override
+  void initState() {
+    if(_stream != null && _builderKey.currentState != null) {
+      _stream.listen((_) => _builderKey.currentState.update(isRefresh: true));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) => RefreshableFutureBuilder<List<Transfer>>(

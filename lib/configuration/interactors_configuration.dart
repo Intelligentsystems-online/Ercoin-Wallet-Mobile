@@ -9,6 +9,7 @@ import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.da
 import 'package:ercoin_wallet/interactor/address_details/address_details_interactor.dart';
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
 import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
+import 'package:ercoin_wallet/interactor/home/home_interactor.dart';
 import 'package:ercoin_wallet/interactor/settings/settings_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/destination/enter_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_destination_interactor.dart';
@@ -94,6 +95,10 @@ class InteractorsConfiguration {
     injector.registerSingleton<AddressDetailsInteractor>((injector) => AddressDetailsInteractor(
         injector.getDependency<NamedAddressService>(),
         injector.getDependency<ActiveAccountTransferListCacheService>()
+    ));
+    injector.registerSingleton<HomeInteractor>((injector) => HomeInteractor(
+      injector.getDependency<LocalAccountDetailsCacheService>(),
+      injector.getDependency<ActiveAccountTransferListCacheService>()
     ));
   }
 }

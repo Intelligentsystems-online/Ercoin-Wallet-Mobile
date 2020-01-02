@@ -13,15 +13,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-class AccountInfoPage extends StatelessWidget {
-  final _interactor = mainInjector.getDependency<AccountInfoInteractor>();
+class AccountInfoPage extends StatefulWidget {
+  final Stream _stream;
 
-  AccountInfoPage();
+  AccountInfoPage(this._stream);
+
+  @override
+  State<StatefulWidget> createState() => _AccountInfoState(_stream);
+}
+
+class _AccountInfoState extends State<AccountInfoPage> {
+  Stream _stream;
+
+  final _interactor = mainInjector.getDependency<AccountInfoInteractor>();
+  final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
+
+  _AccountInfoState(this._stream);
+
+  @override
+  void initState() {
+    if(_stream != null && _builderKey.currentState != null) {
+      _stream.listen((_) {
+        print("Mateusz");
+        _builderKey.currentState.update(isRefresh: true);});
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) => Container(
         padding: standardPadding.copyWith(bottom: 0),
         child: RefreshableFutureBuilder(
+          key: _builderKey,
           forceScrollable: true,
           futureBuilder: (isRefresh) async {
             return await _interactor.obtainActiveLocalAccountDetailsWithRecentTransfers(refresh: isRefresh);

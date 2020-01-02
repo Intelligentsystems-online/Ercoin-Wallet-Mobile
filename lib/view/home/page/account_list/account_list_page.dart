@@ -6,7 +6,6 @@ import 'package:ercoin_wallet/utils/view/account_list.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/refreshable_future_builder.dart';
 import 'package:ercoin_wallet/utils/view/searchable_list.dart';
-import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
@@ -14,15 +13,30 @@ import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/material.dart';
 
 class AccountListPage extends StatefulWidget {
+  final Stream _stream;
+
+  AccountListPage(this._stream);
+
   @override
-  State<StatefulWidget> createState() => _AccountListPageState();
+  State<StatefulWidget> createState() => _AccountListPageState(_stream);
 }
 
 class _AccountListPageState extends State<AccountListPage> {
+  Stream _stream;
+  String _search;
+
   final _interactor = mainInjector.getDependency<AccountListInteractor>();
   final _builderKey = GlobalKey<RefreshableFutureBuilderState>();
 
-  String _search;
+  _AccountListPageState(this._stream);
+
+  @override
+  void initState() {
+    if(_stream != null && _builderKey.currentState != null) {
+      _stream.listen((_) => _builderKey.currentState.update(isRefresh: true));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext ctx) => Container(

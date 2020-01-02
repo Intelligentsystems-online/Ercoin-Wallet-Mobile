@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:ercoin_wallet/interactor/home/home_interactor.dart';
+import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/view/home/page/account_info/account_info_page.dart';
@@ -13,7 +17,7 @@ class HomeRoute extends StatefulWidget {
   final int initialPageIndex;
   final String snackBarText;
 
-  const HomeRoute({this.initialPageIndex = 0, this.snackBarText});
+  HomeRoute({this.initialPageIndex = 0, this.snackBarText});
 
   @override
   _HomeRouteState createState() => _HomeRouteState(initialPageIndex, snackBarText);
@@ -22,6 +26,9 @@ class HomeRoute extends StatefulWidget {
 class _HomeRouteState extends State<HomeRoute> {
   final String _snackBarText;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _interactor = mainInjector.getDependency<HomeInteractor>();
+
+  StreamController _streamController;
   PageController _pageController;
 
   int _currentPageIndex = 0;
@@ -29,6 +36,8 @@ class _HomeRouteState extends State<HomeRoute> {
   _HomeRouteState(int initialPageIndex, this._snackBarText) {
     _currentPageIndex = initialPageIndex;
     _pageController = PageController(initialPage: initialPageIndex, keepPage: true);
+    _streamController = new StreamController.broadcast();
+
   }
 
   @override
@@ -46,6 +55,11 @@ class _HomeRouteState extends State<HomeRoute> {
           title: const Text("Ercoin wallet"),
           actions: <Widget>[
             IconButton(
+              icon: Icon(Icons.refresh),
+              disabledColor: Colors.white,
+              onPressed: () async => _onRefresh(),
+            ),
+            IconButton(
               icon: Icon(Icons.settings),
               disabledColor: Colors.white,
               onPressed: () => pushRoute(Navigator.of(ctx), () => SettingsRoute()),
@@ -56,10 +70,19 @@ class _HomeRouteState extends State<HomeRoute> {
         bottomNavigationBar: _bottomNavigationBar(ctx),
       );
 
+  _onRefresh() async {
+    _interactor.invalidateApplicationCache();
+    _streamController.add(true);
+  }
+
   Widget _pageView() => PageView(
     controller: _pageController,
     onPageChanged: (index) => setState(() => _currentPageIndex = index),
-    children: <Widget>[AccountInfoPage(), TransferListPage(), AddressBookPage(), AccountListPage()],
+    children: <Widget>[
+      AccountInfoPage(_streamController.stream),
+      TransferListPage(_streamController.stream),
+      AddressBookPage(),
+      AccountListPage(_streamController.stream)],
   );
 
   Widget _bottomNavigationBar(BuildContext context) => BottomNavigationBar(
