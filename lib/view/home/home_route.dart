@@ -70,7 +70,7 @@ class _HomeRouteState extends State<HomeRoute> {
       );
 
   _onRefresh() async {
-    _interactor.invalidateApplicationCache();
+    await _interactor.invalidateApplicationCache();
     _streamController.add(true);
   }
 
