@@ -56,13 +56,12 @@ class AccountInfoPage extends StatelessWidget {
       );
 
   Widget _accountNameRow(LocalAccountDetails localAccountDetails) => Row(children: <Widget>[
-        const Icon(Icons.account_circle),
-        const SizedBox(width: 8.0),
         Expanded(
             child: Text(
                 localAccountDetails.localAccount.namedAddress.name,
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 25)
             ),
         ),
       ]);
