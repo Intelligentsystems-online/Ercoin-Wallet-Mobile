@@ -28,3 +28,17 @@ Future showOkDialog(BuildContext ctx, {@required Widget content, Widget title}) 
     ),
   );
 }
+
+Future showAlertDialog(BuildContext ctx, {Widget content, Widget title, Function() onProceed}) async {
+  await showDialog(
+    context: ctx,
+    builder: (ctx) => AlertDialog(
+      content: content,
+      title: title,
+      actions: <Widget>[
+        FlatButton(child: const Text("Proceed"), onPressed: () => onProceed()),
+        FlatButton(child: const Text("Close"), onPressed: () => Navigator.pop(ctx))
+      ],
+    )
+  );
+}

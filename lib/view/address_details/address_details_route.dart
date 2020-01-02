@@ -75,10 +75,17 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
         textColor: Colors.red,
         icon: const Text("Delete"),
         label: const Icon(Icons.delete),
-        onPressed: () async => _onDelete(),
+        onPressed: () async => _onDeleteAttempt(),
       );
 
-  _onDelete() async {
+  _onDeleteAttempt() async {
+    showAlertDialog(
+        context,
+        title: const Text("Are you sure to remove address?"),
+        onProceed: () async => _onDeleteProceed());
+  }
+
+  _onDeleteProceed() async {
     await _interactor.deleteAddressByPublicKey(_address.address.base58);
     resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 2));
   }
