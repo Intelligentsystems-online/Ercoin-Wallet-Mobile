@@ -35,7 +35,7 @@ class _AccountListPageState extends State<AccountListPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Expanded(child: _accountList(detailsList)),
-              _transferBtn(ctx)
+              _addAccountBtn(ctx)
             ],
         )
       )
@@ -58,7 +58,7 @@ class _AccountListPageState extends State<AccountListPage> {
     _interactor.persistActiveAccountAddress(account);
   }
 
-  Widget _transferBtn(BuildContext ctx) => RaisedButton.icon(
+  Widget _addAccountBtn(BuildContext ctx) => RaisedButton.icon(
     icon: const Text("Create new account"),
     label: const Icon(Icons.add),
       onPressed: () => pushRoute(
