@@ -174,7 +174,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
   _onDeleteAttempt() async {
     showAlertDialog(
       context,
-      content: const Text("Before proceed we recommend to make sure that you wrote down access keys"),
+      content: const Text("Before proceed we recommend to make sure that you wrote down access keys. Otherwise you can lost account data"),
       onProceed: () async => _onDeleteHintAccepted()
     );
   }
