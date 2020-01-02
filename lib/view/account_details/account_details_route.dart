@@ -203,7 +203,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
       child: Text(details.isActive ? "Deactivate" : "Activate"),
       onPressed: () async {
         await _interactor.toggleAccountActivation(details);
-        _updateDetails();
+        resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
       });
 
   Widget _saveBtn(BuildContext ctx, LocalAccount account) => RaisedButton(
