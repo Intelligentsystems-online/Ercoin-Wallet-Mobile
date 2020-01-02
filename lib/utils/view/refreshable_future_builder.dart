@@ -52,7 +52,7 @@ class RefreshableFutureBuilderState<T> extends State<RefreshableFutureBuilder> {
 
   Widget _content(BuildContext ctx) {
     if (_value == null) {
-      return Container();
+      return Center(child: Text("Please wait, refreshing information from blockchain node", textAlign: TextAlign.center));
     } else if(forceScrollable) {
       return Stack(
         children: <Widget>[
