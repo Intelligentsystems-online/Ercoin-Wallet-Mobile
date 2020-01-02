@@ -29,18 +29,17 @@ class _AddressBookPageState extends State<AddressBookPage> {
   }
 
   @override
-  Widget build(BuildContext ctx) => Scaffold(
-    body: Container(
-      padding: standardPadding.copyWith(bottom: 0),
-      child: ProgressOverlayContainer(
-          overlayEnabled: _namedAddressList == null,
-          child: _addressList(),
+  Widget build(BuildContext ctx) =>  Container(
+    padding: standardPadding.copyWith(bottom: 0),
+    child: ProgressOverlayContainer(
+      overlayEnabled: _namedAddressList == null,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(child: _addressList()),
+            _addAddressBtn(ctx)
+          ]
       ),
-    ),
-    floatingActionButton: FloatingActionButton(
-      heroTag: "AddressBookPage",
-      child: const Icon(Icons.add),
-      onPressed: () => pushRoute(Navigator.of(ctx), () => AddAddressRoute()),
     ),
   );
 
@@ -70,4 +69,10 @@ class _AddressBookPageState extends State<AddressBookPage> {
 
   _onAddressPressed(BuildContext ctx, NamedAddress namedAddress) =>
       pushRoute(Navigator.of(context), () => AddressDetailsRoute(address: namedAddress));
+
+  Widget _addAddressBtn(BuildContext ctx) => RaisedButton.icon(
+      icon: const Text("Create new address"),
+      label: const Icon(Icons.add),
+      onPressed: () => pushRoute(Navigator.of(ctx), () => AddAddressRoute())
+  );
 }

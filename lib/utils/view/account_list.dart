@@ -8,11 +8,14 @@ import 'package:ercoin_wallet/view/account_details/account_details_route.dart';
 
 import 'package:flutter/material.dart';
 
+import 'expanded_row.dart';
+
 class AccountList extends StatelessWidget {
   final List<LocalAccountActivationDetails> list;
   final Function(LocalAccount) afterBackFromAccountDetails;
+  final Function(LocalAccount) onActivate;
 
-  const AccountList({this.list, this.afterBackFromAccountDetails});
+  const AccountList({this.list, this.afterBackFromAccountDetails, this.onActivate});
 
   @override
   Widget build(BuildContext ctx) => ListView.builder(
@@ -27,10 +30,15 @@ class AccountList extends StatelessWidget {
           child: ListTile(
             title: Text(details.details.localAccount.namedAddress.name),
             subtitle: Text("${details.details.balance.ercoinFixed} ERN"),
-            trailing: details.isActive ? Icon(Icons.check, color: Colors.green) : null,
+            trailing: details.isActive ? Icon(Icons.check, color: Colors.green) : _activateBtn(details.details.localAccount),
           ),
         ),
       );
+
+  _activateBtn(LocalAccount account) => OutlineButton(
+    child: const Text("Activate"),
+    onPressed: () => onActivate(account),
+  );
 
   _onAccountPressed(BuildContext ctx, LocalAccount account) async {
     await pushRoute(Navigator.of(ctx), () => AccountDetailsRoute(account: account));
