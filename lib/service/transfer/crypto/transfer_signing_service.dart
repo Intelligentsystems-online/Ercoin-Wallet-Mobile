@@ -18,12 +18,13 @@ class TransferSigningService {
       String message, 
       CoinsAmount amount,
   ) async {
+    final messageBytes = _encodingService.encodeMessage(message);
     List<int> transactionBytes = List.from([0]);
     transactionBytes.addAll(_encodingService.encodeTimestamp(DateTime.now()));
     transactionBytes.addAll(destination.bytes);
     transactionBytes.addAll(_encodingService.encodeCoinsAmount(amount));
-    transactionBytes.addAll(_encodingService.encodeMessageLength(message.length));
-    transactionBytes.addAll(_encodingService.encodeMessage(message));
+    transactionBytes.addAll(_encodingService.encodeMessageLength(messageBytes.length));
+    transactionBytes.addAll(messageBytes);
     transactionBytes.addAll([1]);
     transactionBytes.addAll(sender.namedAddress.address.bytes);
 

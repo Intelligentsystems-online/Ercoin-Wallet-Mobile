@@ -73,12 +73,18 @@ class TransferApiService {
   TransferData _decodeTransferData(String transactionBase64) {
     var transactionBytes = base64.decode(transactionBase64);
     var messageLength = _decodingService.obtainMessageLength(transactionBytes);
+    var message;
+    try {
+      message = _decodingService.obtainMessage(transactionBytes, messageLength);
+    } catch(_) {
+      message = "No message";
+    }
 
     return TransferData(
       amount: _decodingService.obtainCoinsAmount(transactionBytes),
       from: _decodingService.obtainFromAddress(transactionBytes, messageLength),
       to: _decodingService.obtainToAddress(transactionBytes),
-      message: _decodingService.obtainMessage(transactionBytes, messageLength),
+      message: message,
       timestamp: _decodingService.obtainTimestamp(transactionBytes),
     );
   }
