@@ -61,7 +61,7 @@ class AccountInfoPage extends StatelessWidget {
                 localAccountDetails.localAccount.namedAddress.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 25)
+                style: TextStyle(fontSize: 20)
             ),
         ),
       ]);
