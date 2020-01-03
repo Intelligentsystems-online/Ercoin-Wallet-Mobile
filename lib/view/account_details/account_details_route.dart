@@ -193,11 +193,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
     if(await _interactor.activateAnyAccount()) {
       resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
     } else {
-      resetRoute(
-          Navigator.of(context),
-          () => AddAccountRoute(
-            onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()),
-        ));
+      resetRoute(Navigator.of(context), () => AddAccountRoute());
     }
   }
 

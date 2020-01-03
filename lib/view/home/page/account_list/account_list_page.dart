@@ -85,9 +85,6 @@ class _AccountListPageState extends State<AccountListPage> with AutomaticKeepAli
   Widget _addAccountBtn(BuildContext ctx) => RaisedButton.icon(
     icon: const Text("Create new account"),
     label: const Icon(Icons.add),
-      onPressed: () => pushRoute(
-        Navigator.of(ctx),
-            () => AddAccountRoute(onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute())),
-      )
+      onPressed: () => pushRoute(Navigator.of(ctx), () => AddAccountRoute())
   );
 }
