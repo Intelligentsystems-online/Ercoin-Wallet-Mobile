@@ -9,6 +9,7 @@ import 'package:ercoin_wallet/interactor/address_book/address_book_interactor.da
 import 'package:ercoin_wallet/interactor/address_details/address_details_interactor.dart';
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
 import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
+import 'package:ercoin_wallet/interactor/registration_info/registration_info_interactor.dart';
 import 'package:ercoin_wallet/interactor/settings/settings_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/destination/enter_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_destination_interactor.dart';
@@ -17,6 +18,7 @@ import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
+import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
 import 'package:ercoin_wallet/service/file/json_file_service.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
 import 'package:ercoin_wallet/service/local_account/local_account_details_cache_service.dart';
@@ -41,7 +43,8 @@ class InteractorsConfiguration {
       injector.getDependency<LocalAccountDetailsCacheService>(),
     ));
     injector.registerSingleton<AddAccountInteractor>((injector) => AddAccountInteractor(
-      injector.getDependency<KeyGeneratorService>()
+      injector.getDependency<KeyGeneratorService>(),
+      injector.getDependency<SharedPreferencesService>()
     ));
     injector.registerSingleton<ImportAccountInteractor>((_) => ImportAccountInteractor(
       injector.getDependency<LocalAccountService>(),
@@ -56,6 +59,9 @@ class InteractorsConfiguration {
       injector.getDependency<NamedAddressService>()
     ));
     injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
+    injector.registerSingleton<RegistrationInfoInteractor>((injector) => RegistrationInfoInteractor(
+        injector.getDependency<SharedPreferencesService>()
+    ));
     injector.registerSingleton<SettingsInteractor>((injector) => SettingsInteractor(
       injector.getDependency<SettingsService>(),
       injector.getDependency<ApiConsumerService>()
