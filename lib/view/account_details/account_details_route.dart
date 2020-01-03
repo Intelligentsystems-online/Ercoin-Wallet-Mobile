@@ -6,6 +6,7 @@ import 'package:ercoin_wallet/model/base/coins_amount.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
 import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
+import 'package:ercoin_wallet/utils/view/delete_alert_dialog.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_box.dart';
@@ -17,6 +18,8 @@ import 'package:ercoin_wallet/view/backup/backup_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+import 'delete_recomendation_dialog.dart';
 
 class AccountDetailsRoute extends StatefulWidget {
   final LocalAccount account;
@@ -169,31 +172,28 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         icon: const Text("Delete"),
         label: const Icon(Icons.delete),
-        onPressed: () async => _onDeleteAttempt(),
+        onPressed: () async => _onDeleteAttempt(ctx),
       );
 
-  _onDeleteAttempt() async {
-    showAlertDialog(
-      context,
-      content: const Text("Before proceed we recommend to make sure that you wrote down access keys. Otherwise you can lost account data"),
-      onProceed: () async => _onDeleteHintAccepted()
-    );
+  _onDeleteAttempt(BuildContext ctx) async {
+    showDialog(
+        context: ctx,
+        builder: (ctx) => DeleteRecomendationDialog((ctx) => _onDeleteRecomendationAccepted(ctx)));
   }
 
-  _onDeleteHintAccepted() async {
-    Navigator.of(context).pop();
-    showAlertDialog(
-        context,
-        title: const Text("Are you sure to remove account?"),
-        onProceed: () async => _onDeleteProceed());
+  _onDeleteRecomendationAccepted(BuildContext ctx) async {
+    Navigator.of(ctx).pop();
+    showDialog(
+        context: ctx,
+        builder: (ctx) => DeleteAlertDialog((ctx) async => await _onDeleteProceed(ctx)));
   }
 
-  _onDeleteProceed() async {
+  _onDeleteProceed(BuildContext ctx) async {
     await _interactor.deleteAccountByPublicKey(account.namedAddress.address.base58);
     if(await _interactor.activateAnyAccount()) {
-      resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
+      resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
     } else {
-      resetRoute(Navigator.of(context), () => AddAccountRoute());
+      resetRoute(Navigator.of(ctx), () => AddAccountRoute());
     }
   }
 
