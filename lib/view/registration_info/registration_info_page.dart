@@ -45,7 +45,6 @@ class _RegistrationInfoState extends State<RegistrationInfoPage> {
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
     text: "Procced",
-    //onPressed: _isAccepted ? () => onProceed(context) : null,
     onPressed: () async {
      if(_isAccepted) {
        await _interactor.persistRegistrationInfoRejected();
