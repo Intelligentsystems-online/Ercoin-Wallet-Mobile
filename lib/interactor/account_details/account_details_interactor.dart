@@ -33,6 +33,15 @@ class AccountDetailsInteractor {
     _localAccountDetailsCacheService.invalidateCache();
   }
 
+  Future<bool> activateAnyAccount() async {
+    final accounts = await _accountService.obtainList();
+    if(accounts.isNotEmpty) {
+      await _activeAccountService.persistActiveAccount(accounts.first);
+      return true;
+    }
+    else return false;
+  }
+
   Future<LocalAccount> _obtainAnyAccountExcept(LocalAccount account) async {
     final accounts = await _accountService.obtainList();
     return accounts.firstWhere((element) => element != account);
