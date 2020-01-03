@@ -66,5 +66,4 @@ class _RegistrationInfoState extends State<RegistrationInfoPage> {
      resetRoute(Navigator.of(context), () => HomeRoute());
     }
   );
-
 }
