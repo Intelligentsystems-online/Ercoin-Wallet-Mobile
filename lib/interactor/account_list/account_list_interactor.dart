@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ercoin_wallet/model/base/address.dart';
+import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_details.dart';
 import 'package:ercoin_wallet/service/local_account/active/active_local_account_service.dart';
@@ -25,6 +26,8 @@ class AccountListInteractor {
       return _activeLocalAccountService.obtainAccountActivationDetailsListByNameContains(search);
     }
   }
+
+  Future persistActiveAccountAddress(LocalAccount account) => _activeLocalAccountService.persistActiveAccount(account);
 
   Future<Address> obtainActiveAccountAddress() => _activeLocalAccountService.obtainActiveAccountAddress();
 

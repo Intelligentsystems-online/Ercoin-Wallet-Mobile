@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:ercoin_wallet/interactor/account_details/account_details_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/coins_amount.dart';
-import 'package:ercoin_wallet/model/base/named_address.dart';
-import 'package:ercoin_wallet/model/base/private_key.dart';
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
 import 'package:ercoin_wallet/model/local_account/local_account_activation_details.dart';
 import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
@@ -14,9 +12,9 @@ import 'package:ercoin_wallet/utils/view/standard_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/stream_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
+import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/backup/backup_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
-import 'package:ercoin_wallet/view/home/page/account_list/account_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -171,12 +169,36 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         icon: const Text("Delete"),
         label: const Icon(Icons.delete),
-        onPressed: () async => _onDelete(account),
+        onPressed: () async => _onDeleteAttempt(),
       );
 
-  _onDelete(LocalAccount account) async {
+  _onDeleteAttempt() async {
+    showAlertDialog(
+      context,
+      content: const Text("Before proceed we recommend to make sure that you wrote down access keys. Otherwise you can lost account data"),
+      onProceed: () async => _onDeleteHintAccepted()
+    );
+  }
+
+  _onDeleteHintAccepted() async {
+    Navigator.of(context).pop();
+    showAlertDialog(
+        context,
+        title: const Text("Are you sure to remove account?"),
+        onProceed: () async => _onDeleteProceed());
+  }
+
+  _onDeleteProceed() async {
     await _interactor.deleteAccountByPublicKey(account.namedAddress.address.base58);
-    resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
+    if(await _interactor.activateAnyAccount()) {
+      resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
+    } else {
+      resetRoute(
+          Navigator.of(context),
+          () => AddAccountRoute(
+            onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()),
+        ));
+    }
   }
 
   Widget _backupBtn(BuildContext ctx) => OutlineButton(
@@ -190,7 +212,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
       child: Text(details.isActive ? "Deactivate" : "Activate"),
       onPressed: () async {
         await _interactor.toggleAccountActivation(details);
-        _updateDetails();
+        resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
       });
 
   Widget _saveBtn(BuildContext ctx, LocalAccount account) => RaisedButton(
