@@ -51,21 +51,12 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
       child: RefreshableFutureBuilder(
         key: _builderKey,
         forceScrollable: true,
-        futureBuilder: (isRefresh) async {
-          return await _interactor
-              .obtainActiveLocalAccountDetailsWithRecentTransfers(
-              refresh: isRefresh);
-        },
+        futureBuilder: (isRefresh) async => await _fetchAccount(isRefresh),
         builder: (_, LocalAccountDetailsWithRecentTransfers details) =>
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Row(children: <Widget>[
-                  Expanded(child: _accountInfoSection(ctx, details.details)),
-                  AddressQrCode(
-                      address: details.details.localAccount.namedAddress
-                          .address),
-                ]),
+                _accountInfoSection(ctx, details.details),
                 if(details.details.isRegistered) ...[
                   Expanded(child: TransferList(list: details.recentTransfers)),
                   _transferBtn(ctx)
@@ -77,7 +68,16 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _accountInfoSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Center(
+  Future<LocalAccountDetailsWithRecentTransfers> _fetchAccount(bool isRefresh) async =>
+      await _interactor.obtainActiveLocalAccountDetailsWithRecentTransfers(refresh: isRefresh);
+
+  Widget _accountInfoSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Row(
+      children: <Widget>[
+        Expanded(child: _accountDetailsSection(ctx, localAccountDetails)),
+        AddressQrCode(address: localAccountDetails.localAccount.namedAddress.address),
+  ]);
+
+  Widget _accountDetailsSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
