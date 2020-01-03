@@ -12,6 +12,7 @@ import 'package:ercoin_wallet/utils/view/standard_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
 import 'package:ercoin_wallet/utils/view/stream_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
+import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/backup/backup_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
 import 'package:flutter/material.dart';
@@ -189,7 +190,15 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
 
   _onDeleteProceed() async {
     await _interactor.deleteAccountByPublicKey(account.namedAddress.address.base58);
-    resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
+    if(await _interactor.activateAnyAccount()) {
+      resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 3));
+    } else {
+      resetRoute(
+          Navigator.of(context),
+          () => AddAccountRoute(
+            onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()),
+        ));
+    }
   }
 
   Widget _backupBtn(BuildContext ctx) => OutlineButton(
@@ -203,7 +212,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
       child: Text(details.isActive ? "Deactivate" : "Activate"),
       onPressed: () async {
         await _interactor.toggleAccountActivation(details);
-        _updateDetails();
+        resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
       });
 
   Widget _saveBtn(BuildContext ctx, LocalAccount account) => RaisedButton(

@@ -14,8 +14,6 @@ import 'package:ercoin_wallet/interactor/transfer/destination/enter_transfer_des
 import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
-import 'package:ercoin_wallet/repository/named_address/named_address_repository.dart';
-import 'package:ercoin_wallet/repository/local_account/local_account_repository.dart';
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
