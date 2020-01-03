@@ -1,8 +1,5 @@
 import 'dart:async';
-
-import 'package:ercoin_wallet/interactor/home/home_interactor.dart';
 import 'package:ercoin_wallet/main.dart';
-import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/view/home/page/account_info/account_info_page.dart';
 import 'package:ercoin_wallet/view/home/page/account_list/account_list_page.dart';
@@ -26,7 +23,6 @@ class HomeRoute extends StatefulWidget {
 class _HomeRouteState extends State<HomeRoute> {
   final String _snackBarText;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _interactor = mainInjector.getDependency<HomeInteractor>();
 
   StreamController _streamController;
   PageController _pageController;
@@ -36,12 +32,12 @@ class _HomeRouteState extends State<HomeRoute> {
   _HomeRouteState(int initialPageIndex, this._snackBarText) {
     _currentPageIndex = initialPageIndex;
     _pageController = PageController(initialPage: initialPageIndex, keepPage: true);
-    _streamController = new StreamController.broadcast();
   }
 
   @override
   initState() {
     super.initState();
+    _streamController = StreamController.broadcast();
     if (_snackBarText != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => showTextSnackBar(_scaffoldKey.currentState, _snackBarText));
     }
@@ -56,7 +52,7 @@ class _HomeRouteState extends State<HomeRoute> {
             IconButton(
               icon: Icon(Icons.refresh),
               disabledColor: Colors.white,
-              onPressed: () async => _onRefresh(),
+              onPressed: () async => await _onRefresh(),
             ),
             IconButton(
               icon: Icon(Icons.settings),
@@ -70,7 +66,6 @@ class _HomeRouteState extends State<HomeRoute> {
       );
 
   _onRefresh() async {
-    await _interactor.invalidateApplicationCache();
     _streamController.add(true);
   }
 
