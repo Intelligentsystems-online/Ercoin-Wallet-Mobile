@@ -195,9 +195,8 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
     } else {
       resetRoute(
           Navigator.of(context),
-          () => AddAccountRoute(
-            onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()),
-        ));
+          () => AddAccountRoute()
+        );
     }
   }
 

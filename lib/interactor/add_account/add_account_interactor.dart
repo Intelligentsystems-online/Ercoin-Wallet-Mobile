@@ -18,9 +18,6 @@ class AddAccountInteractor {
   Future<bool> shouldDisplayRegistrationInfo() async {
     final result = await _sharedPreferencesService.getSharedPreference(registrationAlertPreferenceKey);
 
-    if(result.isEmpty || result == registrationAlertAliveValue)
-      return true;
-    else
-      return false;
+    return result.isEmpty || result == registrationAlertAliveValue;
   }
 }

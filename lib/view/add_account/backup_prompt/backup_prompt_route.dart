@@ -44,7 +44,6 @@ class BackupPromptRoute extends StatelessWidget {
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         label: const Icon(Icons.warning),
         icon: const Text("Proceed without backup"),
-//        onPressed: () => onAdded(ctx),
         onPressed: () => onAdded(ctx),
       );
 }

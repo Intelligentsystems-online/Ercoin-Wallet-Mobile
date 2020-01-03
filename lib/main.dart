@@ -47,11 +47,6 @@ class App extends StatelessWidget {
       );
 
   Widget _onNewUser() => TermsRoute(
-        onProceed: (ctx) => pushRoute(
-          Navigator.of(ctx),
-          () => AddAccountRoute(
-            onAdded: (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute()),
-          ),
-        ),
-      );
+      onProceed: (ctx) => pushRoute(Navigator.of(ctx), () => AddAccountRoute())
+  );
 }
