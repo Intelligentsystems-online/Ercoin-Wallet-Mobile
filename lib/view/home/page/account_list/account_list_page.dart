@@ -38,7 +38,7 @@ class _AccountListPageState extends State<AccountListPage> with AutomaticKeepAli
   @override
   void initState() {
     if(_streamController != null) {
-      _streamController.stream.asBroadcastStream().listen((_) => _builderKey.currentState.update(isRefresh: true));
+      _streamController.stream.listen((_) => _builderKey.currentState.update(isRefresh: true));
     }
     super.initState();
   }
