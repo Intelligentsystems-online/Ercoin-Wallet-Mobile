@@ -52,7 +52,7 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
   Widget _importAccountBtn(BuildContext ctx) => OutlineButton(
       child: const Text("Import existing account"),
       borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
-      onPressed: () => _onImportAccountPressed(),
+      onPressed: () async => await _onImportAccountPressed(),
     );
 
   _onImportAccountPressed() async {
@@ -62,7 +62,7 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
 
   Widget _createAccountBtn() => RaisedButton(
           child: const Text("Create new account"),
-          onPressed: () => _createAccount(),
+          onPressed: () async => await _createAccount(),
         );
 
   _createAccount() async {

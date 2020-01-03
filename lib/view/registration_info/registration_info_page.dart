@@ -22,23 +22,37 @@ class _RegistrationInfoState extends State<RegistrationInfoPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text("Registration info"),
+      title: const Text("Account not registered"),
     ),
     body: TopAndBottomContainer(
       top: _registrationInfoLabel(),
-      bottom: _proceedBtn()
+      bottom: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _registrationInfoCheckbox(),
+          _proceedBtn()
+        ],
+      )
     )
   );
 
   Widget _registrationInfoLabel() => Column(
     children: <Widget>[
-      const Text("Account is not registered in blockchain node. Therefore, an account retention fee will be charged on the first transfers"),
-      _registrationInfoCheckbox()
+      const Text("This account has been created but is still not registered. In order to complete the registration you have to transfer at least 0.5 ERN to it."),
+      SizedBox(height: 8),
+      Row(
+        children: <Widget>[
+          const Icon(Icons.warning, color: Colors.red),
+          SizedBox(width: 8),
+          const Text("Registration fee of 0.1 ERN will be charged", style: const TextStyle(color: Colors.red))
+        ],
+      )
     ],
   );
 
   Widget _registrationInfoCheckbox() => CheckboxWithTextWidget(
-      text: "I understand, don't show again.",
+      text: "Don't show this message again",
       value: _isAccepted,
       onChanged: (isChecked) => setState(() => _isAccepted = isChecked)
   );
