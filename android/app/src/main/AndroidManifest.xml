@@ -2,7 +2,7 @@
     package="tech.ercoin.ercoin_wallet">
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="ercoin_wallet"
+        android:label="Ercoin wallet"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

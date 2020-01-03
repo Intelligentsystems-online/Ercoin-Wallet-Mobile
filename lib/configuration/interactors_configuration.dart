@@ -10,9 +10,9 @@ import 'package:ercoin_wallet/interactor/address_details/address_details_interac
 import 'package:ercoin_wallet/interactor/backup/backup_interactor.dart';
 import 'package:ercoin_wallet/interactor/enter_address/enter_address_interactor.dart';
 import 'package:ercoin_wallet/interactor/settings/settings_interactor.dart';
+import 'package:ercoin_wallet/interactor/transfer/confirm/transfer_confirm_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/destination/enter_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_destination_interactor.dart';
-import 'package:ercoin_wallet/interactor/transfer/transfer_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
@@ -74,7 +74,7 @@ class InteractorsConfiguration {
       injector.getDependency<LocalAccountService>(),
       injector.getDependency<ActiveLocalAccountService>(),
     ));
-    injector.registerSingleton<TransferInteractor>((injector) => TransferInteractor(
+    injector.registerSingleton<TransferConfirmInteractor>((injector) => TransferConfirmInteractor(
       injector.getDependency<TransferService>()
     ));
     injector.registerSingleton<AddAddressIntractor>((injector) => AddAddressIntractor(
