@@ -91,7 +91,7 @@ class _SettingsState extends State<SettingsRoute> {
   );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-        text: "Proceed",
+        text: "Save",
         onPressed: () => _onProceed(),
       );
 
