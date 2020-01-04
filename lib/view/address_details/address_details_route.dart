@@ -3,6 +3,7 @@ import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
 import 'package:ercoin_wallet/utils/view/delete_alert_dialog.dart';
+import 'package:ercoin_wallet/utils/view/future_builder_with_progress.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
@@ -35,24 +36,28 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
   Widget build(BuildContext ctx) => Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(title: const Text("Address details")),
-        body: TopAndBottomContainer(
-          top: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Align(alignment: Alignment.center, child: AddressQrCode(address: _address.address)),
-              const SizedBox(height: 16.0),
-              _nameBox(),
-              const SizedBox(height: 16.0),
-              _addressBox(),
-            ],
+        body: FutureBuilderWithProgress(
+          future: _interactor.isActiveAccountRegistered(),
+          builder: (bool isActiveAccountRegistered) => TopAndBottomContainer(
+            top: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Align(alignment: Alignment.center, child: AddressQrCode(address: _address.address)),
+                const SizedBox(height: 16.0),
+                _nameBox(),
+                const SizedBox(height: 16.0),
+                _addressBox(),
+              ],
+            ),
+            bottom: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[_deleteBtn(ctx), if(isActiveAccountRegistered) _transferBtn(ctx), _saveBtn(ctx)],
+            ),
           ),
-          bottom: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[_deleteBtn(ctx), _transferBtn(ctx), _saveBtn(ctx)],
-          ),
-        ),
+        )
+
       );
 
   Widget _nameBox() => Form(

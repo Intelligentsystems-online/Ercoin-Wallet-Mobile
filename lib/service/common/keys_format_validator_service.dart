@@ -2,23 +2,23 @@ import 'package:ercoin_wallet/model/base/address.dart';
 import 'package:ercoin_wallet/model/base/private_key.dart';
 
 class KeysFormatValidatorService {
-  validatePublicKey(String publicKey) {
-    if(publicKey.isEmpty)
+  validatePublicKey(String key) {
+    if(key.isEmpty)
       return "Enter address value";
     else try {
-      Address.ofBase58(publicKey);
-    } catch(_) {
-      return "Invalid address format";
+      Address.ofBase58(key);
+    } on FormatException catch(exception) {
+      return exception.message;
     }
   }
 
-  validatePrivateKey(String privateKey)  {
-    if(privateKey.isEmpty)
+  validatePrivateKey(String key)  {
+    if(key.isEmpty)
       return "Enter private key value";
     else try {
-      PrivateKey.ofBase58(privateKey);
-    } catch(_) {
-      return "Invalid private key format";
+      PrivateKey.ofBase58(key);
+    } on FormatException catch(exception) {
+      return exception.message;
     }
   }
 }

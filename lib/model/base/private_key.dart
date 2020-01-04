@@ -12,13 +12,26 @@ class PrivateKey extends Equatable {
 
   static const requiredLength = 64;
 
-  final Uint8List bytes;
+  final Uint8List _bytes;
 
-  const PrivateKey({@required this.bytes}) : assert(bytes.length == requiredLength);
+  const PrivateKey._(this._bytes);
 
-  static PrivateKey ofBase58(String base58) =>
-      PrivateKey(bytes: _base58codec.decode(base58));
+  static PrivateKey ofBytes(Uint8List bytes) {
+    if(bytes.length == requiredLength)
+      return PrivateKey._(bytes);
+    else
+      throw FormatException("Invalid private key length");
+  }
 
+  static PrivateKey ofBase58(String base58) {
+    try {
+      return ofBytes(_base58codec.decode(base58));
+    } catch(_) {
+      throw FormatException("Invalid private key format");
+    }
+  }
+
+  Uint8List get bytes => _bytes;
   String get base58 => _base58codec.encode(bytes);
 
   @override

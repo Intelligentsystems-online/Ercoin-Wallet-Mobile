@@ -97,6 +97,7 @@ class InteractorsConfiguration {
     ));
     injector.registerSingleton<AddressDetailsInteractor>((injector) => AddressDetailsInteractor(
         injector.getDependency<NamedAddressService>(),
+        injector.getDependency<ActiveLocalAccountService>(),
         injector.getDependency<ActiveAccountTransferListCacheService>()
     ));
   }
