@@ -28,6 +28,7 @@ dependencies:
   injector: 1.0.8
   equatable: ^1.0.0
   base58check: 1.0.1
+  url_launcher: 5.4.1
   test:
 
 dev_dependencies:

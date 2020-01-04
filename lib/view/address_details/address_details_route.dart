@@ -2,6 +2,7 @@ import 'package:ercoin_wallet/interactor/address_details/address_details_interac
 import 'package:ercoin_wallet/main.dart';
 import 'package:ercoin_wallet/model/base/named_address.dart';
 import 'package:ercoin_wallet/utils/view/address_qr_code.dart';
+import 'package:ercoin_wallet/utils/view/delete_alert_dialog.dart';
 import 'package:ercoin_wallet/utils/view/navigation_utils.dart';
 import 'package:ercoin_wallet/utils/view/standard_copy_text_box.dart';
 import 'package:ercoin_wallet/utils/view/standard_text_form_field.dart';
@@ -75,19 +76,18 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
         textColor: Colors.red,
         icon: const Text("Delete"),
         label: const Icon(Icons.delete),
-        onPressed: () async => _onDeleteAttempt(),
+        onPressed: () async => await _onDeleteAttempt(ctx),
       );
 
-  _onDeleteAttempt() async {
-    showAlertDialog(
-        context,
-        title: const Text("Are you sure to remove address?"),
-        onProceed: () async => _onDeleteProceed());
+  _onDeleteAttempt(BuildContext ctx) async {
+    showDialog(
+        context: ctx,
+        builder: (ctx) => DeleteAlertDialog((ctx) async => await _onDeleteProceed(ctx)));
   }
 
-  _onDeleteProceed() async {
+  _onDeleteProceed(BuildContext ctx) async {
     await _interactor.deleteAddressByPublicKey(_address.address.base58);
-    resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 2));
+    resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 2));
   }
 
   Widget _transferBtn(BuildContext ctx) => OutlineButton.icon(

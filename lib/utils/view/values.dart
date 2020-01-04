@@ -12,6 +12,9 @@ const standardTextFieldContentPadding = const EdgeInsets.symmetric(vertical: 17,
 const standardTextFieldLabelFontSize = 16.0;
 const standardTextFieldBorder = const OutlineInputBorder(borderRadius: standardBorderRadius, borderSide: BorderSide());
 
+const standardTextSpanStyle = const TextStyle(fontSize: 16, color: Colors.black);
+const standardLinkTextSpanStyle = const TextStyle(fontSize: 16, color: Colors.blue);
+
 final standardThemeData = ThemeData(
   brightness: Brightness.light,
   accentColor: Colors.indigoAccent,

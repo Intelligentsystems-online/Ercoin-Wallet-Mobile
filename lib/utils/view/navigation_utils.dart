@@ -1,3 +1,4 @@
+import 'package:ercoin_wallet/utils/view/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,19 +27,5 @@ Future showOkDialog(BuildContext ctx, {@required Widget content, Widget title}) 
       title: title,
       actions: <Widget>[FlatButton(child: const Text("Close"), onPressed: () => Navigator.pop(ctx))],
     ),
-  );
-}
-
-Future showAlertDialog(BuildContext ctx, {Widget content, Widget title, Function() onProceed}) async {
-  await showDialog(
-    context: ctx,
-    builder: (ctx) => AlertDialog(
-      content: content,
-      title: title,
-      actions: <Widget>[
-        FlatButton(child: const Text("Proceed"), onPressed: () => onProceed()),
-        FlatButton(child: const Text("Close"), onPressed: () => Navigator.pop(ctx))
-      ],
-    )
   );
 }
