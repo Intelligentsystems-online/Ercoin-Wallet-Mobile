@@ -15,12 +15,8 @@ class CoinsAmount extends Equatable {
      throw FormatException("Coins amount should be greater than zero.");
   }
 
-  static ofMicroErcoin(int microErcoin) {
-    if(microErcoin >= 0)
-      return CoinsAmount._(microErcoin / 1000000.0);
-    else
-      throw FormatException("Coins amount should be greater than zero.");
-  }
+  static CoinsAmount ofMicroErcoin(int microErcoin) =>
+    ofErcoin(microErcoin / 1000000.0);
 
   int get microErcoin => (_ercoin * 1000000).floor();
 
