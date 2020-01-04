@@ -11,15 +11,15 @@ class LocalAccountDetailsDecodingService {
   LocalAccountDetails buildAccountDetails(ApiResponse<String> apiResponse, LocalAccount account) {
     switch(apiResponse.status) {
       case ApiResponseStatus.SUCCESS:
-        return LocalAccountDetails(
+        return LocalAccountDetails.of(
           localAccount: account,
           balance: _obtainBalanceValue(base64.decode(apiResponse.response)),
           isRegistered: true,
         );
       case ApiResponseStatus.ACCOUNT_NOT_FOUND:
-        return LocalAccountDetails(
+        return LocalAccountDetails.of(
           localAccount: account,
-          balance: const CoinsAmount(ercoin: 0.0),
+          balance: CoinsAmount.ofErcoin(0.0),
           isRegistered: false,
         );
       default:

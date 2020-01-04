@@ -9,9 +9,14 @@ class LocalAccountDetails {
   final CoinsAmount balance;
   final bool isRegistered;
 
-  const LocalAccountDetails({
-    @required this.localAccount,
-    @required this.balance,
-    @required this.isRegistered,
-  }) : assert(isRegistered || balance == const CoinsAmount(ercoin: 0));
+  const LocalAccountDetails._(this.localAccount, this.balance, this.isRegistered);
+
+  static LocalAccountDetails of({@required LocalAccount localAccount,
+                                 @required CoinsAmount balance,
+                                 @required bool isRegistered}) {
+    if(isRegistered || balance == CoinsAmount.ofErcoin(0.0))
+      return LocalAccountDetails._(localAccount, balance, isRegistered);
+    else
+      throw FormatException("Cannot create LocalAccountDetails object due to invalid params");
+  }
 }
