@@ -39,13 +39,13 @@ class _RegistrationInfoState extends State<RegistrationInfoPage> {
 
   Widget _registrationInfoLabel() => Column(
     children: <Widget>[
-      const Text("This account has been created but is still not registered. In order to complete the registration you have to transfer at least 0.5 ERN to it."),
+      const Text("This account has been created but is still not registered. In order to complete the registration you have to transfer ercoins to it."),
       SizedBox(height: 8),
       Row(
         children: <Widget>[
           const Icon(Icons.warning, color: Colors.red),
           SizedBox(width: 8),
-          const Text("Registration fee of 0.1 ERN will be charged", style: const TextStyle(color: Colors.red))
+          const Text("Registration fee will be charged", style: const TextStyle(color: Colors.red))
         ],
       )
     ],

@@ -14,7 +14,7 @@ class DeleteRecomendationDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(borderRadius: standardBorderRadius),
       contentPadding: standardDialogPadding,
       title: Text(
-        "Backup recomendated",
+        "Backup recommended",
         textAlign: TextAlign.center,
         style: Theme.of(ctx).textTheme.title,
       ),
@@ -22,7 +22,7 @@ class DeleteRecomendationDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text("Before proceed make sure that you wrote down access keys. Otherwise you can lost account data"),
+          Text("Before proceeding make sure that you wrote down access keys. Otherwise you can lost account data"),
           SizedBox(height: 8),
           _buttonsRow(ctx),
         ],
