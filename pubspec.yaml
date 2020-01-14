@@ -1,7 +1,7 @@
 name: ercoin_wallet
 description: Ercoin wallet.
 
-version: 1.0.0
+version: 1.0.1
 
 environment:
   sdk: ^2.7.0
@@ -44,5 +44,9 @@ dependency_overrides:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: QRIcon
+      fonts:
+        - asset: fonts/QRIcon.ttf
 
 

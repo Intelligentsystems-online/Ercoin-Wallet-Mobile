@@ -37,7 +37,7 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
 
   @override
   void initState() {
-    if(_streamController != null) {
+    if (_streamController != null) {
       _streamController.stream.listen((_) => _builderKey.currentState.update(isRefresh: true));
     }
     super.initState();
@@ -53,18 +53,19 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
         streamController: _streamController,
         forceScrollable: true,
         futureBuilder: (isRefresh) async => await _fetchAccount(isRefresh),
-        builder: (_, LocalAccountDetailsWithRecentTransfers details) =>
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _accountInfoSection(ctx, details.details),
-                if(details.details.isRegistered) ...[
-                  Expanded(child: TransferList(list: details.recentTransfers)),
-                  _transferBtn(ctx)
-                ] else
-                  Expanded(child: Center(child: const Text("Nothing to show"))),
-              ],
-            ),
+        builder: (_, LocalAccountDetailsWithRecentTransfers details) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SizedBox(height: 16.0),
+            _accountInfoSection(ctx, details.details),
+            const SizedBox(height: 16.0),
+            if (details.details.isRegistered) ...[
+              Expanded(child: TransferList(list: details.recentTransfers)),
+              _transferBtn(ctx)
+            ] else
+              Expanded(child: Center(child: const Text("Nothing to show"))),
+          ],
+        ),
       ),
     );
   }
@@ -73,18 +74,21 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
       await _interactor.obtainActiveLocalAccountDetailsWithRecentTransfers(refresh: isRefresh);
 
   Widget _accountInfoSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Row(
-      children: <Widget>[
-        Expanded(child: _accountDetailsSection(ctx, localAccountDetails)),
-        AddressQrCode(address: localAccountDetails.localAccount.namedAddress.address),
-  ]);
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(child: _accountDetailsSection(ctx, localAccountDetails)),
+          const SizedBox(width: 16.0),
+          AddressQrCode(address: localAccountDetails.localAccount.namedAddress.address),
+        ],
+      );
 
   Widget _accountDetailsSection(BuildContext ctx, LocalAccountDetails localAccountDetails) => Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _accountNameRow(localAccountDetails),
             _accountBalanceRow(localAccountDetails),
-            _accountAddressRow(ctx, localAccountDetails),
             if (!localAccountDetails.isRegistered) _accountNotRegisteredRow(),
           ],
         ),
@@ -92,12 +96,8 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
 
   Widget _accountNameRow(LocalAccountDetails localAccountDetails) => Row(children: <Widget>[
         Expanded(
-            child: Text(
-                localAccountDetails.localAccount.namedAddress.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 20)
-            ),
+          child: Text(localAccountDetails.localAccount.namedAddress.name,
+              maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 20)),
         ),
       ]);
 
@@ -106,22 +106,6 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
         const SizedBox(width: 8.0),
         const Text("Not registered", style: const TextStyle(color: Colors.red)),
       ]);
-
-  Widget _accountAddressRow(BuildContext ctx, LocalAccountDetails localAccountDetails) => Row(
-        children: <Widget>[
-          Text(localAccountDetails.localAccount.namedAddress.address.base58.substring(0, 15) + "..."),
-          SizedBox(
-            width: 25.0,
-            height: 25.0,
-            child: IconButton(
-              icon: const Icon(Icons.content_copy),
-              iconSize: 15.0,
-              padding: EdgeInsets.zero,
-              onPressed: () => _onCopyPressed(ctx, localAccountDetails),
-            ),
-          ),
-        ],
-      );
 
   Widget _accountBalanceRow(LocalAccountDetails localAccountDetails) => Row(
         crossAxisAlignment: CrossAxisAlignment.baseline,
