@@ -71,7 +71,7 @@ class RefreshableFutureBuilderState<T> extends State<RefreshableFutureBuilder> {
   }
 
   Future _updateValue({@required bool isRefresh}) async {
-    if(streamController != null) streamController.add(true);
+    streamController.add(true);
     final value = await futureBuilder(_isLoaded && isRefresh);
     setState(() {
       _value = value;
