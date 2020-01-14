@@ -16,6 +16,7 @@ import 'package:ercoin_wallet/interactor/transfer/destination/enter_transfer_des
 import 'package:ercoin_wallet/interactor/transfer/destination/select_transfer_destination_interactor.dart';
 import 'package:ercoin_wallet/interactor/transfer_list/transfer_list_interactor.dart';
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
+import 'package:ercoin_wallet/service/common/directory_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
 import 'package:ercoin_wallet/service/common/shared_preferences_service.dart';
@@ -58,13 +59,16 @@ class InteractorsConfiguration {
     injector.registerSingleton<AddressBookInteractor>((injector) => AddressBookInteractor(
       injector.getDependency<NamedAddressService>()
     ));
-    injector.registerSingleton<BackupInteractor>((_) => BackupInteractor());
+    injector.registerSingleton<BackupInteractor>((injector) => BackupInteractor(
+      injector.getDependency<DirectoryService>()
+    ));
     injector.registerSingleton<RegistrationInfoInteractor>((injector) => RegistrationInfoInteractor(
         injector.getDependency<SharedPreferencesService>()
     ));
     injector.registerSingleton<SettingsInteractor>((injector) => SettingsInteractor(
       injector.getDependency<SettingsService>(),
-      injector.getDependency<ApiConsumerService>()
+      injector.getDependency<ApiConsumerService>(),
+      injector.getDependency<DirectoryService>()
     ));
     injector.registerSingleton<EnterAddressFormInteractor>((injector) => EnterAddressFormInteractor(
       injector.getDependency<NamedAddressService>(),

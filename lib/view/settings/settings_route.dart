@@ -42,7 +42,7 @@ class _SettingsState extends State<SettingsRoute> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(title: const Text("Settings")),
         body: FutureBuilderWithProgress(
-          future: getApplicationDocumentsDirectory(),
+          future: _interactor.obtainBackupDirectory(),
           builder: (Directory directory) => TopAndBottomContainer(
             top: Form(
               key: _formKey,
