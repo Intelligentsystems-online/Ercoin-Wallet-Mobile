@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:ercoin_wallet/model/api/api_health_status.dart';
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
+import 'package:ercoin_wallet/service/common/directory_service.dart';
 import 'package:ercoin_wallet/service/settings/settings_service.dart';
 
 class SettingsInteractor {
   final SettingsService _settingsService;
   final ApiConsumerService _apiConsumerService;
+  final DirectoryService _directoryService;
 
-  SettingsInteractor(this._settingsService, this._apiConsumerService);
+  SettingsInteractor(this._settingsService, this._apiConsumerService, this._directoryService);
+
+  Future<Directory> obtainBackupDirectory() async => await _directoryService.obtainBackupDirectory();
 
   Future<String> validateNodeUri(String uri) async {
    if(uri.isEmpty)

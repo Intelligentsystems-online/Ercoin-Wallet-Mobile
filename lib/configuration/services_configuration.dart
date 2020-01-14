@@ -3,6 +3,7 @@ import 'package:ercoin_wallet/repository/named_address/named_address_repository.
 import 'package:ercoin_wallet/service/api/api_consumer_service.dart';
 import 'package:ercoin_wallet/service/api/api_response_status_decoder_service.dart';
 import 'package:ercoin_wallet/service/api/api_uri_factory_service.dart';
+import 'package:ercoin_wallet/service/common/directory_service.dart';
 import 'package:ercoin_wallet/service/common/byte_converter_service.dart';
 import 'package:ercoin_wallet/service/common/key_generator_service.dart';
 import 'package:ercoin_wallet/service/common/keys_format_validator_service.dart';
@@ -54,6 +55,7 @@ class ServicesConfiguration {
   }
 
   static _configureCommon(Injector injector) {
+    injector.registerSingleton<DirectoryService>((_) => DirectoryService());
     injector.registerSingleton<ByteConverterService>((_) => ByteConverterService());
     injector.registerSingleton<KeyGeneratorService>((_) => KeyGeneratorService());
     injector.registerSingleton<KeysFormatValidatorService>((_) => KeysFormatValidatorService());

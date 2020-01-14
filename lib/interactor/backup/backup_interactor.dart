@@ -3,11 +3,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ercoin_wallet/model/local_account/local_account.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:ercoin_wallet/service/common/directory_service.dart';
 
 class BackupInteractor {
+  final DirectoryService _directoryService;
+
+  const BackupInteractor(this._directoryService);
+
   Future<String> createBackup(LocalAccount localAccount) async {
-    final directory = await getApplicationDocumentsDirectory();
+    Directory directory = await _directoryService.obtainBackupDirectory();
+
     final file = File(_prepareFilePath(directory.path, localAccount.namedAddress.name));
 
     final jsonContent = jsonEncode({
