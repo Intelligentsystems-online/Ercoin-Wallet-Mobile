@@ -10,7 +10,7 @@ class LocalAccountKeys {
 
   const LocalAccountKeys({@required this.address, @required this.privateKey});
   static ofKeyPair(KeyPair keyPair) => LocalAccountKeys(
-    address: Address(bytes: keyPair.publicKey),
-    privateKey: PrivateKey(bytes: keyPair.secretKey)
+    address: Address.ofBytes(keyPair.publicKey),
+    privateKey: PrivateKey.ofBytes(keyPair.secretKey)
   );
 }

@@ -18,7 +18,7 @@ void main() {
   });
   
   test('Should correctly encode transaction value', () {
-    var transactionValueBytes = _transactionEncoder.encodeCoinsAmount(CoinsAmount(ercoin: 1));
+    var transactionValueBytes = _transactionEncoder.encodeCoinsAmount(CoinsAmount.ofErcoin(1));
 
     expect(Uint8List.fromList([0,0,0,0,0,15,66,64]), transactionValueBytes);
   });

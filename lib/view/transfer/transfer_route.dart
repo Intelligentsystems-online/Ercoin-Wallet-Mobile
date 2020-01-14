@@ -68,7 +68,7 @@ class _TransferRouteState extends State<TransferRoute> {
   Widget _amountInput() => StandardTextFormField(
         hintText: "Amount",
         icon: const Icon(Icons.edit),
-        inputFormatters: [DecimalInputFormatter(decimalRange: 6)],
+        inputFormatters: [DecimalInputFormatter(6)],
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         validator: (value) => value.isEmpty ? "Enter amount" : null,
         onSaved: (value) => setState(() => _amount = double.parse(value)),
@@ -90,7 +90,7 @@ class _TransferRouteState extends State<TransferRoute> {
               pushRoute(Navigator.of(ctx), () => TransferConfirmRoute(
                 destination: destination,
                 destinationName: destinationName,
-                amount: CoinsAmount(ercoin: _amount),
+                amount: CoinsAmount.ofErcoin(_amount),
                 message: _message ?? "",
               ));
             }
