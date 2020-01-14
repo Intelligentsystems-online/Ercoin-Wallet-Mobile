@@ -50,6 +50,7 @@ class _AccountListPageState extends State<AccountListPage> with AutomaticKeepAli
         padding: standardPadding.copyWith(bottom: 0),
         child: RefreshableFutureBuilder<List<LocalAccountActivationDetails>>(
             key: _builderKey,
+            streamController: _streamController,
             forceScrollable: false,
             futureBuilder: (isRefresh) async =>
             await _interactor.obtainDetailsList(_search, refresh: isRefresh),

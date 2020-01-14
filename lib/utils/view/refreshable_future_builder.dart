@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,9 +7,11 @@ class RefreshableFutureBuilder<T> extends StatefulWidget {
   final Future<T> Function(bool isRefresh) futureBuilder;
   final Widget Function(BuildContext ctx, T value) builder;
   final bool forceScrollable;
+  final StreamController streamController;
 
   const RefreshableFutureBuilder({
     Key key,
+    @required this.streamController,
     @required this.futureBuilder,
     @required this.builder,
     @required this.forceScrollable
@@ -15,19 +19,20 @@ class RefreshableFutureBuilder<T> extends StatefulWidget {
 
   @override
   RefreshableFutureBuilderState createState() =>
-      RefreshableFutureBuilderState<T>(futureBuilder, builder, forceScrollable);
+      RefreshableFutureBuilderState<T>(futureBuilder, builder, forceScrollable, streamController);
 }
 
 class RefreshableFutureBuilderState<T> extends State<RefreshableFutureBuilder> {
   final Future<T> Function(bool isRefresh) futureBuilder;
   final Widget Function(BuildContext ctx, T value) builder;
   final bool forceScrollable;
+  final StreamController streamController;
   final _indicatorKey = GlobalKey<RefreshIndicatorState>();
 
   T _value;
   bool _isLoaded = false;
 
-  RefreshableFutureBuilderState(this.futureBuilder, this.builder, this.forceScrollable);
+  RefreshableFutureBuilderState(this.futureBuilder, this.builder, this.forceScrollable, this.streamController);
 
   update({@required bool isRefresh}) {
     if(isRefresh) {
@@ -66,6 +71,7 @@ class RefreshableFutureBuilderState<T> extends State<RefreshableFutureBuilder> {
   }
 
   Future _updateValue({@required bool isRefresh}) async {
+    streamController.add(true);
     final value = await futureBuilder(_isLoaded && isRefresh);
     setState(() {
       _value = value;

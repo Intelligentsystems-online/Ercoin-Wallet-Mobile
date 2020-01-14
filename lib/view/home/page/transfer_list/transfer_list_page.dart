@@ -43,6 +43,7 @@ class _TransferListPageState extends State<TransferListPage> with AutomaticKeepA
     super.build(ctx);
     return RefreshableFutureBuilder<List<Transfer>>(
       key: _builderKey,
+      streamController: _streamController,
       forceScrollable: false,
       futureBuilder: (isRefresh) async =>
       await _interactor.obtainTransferList(
