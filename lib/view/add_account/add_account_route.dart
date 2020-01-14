@@ -68,9 +68,9 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
 
   Future<Function(BuildContext)> _onProceedAction() async {
     if(await _interactor.shouldDisplayRegistrationInfo()) {
-      return (ctx) => pushRoute(Navigator.of(ctx), () => RegistrationInfoPage());
+      return (ctx) => resetRoute(Navigator.of(ctx), () => RegistrationInfoPage());
     } else {
-      return (ctx) => pushRoute(Navigator.of(ctx), () => HomeRoute());
+      return (ctx) => resetRoute(Navigator.of(ctx), () => HomeRoute());
     }
   }
 }

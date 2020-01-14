@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 class StandardTextFormField extends StatefulWidget {
   final Function(String) validator;
   final Function(String) onSaved;
+  final Function() onFocusLost;
   final TextEditingController controller;
   final String initialValue;
   final String hintText;
@@ -16,6 +17,7 @@ class StandardTextFormField extends StatefulWidget {
   const StandardTextFormField({
     this.validator,
     this.onSaved,
+    this.onFocusLost,
     this.controller,
     this.initialValue,
     this.hintText,
@@ -27,13 +29,15 @@ class StandardTextFormField extends StatefulWidget {
 
   @override
   _StandardTextFormFieldState createState() => _StandardTextFormFieldState(
-      validator, onSaved, controller, initialValue, hintText, icon, keyboardType, inputFormatters, maxLength
+      validator, onSaved, onFocusLost, controller, initialValue,
+      hintText, icon, keyboardType, inputFormatters, maxLength
   );
 }
 
 class _StandardTextFormFieldState extends State<StandardTextFormField> {
   final Function(String) validator;
   final Function(String) onSaved;
+  final Function() onFocusLost;
   final TextEditingController controller;
   final String initialValue;
   final String hintText;
@@ -44,9 +48,12 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
 
   String _error;
 
+  final _focusNode = FocusNode();
+
   _StandardTextFormFieldState(
     this.validator,
     this.onSaved,
+    this.onFocusLost,
     this.controller,
     this.initialValue,
     this.hintText,
@@ -55,6 +62,16 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
     this.inputFormatters,
     this.maxLength,
   );
+
+  @override
+  initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if(!_focusNode.hasFocus && onFocusLost != null) {
+        onFocusLost();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext ctx) => TextFormField(
@@ -69,6 +86,7 @@ class _StandardTextFormFieldState extends State<StandardTextFormField> {
           border: OutlineInputBorder(borderRadius: standardBorderRadius, borderSide: BorderSide()),
           contentPadding: standardTextFieldContentPadding,
         ),
+        focusNode: _focusNode,
         validator: _validate,
         initialValue: initialValue,
         onSaved: onSaved,

@@ -16,6 +16,7 @@ import 'package:ercoin_wallet/utils/view/top_and_bottom_container.dart';
 import 'package:ercoin_wallet/view/add_account/add_account_route.dart';
 import 'package:ercoin_wallet/view/backup/backup_route.dart';
 import 'package:ercoin_wallet/view/home/home_route.dart';
+import 'package:ercoin_wallet/view/transfer/transfer_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -65,8 +66,9 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                const SizedBox(height: 16.0),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Expanded(
                         child: Column(
@@ -79,7 +81,8 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
                     AddressQrCode(address: details.details.localAccount.namedAddress.address),
                   ],
                 ),
-                _nameBox(),
+                const SizedBox(height: 32.0),
+                _nameBox(ctx),
                 const SizedBox(height: 16.0),
                 _addressBox(),
                 const SizedBox(height: 16.0),
@@ -98,7 +101,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
                   ],
                 ),
                 _activationBtn(ctx, details),
-                _saveBtn(ctx, details.details.localAccount),
+                if (!details.isActive) _transferBtn(ctx),
               ],
             )),
       ));
@@ -132,16 +135,16 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         ],
       );
 
-  Widget _nameBox() => Form(
+  Widget _nameBox(BuildContext ctx) => Form(
       key: _formKey,
       child: StandardTextFormField(
-          initialValue: account.namedAddress.name,
-          validator: (value) => value.isEmpty ? "Enter name" : null,
-          onSaved: (value) => setState(() => _name = value),
-          hintText: "Name",
-          icon: const Icon(Icons.edit),
-      )
-  );
+        initialValue: account.namedAddress.name,
+        onFocusLost: () => _saveName(ctx, account),
+        validator: (value) => value.isEmpty ? "Enter name" : null,
+        onSaved: (value) => setState(() => _name = value),
+        hintText: "Name",
+        icon: const Icon(Icons.edit),
+      ));
 
   Widget _addressBox() => StandardCopyTextBox(
         value: account.namedAddress.address.base58,
@@ -159,7 +162,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
             await showOkDialog(
               ctx,
               content: const Text(
-                  "Private key gives full access over this account and all its funds. Do not share it with anyone",
+                "Private key gives full access over this account and all its funds. Do not share it with anyone",
               ),
             );
             setState(() => _shouldShowPrivateKey = true);
@@ -175,28 +178,6 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
         onPressed: () async => _onDeleteAttempt(ctx),
       );
 
-  _onDeleteAttempt(BuildContext ctx) async {
-    showDialog(
-        context: ctx,
-        builder: (ctx) => DeleteRecomendationDialog((ctx) => _onDeleteRecomendationAccepted(ctx)));
-  }
-
-  _onDeleteRecomendationAccepted(BuildContext ctx) async {
-    Navigator.of(ctx).pop();
-    showDialog(
-        context: ctx,
-        builder: (ctx) => DeleteAlertDialog((ctx) async => await _onDeleteProceed(ctx)));
-  }
-
-  _onDeleteProceed(BuildContext ctx) async {
-    await _interactor.deleteAccountByPublicKey(account.namedAddress.address.base58);
-    if(await _interactor.activateAnyAccount()) {
-      resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
-    } else {
-      resetRoute(Navigator.of(ctx), () => AddAccountRoute());
-    }
-  }
-
   Widget _backupBtn(BuildContext ctx) => OutlineButton(
         borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
         child: const Text("Create backup"),
@@ -208,20 +189,54 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
       child: Text(details.isActive ? "Deactivate" : "Activate"),
       onPressed: () async {
         await _interactor.toggleAccountActivation(details);
-        resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
+        _updateDetails();
       });
 
-  Widget _saveBtn(BuildContext ctx, LocalAccount account) => RaisedButton(
-      child: const Text("Save"),
-      onPressed: () async {
-        if(_formKey.currentState.validate()) {
-          _formKey.currentState.save();
+  Widget _transferBtn(BuildContext ctx) => RaisedButton.icon(
+        icon: const Text("Transfer"),
+        label: const Icon(Icons.send),
+        onPressed: () async {
+          await pushRoute(
+            Navigator.of(ctx),
+            () => TransferRoute(
+              destinationAddress: account.namedAddress.address,
+              destinationName: account.namedAddress.name,
+            ),
+          );
+          _updateDetails();
+        },
+      );
 
-          await _interactor.updateNameByPublicKey(account.namedAddress.address.base58, _name);
-          resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
-        }
-      }
-  );
+  _saveName(BuildContext ctx, LocalAccount account) async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+
+      await _interactor.updateNameByPublicKey(account.namedAddress.address.base58, _name);
+      _updateDetails();
+    }
+  }
+
+  _onDeleteAttempt(BuildContext ctx) async => showDialog(
+        context: ctx,
+        builder: (ctx) => DeleteRecomendationDialog((ctx) => _onDeleteRecommendationAccepted(ctx)),
+      );
+
+  _onDeleteRecommendationAccepted(BuildContext ctx) async {
+    Navigator.of(ctx).pop();
+    showDialog(
+      context: ctx,
+      builder: (ctx) => DeleteAlertDialog((ctx) async => await _onDeleteProceed(ctx)),
+    );
+  }
+
+  _onDeleteProceed(BuildContext ctx) async {
+    await _interactor.deleteAccountByPublicKey(account.namedAddress.address.base58);
+    if (await _interactor.activateAnyAccount()) {
+      resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 3));
+    } else {
+      resetRoute(Navigator.of(ctx), () => AddAccountRoute());
+    }
+  }
 
   _updateDetails() async => _detailsStream.add(await _interactor.obtainAccountActivationDetails(account));
 }

@@ -40,9 +40,10 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Align(alignment: Alignment.center, child: AddressQrCode(address: _address.address)),
               const SizedBox(height: 16.0),
-              _nameBox(),
+              Align(alignment: Alignment.center, child: AddressQrCode(address: _address.address)),
+              const SizedBox(height: 32.0),
+              _nameBox(ctx),
               const SizedBox(height: 16.0),
               _addressBox(),
             ],
@@ -50,21 +51,21 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
           bottom: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[_deleteBtn(ctx), _transferBtn(ctx), _saveBtn(ctx)],
+            children: <Widget>[_deleteBtn(ctx), _transferBtn(ctx)],
           ),
         ),
       );
 
-  Widget _nameBox() => Form(
-    key: _formKey,
-    child: StandardTextFormField(
+  Widget _nameBox(BuildContext ctx) => Form(
+      key: _formKey,
+      child: StandardTextFormField(
         initialValue: _address.name,
         hintText: "Name",
         icon: const Icon(Icons.edit),
+        onFocusLost: () => _save(ctx),
         validator: (value) => value.isEmpty ? "Enter name" : null,
         onSaved: (value) => setState(() => _name = value),
-    )
-  );
+      ));
 
   Widget _addressBox() => StandardCopyTextBox(
         value: _address.address.base58,
@@ -80,9 +81,7 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
       );
 
   _onDeleteAttempt(BuildContext ctx) async {
-    showDialog(
-        context: ctx,
-        builder: (ctx) => DeleteAlertDialog((ctx) async => await _onDeleteProceed(ctx)));
+    showDialog(context: ctx, builder: (ctx) => DeleteAlertDialog((ctx) async => await _onDeleteProceed(ctx)));
   }
 
   _onDeleteProceed(BuildContext ctx) async {
@@ -90,8 +89,7 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
     resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 2));
   }
 
-  Widget _transferBtn(BuildContext ctx) => OutlineButton.icon(
-        borderSide: BorderSide(color: Theme.of(ctx).primaryColor),
+  Widget _transferBtn(BuildContext ctx) => RaisedButton.icon(
         icon: const Text("Transfer"),
         label: const Icon(Icons.send),
         onPressed: () => pushRoute(
@@ -100,15 +98,11 @@ class _AddressDetailsRouteState extends State<AddressDetailsRoute> {
         ),
       );
 
-  Widget _saveBtn(BuildContext ctx) => RaisedButton(
-        child: const Text("Save"),
-        onPressed: () async {
-          if(_formKey.currentState.validate()) {
-            _formKey.currentState.save();
+  _save(BuildContext ctx) async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
 
-            await _interactor.updateNameByPublicKey(_address.address.base58, _name);
-            resetRoute(Navigator.of(ctx), () => HomeRoute(initialPageIndex: 2));
-          }
-        }
-      );
+      await _interactor.updateNameByPublicKey(_address.address.base58, _name);
+    }
+  }
 }

@@ -30,10 +30,19 @@ class AccountList extends StatelessWidget {
           child: ListTile(
             title: Text(details.details.localAccount.namedAddress.name),
             subtitle: Text("${details.details.balance.ercoinFixed} ERN"),
-            trailing: details.isActive ? Icon(Icons.check, color: Colors.green) : _activateBtn(details.details.localAccount),
+            trailing: details.isActive ? _activeBadge() : _activateBtn(details.details.localAccount),
           ),
         ),
       );
+
+  _activeBadge() => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+      const Icon(Icons.check, color: Colors.green),
+      const SizedBox(width: 8.0),
+      const Text("Active", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green))
+    ],
+  );
 
   _activateBtn(LocalAccount account) => OutlineButton(
     child: const Text("Activate"),
