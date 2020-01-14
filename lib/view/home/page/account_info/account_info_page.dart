@@ -50,6 +50,7 @@ class _AccountInfoState extends State<AccountInfoPage> with AutomaticKeepAliveCl
       padding: standardPadding.copyWith(bottom: 0),
       child: RefreshableFutureBuilder(
         key: _builderKey,
+        streamController: _streamController,
         forceScrollable: true,
         futureBuilder: (isRefresh) async => await _fetchAccount(isRefresh),
         builder: (_, LocalAccountDetailsWithRecentTransfers details) =>
