@@ -43,14 +43,14 @@ class _SettingsState extends State<SettingsRoute> {
         appBar: AppBar(title: const Text("Settings")),
         body: FutureBuilderWithProgress(
           future: _interactor.obtainBackupDirectory(),
-          builder: (Directory directory) => TopAndBottomContainer(
-            top: Form(
+          builder: (Directory directory) => Container(
+            padding: standardPadding,
+            child: Form(
               key: _formKey,
               child: _settingsContent(directory.path),
             ),
-            bottom: _proceedBtn(),
           ),
-        )
+        ),
       );
 
   Widget _settingsContent(String directoryBackupPath) => Column(
@@ -63,6 +63,7 @@ class _SettingsState extends State<SettingsRoute> {
             hintText: "Node address",
             icon: const Icon(Icons.edit),
             controller: _nodeUriController,
+            onFocusLost: () => _save(),
             validator: (_) => _nodeUriValidationResult,
             onSaved: (value) => setState(() => _nodeUri = value),
           ),
@@ -70,37 +71,31 @@ class _SettingsState extends State<SettingsRoute> {
           StandardCopyTextBox(
             value: directoryBackupPath,
             labelText: "Backup path",
-          )
+          ),
         ],
       );
 
   Widget _contentText() => RichText(
-    text: TextSpan(
-      children: [
-        TextSpan(
-            text: "Here you can configure and check application properties. If you want to change configuration using a non-default node, make sure you trust it. For more details see ",
-            style: standardTextSpanStyle
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "Here you can configure and check application properties. If you want to change configuration using a non-default node, make sure you trust it. For more details see ",
+              style: standardTextSpanStyle,
+            ),
+            TextSpan(
+              text: "Official Ercoin Site. ",
+              style: standardLinkTextSpanStyle,
+              recognizer: TapGestureRecognizer()..onTap = () => launch('https://ercoin.tech/'),
+            ),
+          ],
         ),
-        TextSpan(
-            text: "Official Ercoin Site. ",
-            style: standardLinkTextSpanStyle,
-            recognizer: TapGestureRecognizer() ..onTap = () => launch('https://ercoin.tech/')
-        )
-      ]
-    )
-  );
-
-  Widget _proceedBtn() => ExpandedRaisedTextButton(
-        text: "Save",
-        onPressed: () => _onProceed(),
       );
 
-  _onProceed() async {
+  _save() async {
     _formKey.currentState.save();
     await _validateNodeUri();
     if (_formKey.currentState.validate()) {
       await _interactor.persistNodeUri(_nodeUri);
-      pushRoute(Navigator.of(context), () => HomeRoute());
     }
   }
 
