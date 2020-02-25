@@ -30,7 +30,7 @@ class _AddAccountRouteState extends State<AddAccountRoute> {
       body: ProgressOverlayContainer(
         overlayEnabled: _isLoading,
         child: TopAndBottomContainer(
-          top: Text("You can either create a new account or import existing account from file or keys you have written down"),
+          top: Text("You can either create a new account or import an existing account. In the latter it is possible to load account address and private key from previously exported file or enter them manually."),
           bottom: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
