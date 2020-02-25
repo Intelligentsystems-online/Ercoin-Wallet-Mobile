@@ -26,7 +26,7 @@ class BackupRoute extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               const Text(
-                  "Create account backup by writing down and/or exporting to file following data. This will allow you to use this account from different device or restore it after data loss."),
+                  "Create account backup by writing down and/or exporting to file the following data. This will allow you to restore it after data loss or use this account from different devices."),
               const SizedBox(height: 16.0),
               StandardCopyTextBox(labelText: "Name", value: localAccount.namedAddress.name),
               const SizedBox(height: 16.0),
