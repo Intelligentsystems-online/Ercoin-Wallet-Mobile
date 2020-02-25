@@ -22,7 +22,7 @@ class DeleteRecomendationDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text("Before proceeding make sure that you wrote down access keys. Otherwise you can lost account data"),
+          Text("Before proceeding make sure that you wrote down access keys. Otherwise you will loose account data."),
           SizedBox(height: 8),
           _buttonsRow(ctx),
         ],

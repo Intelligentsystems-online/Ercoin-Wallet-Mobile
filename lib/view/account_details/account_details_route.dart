@@ -162,7 +162,7 @@ class _AccountDetailsRouteState extends State<AccountDetailsRoute> {
             await showOkDialog(
               ctx,
               content: const Text(
-                "Private key gives full access over this account and all its funds. Do not share it with anyone",
+                "Private key gives full access over this account and all its funds. Do not share it with anyone.",
               ),
             );
             setState(() => _shouldShowPrivateKey = true);

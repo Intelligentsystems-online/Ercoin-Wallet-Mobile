@@ -14,7 +14,7 @@ class DeleteAlertDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(borderRadius: standardBorderRadius),
       contentPadding: standardDialogPadding,
       title: Text(
-        "Are you sure ?",
+        "Are you sure?",
         textAlign: TextAlign.center,
         style: Theme.of(ctx).textTheme.title,
       ),
