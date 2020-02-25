@@ -29,7 +29,7 @@ class BackupPromptRoute extends StatelessWidget {
       );
 
   Widget _infoText() => const Text(
-      "We strongly advise to create backup. By proceeding without backup you acknowledge that you can lose access to your account");
+      "We strongly advise to create backup. By proceeding without backup you acknowledge the risk of loosing access to the account.");
 
   Widget _backupBtn(BuildContext ctx) => RaisedButton(
         child: const Text("Create backup"),
