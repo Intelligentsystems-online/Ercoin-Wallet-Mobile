@@ -56,7 +56,7 @@ class _ImportAccountRouteState extends State<ImportAccountRoute> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   const Text(
-                      "In order to import account you will need address and private key. You can load them from previously exported file or enter them by hand."),
+                      "In order to import account you will need the address and private key. You can load them from previously exported file or enter them manually."),
                   const SizedBox(height: 16.0),
                   _addressInput(),
                   const SizedBox(height: 16.0),
