@@ -103,7 +103,7 @@ class _TransferConfirmRouteState extends State<TransferConfirmRoute> {
     if (result == ApiResponseStatus.INSUFFICIENT_FUNDS) {
       showTextSnackBar(Scaffold.of(ctx), "Insufficient funds to execute this transfer");
     } else if (result == ApiResponseStatus.GENERIC_ERROR) {
-      showTextSnackBar(Scaffold.of(ctx), "Something went wrong, try again");
+      showTextSnackBar(Scaffold.of(ctx), "Something went wrong, wait a moment and try again");
     } else {
       resetRoute(Navigator.of(context), () => HomeRoute(initialPageIndex: 1, snackBarText: "Transfer successful"));
     }
