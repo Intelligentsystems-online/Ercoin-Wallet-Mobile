@@ -18,7 +18,7 @@ class BackupSuccessDialog extends StatelessWidget {
     shape: const RoundedRectangleBorder(borderRadius: standardBorderRadius),
     contentPadding: standardDialogPadding,
     title: Text(
-      "Exported successfully",
+      "Exported successfully. Please copy the exported file to a safe location.",
       textAlign: TextAlign.center,
       style: Theme.of(ctx).textTheme.title,
     ),
