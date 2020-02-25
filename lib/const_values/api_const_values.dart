@@ -1,4 +1,4 @@
-const defaultNodeUri = "https://testnet-node.ercoin.tech";
+const defaultNodeUri = "https://ercoin.ergologicinc.com";
 
 const healthEndpoint = "/health";
 const fetchTransactionsEndpoint = "/tx_search";
