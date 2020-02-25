@@ -37,17 +37,11 @@ class _RegistrationInfoState extends State<RegistrationInfoPage> {
     )
   );
 
+
   Widget _registrationInfoLabel() => Column(
     children: <Widget>[
-      const Text("This account has been created but is still not registered. In order to complete the registration you have to transfer ercoins to it."),
+      const Text("The account is created but not registered in the blockchain. In order to register you have to transfer ercoins to it. Upon receiving first ercoins registration fee will be charged by the blockchain."),
       SizedBox(height: 8),
-      Row(
-        children: <Widget>[
-          const Icon(Icons.warning, color: Colors.red),
-          SizedBox(width: 8),
-          const Text("Registration fee will be charged", style: const TextStyle(color: Colors.red))
-        ],
-      )
     ],
   );
 
@@ -58,7 +52,7 @@ class _RegistrationInfoState extends State<RegistrationInfoPage> {
   );
 
   Widget _proceedBtn() => ExpandedRaisedTextButton(
-    text: "Procced",
+    text: "Proceed",
     onPressed: () async {
      if(_isAccepted) {
        await _interactor.persistRegistrationInfoRejected();
