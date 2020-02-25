@@ -45,7 +45,7 @@ class _ConfigureAccountNameRouteState extends State<ConfigureAccountNameRoute> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              const Text("Enter in-app name for this account. This name is visible only to you and can be different across different devices"),
+              const Text("Enter in-app name for this account. The name is local and will not appear in other devices."),
               const SizedBox(height: 16.0),
               _nameInput(),
             ],
